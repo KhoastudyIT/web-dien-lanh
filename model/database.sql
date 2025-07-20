@@ -7,6 +7,15 @@ CREATE TABLE danhmuc (
   name VARCHAR(100) NOT NULL
 );
 
+-- Bảng hãng sản xuất
+CREATE TABLE hang (
+  id_hang INT AUTO_INCREMENT PRIMARY KEY,
+  ten_hang VARCHAR(100) NOT NULL,
+  logo_hang VARCHAR(250) DEFAULT NULL,
+  mo_ta TEXT DEFAULT NULL,
+  quoc_gia VARCHAR(50) DEFAULT NULL
+);
+
 -- Bảng sản phẩm
 CREATE TABLE sanpham (
   id_sp INT AUTO_INCREMENT PRIMARY KEY,
@@ -19,7 +28,9 @@ CREATE TABLE sanpham (
   Sale INT DEFAULT NULL,
   image VARCHAR(250) DEFAULT NULL,
   id_danhmuc INT NOT NULL,
-  FOREIGN KEY (id_danhmuc) REFERENCES danhmuc(id)
+  id_hang INT NOT NULL,
+  FOREIGN KEY (id_danhmuc) REFERENCES danhmuc(id),
+  FOREIGN KEY (id_hang) REFERENCES hang(id_hang)
 );
 
 -- Bảng tài khoản
