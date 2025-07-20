@@ -10,41 +10,91 @@ function renderPage($title = "Myweb", $content = "") {
     </main>
     
     <!-- Footer -->
-    <footer class="bg-gray-800 text-white py-8">
+    <footer class="bg-gray-900 text-white py-12">
         <div class="max-w-7xl mx-auto px-4">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
                 <div>
-                    <h3 class="text-lg font-semibold mb-4">Về chúng tôi</h3>
-                    <p class="text-gray-300 text-sm">Công ty chuyên cung cấp các sản phẩm và dịch vụ chất lượng cao.</p>
+                    <img src="images/Neel.png" alt="logo" style="width:40px;">
+                    <p class="text-gray-400 mb-4">
+                        Chuyên cung cấp và sửa chữa các thiết bị điện lạnh chất lượng cao
+                        với dịch vụ tận tâm.
+                    </p>
+                    <div class="flex space-x-4">
+                        <div class="w-8 h-8 flex items-center justify-center">
+                            <i class="ri-facebook-fill text-blue-500 text-lg"></i>
+                        </div>
+                        <div class="w-8 h-8 flex items-center justify-center">
+                            <i class="ri-youtube-fill text-red-500 text-lg"></i>
+                        </div>
+                        <div class="w-8 h-8 flex items-center justify-center">
+                            <i class="ri-instagram-fill text-pink-500 text-lg"></i>
+                        </div>
+                    </div>
                 </div>
+
                 <div>
-                    <h3 class="text-lg font-semibold mb-4">Liên kết</h3>
-                    <ul class="space-y-2 text-sm">
-                        <li><a href="#" class="text-gray-300 hover:text-white">Trang chủ</a></li>
-                        <li><a href="#" class="text-gray-300 hover:text-white">Sản phẩm</a></li>
-                        <li><a href="#" class="text-gray-300 hover:text-white">Dịch vụ</a></li>
-                        <li><a href="#" class="text-gray-300 hover:text-white">Liên hệ</a></li>
+                    <h4 class="font-semibold mb-4">Sản Phẩm</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li>
+                            <a href="#" class="hover:text-white transition-colors">Máy lạnh</a>
+                        </li>
+                        <li>
+                            <a href="#" class="hover:text-white transition-colors">Tủ lạnh</a>
+                        </li>
+                        <li>
+                            <a href="#" class="hover:text-white transition-colors">Máy giặt</a>
+                        </li>
+                        <li>
+                            <a href="#" class="hover:text-white transition-colors">Phụ kiện</a>
+                        </li>
                     </ul>
                 </div>
+
                 <div>
-                    <h3 class="text-lg font-semibold mb-4">Hỗ trợ</h3>
-                    <ul class="space-y-2 text-sm">
-                        <li><a href="#" class="text-gray-300 hover:text-white">FAQ</a></li>
-                        <li><a href="#" class="text-gray-300 hover:text-white">Hướng dẫn</a></li>
-                        <li><a href="#" class="text-gray-300 hover:text-white">Bảo hành</a></li>
+                    <h4 class="font-semibold mb-4">Dịch Vụ</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li>
+                            <a href="#" class="hover:text-white transition-colors">Sửa chữa</a>
+                        </li>
+                        <li>
+                            <a href="#" class="hover:text-white transition-colors">Bảo trì</a>
+                        </li>
+                        <li>
+                            <a href="#" class="hover:text-white transition-colors">Lắp đặt</a>
+                        </li>
+                        <li>
+                            <a href="#" class="hover:text-white transition-colors">Bảo hành</a>
+                        </li>
                     </ul>
                 </div>
+
                 <div>
-                    <h3 class="text-lg font-semibold mb-4">Liên hệ</h3>
-                    <div class="space-y-2 text-sm text-gray-300">
-                        <p>Hotline: 1900 6789</p>
-                        <p>Email: info@myweb.com</p>
-                        <p>Địa chỉ: 123 Đường ABC, Quận XYZ</p>
+                    <h4 class="font-semibold mb-4">Liên Hệ</h4>
+                    <div class="space-y-3 text-gray-400">
+                        <div class="flex items-center gap-3">
+                            <div class="w-5 h-5 flex items-center justify-center">
+                                <i class="ri-map-pin-line text-sm"></i>
+                            </div>
+                            <span class="text-sm">60/15/3, P. Thủ Đức, TP.HCM</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <div class="w-5 h-5 flex items-center justify-center">
+                                <i class="ri-phone-line text-sm"></i>
+                            </div>
+                            <span class="text-sm">84+ 346868288</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <div class="w-5 h-5 flex items-center justify-center">
+                                <i class="ri-mail-line text-sm"></i>
+                            </div>
+                            <span class="text-sm">info@dienlanhkv.vn</span>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-sm text-gray-300">
-                <p>&copy; 2024 Myweb. Tất cả quyền được bảo lưu.</p>
+
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2025 Điện Lạnh KV Thủ Đức . Tất cả quyền được bảo lưu.</p>
             </div>
         </div>
     </footer>
