@@ -1,7 +1,9 @@
 <?php
 // Layout template cho tất cả các trang
 function renderPage($title = "Myweb", $content = "") {
-    include "header.php";
+    // Sử dụng đường dẫn tuyệt đối
+    $project_root = dirname(dirname(__DIR__));
+    include $project_root . "/view/layout/header.php";
     ?>
     <main class="min-h-screen bg-gray-50 py-8">
         <div class="max-w-7xl mx-auto px-4">
@@ -14,7 +16,7 @@ function renderPage($title = "Myweb", $content = "") {
         <div class="max-w-7xl mx-auto px-4">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
                 <div>
-                    <img src="images/Neel.png" alt="logo" style="width:40px;">
+                    <img src="view/image/Neel.png" alt="logo" style="width:40px;">
                     <p class="text-gray-400 mb-4">
                         Chuyên cung cấp và sửa chữa các thiết bị điện lạnh chất lượng cao
                         với dịch vụ tận tâm.

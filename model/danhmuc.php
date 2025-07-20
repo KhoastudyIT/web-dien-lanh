@@ -2,8 +2,8 @@
 
     include "xl_data.php";
 class  danhmuc {
-        private $id_dm = 0; // thuộc tính id_dm
-        private $Name = ""; // thuộc tính tên danhmuc
+        private $id_dm = 0; // Thuộc tính ID danh mục
+        private $Name = ""; // Thuộc tính tên danh mục
 
         public function setId($id_dm){
             return $this->id_dm = $id_dm;
@@ -26,10 +26,10 @@ class  danhmuc {
         }
         public function themDM(danhmuc $dm){
             $xl = new xl_data();
-            //cách viết câu sql
+            // Cách viết câu SQL
             $sql = "INSERT INTO `danhmuc` (`id`, `name`) 
             VALUES (NULL, '".$dm->getName()."')";
-            //gọi hàm thực thi câu sql trong xl_data
+            // Gọi hàm thực thi câu SQL trong xl_data
             $xl->execute_item($sql);
         }
         public function xoadm(danhmuc $dm){

@@ -3,7 +3,7 @@
         private $servername = "localhost";
         private $username="root";
         private $password="";
-        private $databasename="abc";// tên database
+        private $databasename="abc";// Tên database
         protected $conn = null;
 
     function connection_database(){

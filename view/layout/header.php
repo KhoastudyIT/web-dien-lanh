@@ -45,9 +45,10 @@
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="view/css/style.css">
     <link rel="stylesheet" href="view/css/custom.css">
     <style>
-      /* Additional custom CSS goes here if needed */
+      /* CSS tùy chỉnh bổ sung nếu cần */
     </style>
 </head>
 <body>
@@ -57,7 +58,7 @@
         <div class="max-w-7xl mx-auto px-4">
             <div class="flex items-center justify-between h-16">
                 <div class="flex items-center">
-                    <img src="images/Neel.png" alt="logo" style="width:40px;">
+                    <img src="view/image/Neel.png" alt="logo" style="width:40px;">
                 </div>
 
                 <div class="flex-1 max-w-lg mx-8">
@@ -77,8 +78,8 @@
 
                 <nav class="hidden md:flex items-center space-x-8">
                     <a href="index.php" class="text-gray-700 hover:text-primary font-medium">Trang chủ</a>
+                    <a href="index.php?act=sanpham" class="text-gray-700 hover:text-primary font-medium">Sản phẩm</a>
                     <a href="index.php?act=danhmuc" class="text-gray-700 hover:text-primary font-medium">Danh mục</a>
-                    <a href="#" class="text-gray-700 hover:text-primary font-medium">Sản phẩm</a>
                     <a href="#" class="text-gray-700 hover:text-primary font-medium">Liên hệ</a>
                 </nav>
 
@@ -92,9 +93,10 @@
                     </div>
                     <?php
                     // Include JWT helper để kiểm tra user
-                    if (file_exists("../helpers/jwt_helper.php")) {
-                        include_once "../helpers/jwt_helper.php";
-                        include_once "../model/user.php";
+                    $project_root = dirname(dirname(__DIR__));
+                    if (file_exists($project_root . "/helpers/jwt_helper.php")) {
+                        include_once $project_root . "/helpers/jwt_helper.php";
+                        include_once $project_root . "/model/user.php";
                         $currentUser = getCurrentUser();
                     } else {
                         $currentUser = null;

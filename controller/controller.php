@@ -7,7 +7,7 @@ class controller{
         return $dm->getDS_Danhmuc();
     }
     public function themdm(danhmuc $dm){
-        //goi them danh muc trong class danhmuc trong model
+        // Gọi thêm danh mục trong class danhmuc trong model
         $dm->themDM($dm);
     }
     public function xoadm(danhmuc $dm){

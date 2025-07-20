@@ -7,10 +7,10 @@ if(isset($_REQUEST['act'])){
     $act= $_REQUEST['act'];
     switch($act){
         case 'login':
-            include "../view/login.php";
+            include "../view/pages/login.php";
             break;
         case 'register':
-            include "../view/register.php";
+            include "../view/pages/register.php";
             break;
         case 'xl_login':
             if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -47,7 +47,7 @@ if(isset($_REQUEST['act'])){
                 $phone = $_POST['phone'];
                 $address = $_POST['address'];
                 
-                // Validation
+                // Kiểm tra dữ liệu đầu vào
                 if ($password !== $confirm_password) {
                     header('Location: index.php?act=register&error=' . urlencode('Mật khẩu xác nhận không khớp'));
                     exit();
@@ -74,7 +74,7 @@ if(isset($_REQUEST['act'])){
                 header('Location: index.php?act=login');
                 exit();
             }
-            include "../view/profile.php";
+            include "../view/pages/profile.php";
             break;
         case 'logout':
             setcookie('auth_token', '', time() - 3600, '/');
@@ -83,7 +83,7 @@ if(isset($_REQUEST['act'])){
         case 'danhmuc':
             $controller = new controller();
             $danhmuc = $controller->hienthidm();
-            include "../view/danhmuc.php";
+            include "../view/pages/danhmuc.php";
             break;
         case 'xl_themDM':
             if ($_SERVER["REQUEST_METHOD"] == "POST") { 
@@ -93,7 +93,7 @@ if(isset($_REQUEST['act'])){
                 $controller = new controller();
                 $controller->themdm($dm);
                 $danhmuc = $controller->hienthidm();
-                include "../view/danhmuc.php";
+                include "../view/pages/danhmuc.php";
             }
             break;
         case 'xoadm':
@@ -104,11 +104,17 @@ if(isset($_REQUEST['act'])){
                 $controller = new controller();
                 $controller->xoadm($dm);
                 $danhmuc = $controller->hienthidm();
-                include "../view/danhmuc.php";
+                include "../view/pages/danhmuc.php";
             }
+            break;
+        case 'sanpham':
+            include "../view/pages/sanpham.php";
+            break;
+        case 'chitiet':
+            include "../view/pages/chitiet.php";
             break;
     }
 
 }else{
-    include "../view/home.php";
+    include "../view/pages/home.php";
 }

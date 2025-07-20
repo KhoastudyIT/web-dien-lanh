@@ -1,6 +1,8 @@
 <?php
-include "layout.php";
-require_once "../helpers/jwt_helper.php";
+// Sử dụng đường dẫn tuyệt đối từ root của project
+$project_root = dirname(dirname(__DIR__));
+include $project_root . "/view/layout/layout.php";
+require_once $project_root . "/helpers/jwt_helper.php";
 
 $currentUser = getCurrentUser();
 

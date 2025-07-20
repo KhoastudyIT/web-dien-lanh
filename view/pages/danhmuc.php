@@ -1,5 +1,7 @@
 <?php
-include "layout.php";
+// Sử dụng đường dẫn tuyệt đối từ root của project
+$project_root = dirname(dirname(__DIR__));
+include $project_root . "/view/layout/layout.php";
 
 $content = '
 <div class="space-y-8">
