@@ -1,4 +1,7 @@
 <?php
+include_once __DIR__ . '/cart.php';
+include_once __DIR__ . '/database.php';
+
 class DonHang {
     private $db;
 
@@ -9,7 +12,12 @@ class DonHang {
     // Tạo đơn hàng mới
     public function createOrder($userId, $total, $shippingInfo) {
         try {
+            error_log("DonHang::createOrder - Starting order creation for user: $userId");
+            error_log("DonHang::createOrder - Total: $total");
+            error_log("DonHang::createOrder - Shipping info: " . print_r($shippingInfo, true));
+            
             $this->db->beginTransaction();
+            error_log("DonHang::createOrder - Transaction started");
             
             // Tạo đơn hàng
             $sql = "INSERT INTO donhang (id_user, tongdh, ngaydat, trangthai, 
@@ -28,6 +36,7 @@ class DonHang {
             ]);
             
             $orderId = $this->db->lastInsertId();
+            error_log("DonHang::createOrder - Order created with ID: $orderId");
             
             // Thêm chi tiết đơn hàng
             $cart = new Cart();
@@ -64,12 +73,16 @@ class DonHang {
             
             // Xóa giỏ hàng
             $cart->clear();
+            error_log("DonHang::createOrder - Cart cleared");
             
             $this->db->commit();
+            error_log("DonHang::createOrder - Transaction committed successfully");
             return $orderId;
             
         } catch (Exception $e) {
+            error_log("DonHang::createOrder - Error: " . $e->getMessage());
             $this->db->rollback();
+            error_log("DonHang::createOrder - Transaction rolled back");
             throw $e;
         }
     }
@@ -482,6 +495,17 @@ class DonHang {
         $stmt = $this->db->prepare($sql);
         $stmt->execute([$threshold]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
+    // Cập nhật trạng thái thanh toán
+    public function updatePaymentStatus($orderId, $paymentStatus) {
+        try {
+            $sql = "UPDATE donhang SET phuong_thuc_thanh_toan = ? WHERE id_dh = ?";
+            $stmt = $this->db->prepare($sql);
+            return $stmt->execute([$paymentStatus, $orderId]);
+        } catch (Exception $e) {
+            return false;
+        }
     }
 }
 ?> 

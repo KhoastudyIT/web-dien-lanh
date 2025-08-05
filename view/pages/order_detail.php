@@ -96,6 +96,60 @@ $content = '
                 </div>
             </div>
         </div>
+        
+        <!-- Order Timeline -->
+        <div class="mt-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">Trạng thái đơn hàng</h3>
+            <div class="relative">
+                <div class="flex items-center justify-between">
+                    <div class="flex flex-col items-center">
+                        <div class="w-10 h-10 rounded-full ' . ($orderDetails['trangthai'] === 'Chờ xác nhận' || $orderDetails['trangthai'] === 'Đã xác nhận' || $orderDetails['trangthai'] === 'Đang giao' || $orderDetails['trangthai'] === 'Đã giao' ? 'bg-yellow-500' : 'bg-gray-300') . ' flex items-center justify-center mb-2">
+                            <span class="text-white font-bold">1</span>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-sm font-medium text-gray-900">Chờ xác nhận</p>
+                            <p class="text-xs text-gray-500">Đơn hàng đã được đặt và đang chờ xác nhận</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex-1 h-1 mx-4 ' . ($orderDetails['trangthai'] === 'Đã xác nhận' || $orderDetails['trangthai'] === 'Đang giao' || $orderDetails['trangthai'] === 'Đã giao' ? 'bg-yellow-500' : 'bg-gray-300') . '"></div>
+                    
+                    <div class="flex flex-col items-center">
+                        <div class="w-10 h-10 rounded-full ' . ($orderDetails['trangthai'] === 'Đã xác nhận' || $orderDetails['trangthai'] === 'Đang giao' || $orderDetails['trangthai'] === 'Đã giao' ? 'bg-blue-500' : 'bg-gray-300') . ' flex items-center justify-center mb-2">
+                            <span class="text-white font-bold">2</span>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-sm font-medium text-gray-900">Đã xác nhận</p>
+                            <p class="text-xs text-gray-500">Đơn hàng đã được xác nhận và đang chuẩn bị</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex-1 h-1 mx-4 ' . ($orderDetails['trangthai'] === 'Đang giao' || $orderDetails['trangthai'] === 'Đã giao' ? 'bg-blue-500' : 'bg-gray-300') . '"></div>
+                    
+                    <div class="flex flex-col items-center">
+                        <div class="w-10 h-10 rounded-full ' . ($orderDetails['trangthai'] === 'Đang giao' || $orderDetails['trangthai'] === 'Đã giao' ? 'bg-purple-500' : 'bg-gray-300') . ' flex items-center justify-center mb-2">
+                            <span class="text-white font-bold">3</span>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-sm font-medium text-gray-900">Đang giao hàng</p>
+                            <p class="text-xs text-gray-500">Đơn hàng đang được giao đến địa chỉ của bạn</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex-1 h-1 mx-4 ' . ($orderDetails['trangthai'] === 'Đã giao' ? 'bg-purple-500' : 'bg-gray-300') . '"></div>
+                    
+                    <div class="flex flex-col items-center">
+                        <div class="w-10 h-10 rounded-full ' . ($orderDetails['trangthai'] === 'Đã giao' ? 'bg-green-500' : 'bg-gray-300') . ' flex items-center justify-center mb-2">
+                            <span class="text-white font-bold">4</span>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-sm font-medium text-gray-900">Đã giao hàng</p>
+                            <p class="text-xs text-gray-500">Đơn hàng đã được giao thành công</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Order Items -->

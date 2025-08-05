@@ -231,14 +231,22 @@ if(isset($_REQUEST['act'])){
             include "../view/pages/checkout.php";
             break;
         case 'process_checkout':
-            // Kiểm tra đăng nhập trước khi xử lý thanh toán
+            // Debug logging
+            error_log("process_checkout: Starting order processing");
+            
+            // Kiểm tra đăng nhập
             $currentUser = getCurrentUser();
             if (!$currentUser) {
+                error_log("process_checkout: User not authenticated");
                 header('Location: /project/controller/index.php?act=login&error=' . urlencode('Vui lòng đăng nhập để thanh toán'));
                 exit();
             }
             
+            error_log("process_checkout: User authenticated - " . $currentUser['username']);
+            
             if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                error_log("process_checkout: POST request received");
+                error_log("process_checkout: POST data: " . print_r($_POST, true));
                 // Validate dữ liệu
                 $ten_nguoi_nhan = $_POST['ten_nguoi_nhan'] ?? '';
                 $sdt_nguoi_nhan = $_POST['sdt_nguoi_nhan'] ?? '';
@@ -247,6 +255,7 @@ if(isset($_REQUEST['act'])){
                 $phuong_thuc_thanh_toan = $_POST['phuong_thuc_thanh_toan'] ?? 'Tiền mặt';
                 
                 if (empty($ten_nguoi_nhan) || empty($sdt_nguoi_nhan) || empty($dia_chi_giao)) {
+                    error_log("process_checkout: Validation failed - missing required fields");
                     header('Location: /project/controller/index.php?act=checkout&error=' . urlencode('Vui lòng điền đầy đủ thông tin bắt buộc'));
                     exit();
                 }
@@ -256,12 +265,18 @@ if(isset($_REQUEST['act'])){
                 $cart_items = $cart->getCart();
                 $total = $cart->getTotal();
                 
+                error_log("process_checkout: Cart items count: " . count($cart_items));
+                error_log("process_checkout: Cart total: " . $total);
+                
                 if (empty($cart_items)) {
+                    error_log("process_checkout: Cart is empty");
                     header('Location: /project/controller/index.php?act=cart&error=' . urlencode('Giỏ hàng trống, vui lòng thêm sản phẩm'));
                     exit();
                 }
                 
                 try {
+                    error_log("process_checkout: Starting order creation");
+                    include_once "../model/donhang.php";
                     $donhang = new DonHang();
                     $shippingInfo = [
                         'ten_nguoi_nhan' => $ten_nguoi_nhan,
@@ -271,18 +286,17 @@ if(isset($_REQUEST['act'])){
                         'phuong_thuc_thanh_toan' => $phuong_thuc_thanh_toan
                     ];
                     
+                    error_log("process_checkout: Shipping info: " . print_r($shippingInfo, true));
+                    
                     $orderId = $donhang->createOrder($currentUser['id_user'], $total, $shippingInfo);
                     
-                    // Cập nhật trạng thái sản phẩm sau khi thanh toán
-                    $updatedProducts = $donhang->updateProductStatusAfterOrder($orderId);
-                    
-                    // Đảm bảo xóa giỏ hàng sau khi thanh toán thành công
-                    $cart->clear();
+                    error_log("process_checkout: Order created successfully with ID: " . $orderId);
                     
                     header('Location: /project/controller/index.php?act=order_success&id=' . $orderId);
                     exit();
                     
                 } catch (Exception $e) {
+                    error_log("process_checkout: Error creating order: " . $e->getMessage());
                     header('Location: /project/controller/index.php?act=checkout&error=' . urlencode('Có lỗi xảy ra khi đặt hàng: ' . $e->getMessage()));
                     exit();
                 }
@@ -343,7 +357,14 @@ if(isset($_REQUEST['act'])){
                 $orderId = (int)$_POST['order_id'];
                 $status = $_POST['status'];
                 
+                $paymentStatus = $_POST['payment_status'] ?? '';
+                
+                // Cập nhật trạng thái đơn hàng
                 if ($donHang->updateOrderStatus($orderId, $status)) {
+                    // Cập nhật trạng thái thanh toán nếu có
+                    if (!empty($paymentStatus)) {
+                        $donHang->updatePaymentStatus($orderId, $paymentStatus);
+                    }
                     header('Location: /project/controller/index.php?act=admin_orders&success=' . urlencode('Cập nhật trạng thái đơn hàng thành công!'));
                 } else {
                     header('Location: /project/controller/index.php?act=admin_orders&error=' . urlencode('Có lỗi xảy ra khi cập nhật trạng thái!'));
@@ -362,6 +383,53 @@ if(isset($_REQUEST['act'])){
             }
             
             include "../view/pages/admin_order_detail.php";
+            break;
+
+        case 'cancel_order':
+            // Kiểm tra đăng nhập
+            $currentUser = getCurrentUser();
+            if (!$currentUser) {
+                header('Content-Type: application/json');
+                echo json_encode(['success' => false, 'message' => 'Vui lòng đăng nhập']);
+                exit();
+            }
+            
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                $orderId = (int)($_POST['order_id'] ?? 0);
+                
+                if ($orderId > 0) {
+                    include_once "../model/donhang.php";
+                    $donHang = new DonHang();
+                    
+                    // Kiểm tra xem đơn hàng có thuộc về user này không
+                    $order = $donHang->getOrderDetails($orderId);
+                    if ($order && $order['id_user'] == $currentUser['id_user']) {
+                        // Chỉ cho phép hủy đơn hàng ở trạng thái "Chờ xác nhận"
+                        if ($order['trangthai'] === 'Chờ xác nhận') {
+                            if ($donHang->updateOrderStatus($orderId, 'Đã hủy', $currentUser['id_user'], 'Khách hàng hủy đơn hàng')) {
+                                header('Content-Type: application/json');
+                                echo json_encode(['success' => true, 'message' => 'Hủy đơn hàng thành công']);
+                            } else {
+                                header('Content-Type: application/json');
+                                echo json_encode(['success' => false, 'message' => 'Có lỗi xảy ra khi hủy đơn hàng']);
+                            }
+                        } else {
+                            header('Content-Type: application/json');
+                            echo json_encode(['success' => false, 'message' => 'Không thể hủy đơn hàng ở trạng thái này']);
+                        }
+                    } else {
+                        header('Content-Type: application/json');
+                        echo json_encode(['success' => false, 'message' => 'Đơn hàng không tồn tại hoặc không thuộc về bạn']);
+                    }
+                } else {
+                    header('Content-Type: application/json');
+                    echo json_encode(['success' => false, 'message' => 'ID đơn hàng không hợp lệ']);
+                }
+            } else {
+                header('Content-Type: application/json');
+                echo json_encode(['success' => false, 'message' => 'Phương thức không được hỗ trợ']);
+            }
+            exit();
             break;
         case 'admin_product_management':
             // Kiểm tra quyền admin

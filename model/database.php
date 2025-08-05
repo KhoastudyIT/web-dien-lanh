@@ -20,27 +20,43 @@
 
     // Thêm các method cần thiết cho DonHang class
     public function beginTransaction() {
-        return $this->connection_database()->beginTransaction();
+        $this->conn = $this->connection_database();
+        return $this->conn->beginTransaction();
     }
 
     public function commit() {
-        return $this->connection_database()->commit();
+        if ($this->conn) {
+            return $this->conn->commit();
+        }
+        return false;
     }
 
     public function rollback() {
-        return $this->connection_database()->rollback();
+        if ($this->conn) {
+            return $this->conn->rollback();
+        }
+        return false;
     }
 
     public function prepare($sql) {
-        return $this->connection_database()->prepare($sql);
+        if (!$this->conn) {
+            $this->conn = $this->connection_database();
+        }
+        return $this->conn->prepare($sql);
     }
 
     public function lastInsertId() {
-        return $this->connection_database()->lastInsertId();
+        if ($this->conn) {
+            return $this->conn->lastInsertId();
+        }
+        return null;
     }
 
     public function query($sql) {
-        return $this->connection_database()->query($sql);
+        if (!$this->conn) {
+            $this->conn = $this->connection_database();
+        }
+        return $this->conn->query($sql);
     }
 }
 }
