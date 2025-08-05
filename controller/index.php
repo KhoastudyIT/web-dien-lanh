@@ -261,8 +261,17 @@ if(isset($_REQUEST['act'])){
                     exit();
                 }
                 
+                // Kiểm tra tồn kho trước khi đặt hàng
+                $donhang = new DonHang();
+                $inventoryErrors = $donhang->checkInventory($cart_items);
+                
+                if (!empty($inventoryErrors)) {
+                    $errorMessage = implode(', ', $inventoryErrors);
+                    header('Location: /project/index.php?act=checkout&error=' . urlencode($errorMessage));
+                    exit();
+                }
+                
                 try {
-                    $donhang = new DonHang();
                     $shippingInfo = [
                         'ten_nguoi_nhan' => $ten_nguoi_nhan,
                         'sdt_nguoi_nhan' => $sdt_nguoi_nhan,
@@ -356,6 +365,16 @@ if(isset($_REQUEST['act'])){
             }
             
             include "../view/pages/admin_order_detail.php";
+            break;
+        case 'admin_inventory':
+            // Kiểm tra quyền admin
+            $currentUser = getCurrentUser();
+            if (!$currentUser || $currentUser['position'] !== 'admin') {
+                header('Location: /project/index.php?act=login&error=' . urlencode('Bạn không có quyền truy cập trang này'));
+                exit();
+            }
+            
+            include "../view/pages/admin_inventory.php";
             break;
         case 'lienhe':
             include "../view/pages/lienhe.php";

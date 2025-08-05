@@ -1,0 +1,5 @@
+Array
+(
+    [success] => 1
+    [message] => Đăng ký thành công
+)

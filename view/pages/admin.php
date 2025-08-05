@@ -227,6 +227,9 @@ $content = '
                 <a href="/project/index.php?act=admin_orders" class="flex items-center px-4 py-3 rounded-lg text-blue-200 hover:bg-blue-700 transition-colors">
                     <i class="ri-shopping-cart-line mr-3"></i>Quản lý đơn hàng
                 </a>
+                <a href="/project/index.php?act=admin_inventory" class="flex items-center px-4 py-3 rounded-lg text-blue-200 hover:bg-blue-700 transition-colors">
+                    <i class="ri-store-2-line mr-3"></i>Quản lý tồn kho
+                </a>
                 <a href="?act=admin&action=users" class="flex items-center px-4 py-3 rounded-lg ' . ($action === 'users' ? 'bg-blue-700 text-white' : 'text-blue-200 hover:bg-blue-700') . ' transition-colors">
                     <i class="ri-user-line mr-3"></i>Quản lý người dùng
                 </a>

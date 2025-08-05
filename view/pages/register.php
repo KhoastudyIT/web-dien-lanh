@@ -44,7 +44,7 @@ $content = '
             </div>' : '') . '
             
             <!-- Register Form -->
-            <form class="space-y-6" action="/project/index.php?act=xl_register" method="POST">
+            <form class="space-y-6" action="/project/controller/index.php?act=xl_register" method="POST">
                 <!-- Username Field -->
                 <div>
                     <label for="username" class="block text-sm font-medium text-gray-700 mb-2">
