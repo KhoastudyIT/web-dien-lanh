@@ -276,14 +276,6 @@ $content = '
                                        class="text-primary hover:text-primary-dark transition-colors">
                                         <i class="ri-eye-line"></i> Xem
                                     </a>
-                                    <button onclick="openStatusModal(' . $order['id_dh'] . ', \'' . $order['trangthai'] . '\')" 
-                                            class="text-blue-600 hover:text-blue-800 transition-colors">
-                                        <i class="ri-edit-line"></i> Sửa
-                                    </button>
-                                    <button onclick="openDeleteModal(' . $order['id_dh'] . ')" 
-                                            class="text-red-600 hover:text-red-800 transition-colors">
-                                        <i class="ri-delete-bin-line"></i> Xóa
-                                    </button>
                                 </div>
                             </td>
                         </tr>

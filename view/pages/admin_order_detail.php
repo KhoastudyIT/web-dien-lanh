@@ -252,43 +252,7 @@ $content = '
                         In đơn hàng
                     </button>
                 </div>
-                
-                <!-- Status Update Form -->
-                <div class="mt-6 p-4 bg-blue-50 rounded-lg">
-                    <h4 class="font-semibold text-blue-800 mb-3">Cập nhật trạng thái</h4>
-                    <form method="POST" action="/project/index.php?act=admin_orders" class="space-y-3">
-                        <input type="hidden" name="order_id" value="' . $orderId . '">
-                        <input type="hidden" name="update_status" value="1">
-                        
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Trạng thái hiện tại</label>
-                            <span class="inline-flex px-3 py-1 text-sm font-semibold rounded-full ' . 
-                                ($order['trangthai'] == 'Chờ xác nhận' ? 'bg-yellow-100 text-yellow-800' :
-                                 ($order['trangthai'] == 'Đã xác nhận' ? 'bg-blue-100 text-blue-800' :
-                                  ($order['trangthai'] == 'Đang giao hàng' ? 'bg-purple-100 text-purple-800' :
-                                   ($order['trangthai'] == 'Đã giao hàng' ? 'bg-green-100 text-green-800' :
-                                    'bg-red-100 text-red-800')))) . '">
-                                ' . htmlspecialchars($order['trangthai']) . '
-                            </span>
-                        </div>
-                        
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Cập nhật thành</label>
-                            <select name="status" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-sm">
-                                <option value="Chờ xác nhận" ' . ($order['trangthai'] == 'Chờ xác nhận' ? 'selected' : '') . '>Chờ xác nhận</option>
-                                <option value="Đã xác nhận" ' . ($order['trangthai'] == 'Đã xác nhận' ? 'selected' : '') . '>Đã xác nhận</option>
-                                <option value="Đang giao hàng" ' . ($order['trangthai'] == 'Đang giao hàng' ? 'selected' : '') . '>Đang giao hàng</option>
-                                <option value="Đã giao hàng" ' . ($order['trangthai'] == 'Đã giao hàng' ? 'selected' : '') . '>Đã giao hàng</option>
-                                <option value="Đã hủy" ' . ($order['trangthai'] == 'Đã hủy' ? 'selected' : '') . '>Đã hủy</option>
-                            </select>
-                        </div>
-                        
-                        <button type="submit" class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-blue-700 transition-colors text-sm">
-                            <i class="ri-save-line mr-1"></i>
-                            Cập nhật trạng thái
-                        </button>
-                    </form>
-                </div>
+
             </div>
         </div>
     </div>
