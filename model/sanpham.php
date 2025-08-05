@@ -40,7 +40,7 @@ class sanpham {
     public function setId_danhmuc($id_danhmuc) { $this->id_danhmuc = $id_danhmuc; }
     public function setId_hang($id_hang) { $this->id_hang = $id_hang; }
 
-    // Lấy tất cả sản phẩm
+    // Lấy tất cả sản phẩm (chỉ sản phẩm còn hàng)
     public function getDS_Sanpham() {
         $db = new database();
         $conn = $db->connection_database();
@@ -49,10 +49,11 @@ class sanpham {
                              FROM sanpham sp 
                              LEFT JOIN danhmuc dm ON sp.id_danhmuc = dm.id 
                              LEFT JOIN hang h ON sp.id_hang = h.id_hang 
+                             WHERE sp.Mount > 0
                              ORDER BY sp.id_sp DESC');
     }
 
-    // Lấy sản phẩm theo danh mục
+    // Lấy sản phẩm theo danh mục (chỉ sản phẩm còn hàng)
     public function getDS_SanphamByDanhmuc($id_danhmuc) {
         $db = new database();
         $conn = $db->connection_database();
@@ -61,11 +62,11 @@ class sanpham {
                              FROM sanpham sp 
                              LEFT JOIN danhmuc dm ON sp.id_danhmuc = dm.id 
                              LEFT JOIN hang h ON sp.id_hang = h.id_hang 
-                             WHERE sp.id_danhmuc = $id_danhmuc 
+                             WHERE sp.id_danhmuc = $id_danhmuc AND sp.Mount > 0
                              ORDER BY sp.id_sp DESC");
     }
 
-    // Lấy sản phẩm theo hãng
+    // Lấy sản phẩm theo hãng (chỉ sản phẩm còn hàng)
     public function getDS_SanphamByHang($id_hang) {
         $db = new database();
         $conn = $db->connection_database();
@@ -74,7 +75,7 @@ class sanpham {
                              FROM sanpham sp 
                              LEFT JOIN danhmuc dm ON sp.id_danhmuc = dm.id 
                              LEFT JOIN hang h ON sp.id_hang = h.id_hang 
-                             WHERE sp.id_hang = $id_hang 
+                             WHERE sp.id_hang = $id_hang AND sp.Mount > 0
                              ORDER BY sp.id_sp DESC");
     }
 
@@ -91,7 +92,7 @@ class sanpham {
         return $result[0] ?? null;
     }
 
-    // Tìm kiếm sản phẩm
+    // Tìm kiếm sản phẩm (chỉ sản phẩm còn hàng)
     public function searchSanpham($keyword) {
         $db = new database();
         $conn = $db->connection_database();
@@ -101,10 +102,11 @@ class sanpham {
                              FROM sanpham sp 
                              LEFT JOIN danhmuc dm ON sp.id_danhmuc = dm.id 
                              LEFT JOIN hang h ON sp.id_hang = h.id_hang 
-                             WHERE sp.Name LIKE '%$keyword%' 
+                             WHERE (sp.Name LIKE '%$keyword%' 
                                 OR sp.Decribe LIKE '%$keyword%'
                                 OR dm.name LIKE '%$keyword%' 
-                                OR h.ten_hang LIKE '%$keyword%'
+                                OR h.ten_hang LIKE '%$keyword%')
+                                AND sp.Mount > 0
                              ORDER BY sp.Viewsp DESC");
     }
 
@@ -119,14 +121,15 @@ class sanpham {
                 FROM sanpham sp 
                 LEFT JOIN danhmuc dm ON sp.id_danhmuc = dm.id 
                 LEFT JOIN hang h ON sp.id_hang = h.id_hang 
-                WHERE sp.Name LIKE '%$keyword%' 
+                WHERE (sp.Name LIKE '%$keyword%' 
                    OR sp.Decribe LIKE '%$keyword%'
                    OR dm.name LIKE '%$keyword%' 
                    OR h.ten_hang LIKE '%$keyword%'
                    OR LOWER(sp.Name) LIKE LOWER('%$keyword%')
                    OR LOWER(sp.Decribe) LIKE LOWER('%$keyword%')
                    OR LOWER(dm.name) LIKE LOWER('%$keyword%')
-                   OR LOWER(h.ten_hang) LIKE LOWER('%$keyword%')
+                   OR LOWER(h.ten_hang) LIKE LOWER('%$keyword%'))
+                   AND sp.Mount > 0
                 ORDER BY 
                     CASE 
                         WHEN sp.Name LIKE '$keyword%' THEN 1
@@ -141,7 +144,7 @@ class sanpham {
         return $xl->readitem($sql);
     }
 
-    // Lấy sản phẩm nổi bật (có sale)
+    // Lấy sản phẩm nổi bật (có sale và còn hàng)
     public function getSanphamNoiBat() {
         $db = new database();
         $conn = $db->connection_database();
@@ -150,12 +153,12 @@ class sanpham {
                              FROM sanpham sp 
                              LEFT JOIN danhmuc dm ON sp.id_danhmuc = dm.id 
                              LEFT JOIN hang h ON sp.id_hang = h.id_hang 
-                             WHERE sp.Sale > 0 
+                             WHERE sp.Sale > 0 AND sp.Mount > 0
                              ORDER BY sp.Sale DESC 
                              LIMIT 8");
     }
 
-    // Lấy sản phẩm mới nhất
+    // Lấy sản phẩm mới nhất (chỉ sản phẩm còn hàng)
     public function getSanphamMoiNhat() {
         $db = new database();
         $conn = $db->connection_database();
@@ -164,8 +167,22 @@ class sanpham {
                              FROM sanpham sp 
                              LEFT JOIN danhmuc dm ON sp.id_danhmuc = dm.id 
                              LEFT JOIN hang h ON sp.id_hang = h.id_hang 
+                             WHERE sp.Mount > 0
                              ORDER BY sp.Date_import DESC 
                              LIMIT 8");
+    }
+
+    // Lấy sản phẩm mới nhất cho admin (tất cả sản phẩm)
+    public function getLatestProducts($limit = 5) {
+        $db = new database();
+        $conn = $db->connection_database();
+        $xl = new xl_data($conn);
+        return $xl->readitem("SELECT sp.*, dm.name as ten_danhmuc, h.ten_hang, h.logo_hang 
+                             FROM sanpham sp 
+                             LEFT JOIN danhmuc dm ON sp.id_danhmuc = dm.id 
+                             LEFT JOIN hang h ON sp.id_hang = h.id_hang 
+                             ORDER BY sp.Date_import DESC 
+                             LIMIT $limit");
     }
 
     // Cập nhật lượt xem

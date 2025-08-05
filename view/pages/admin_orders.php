@@ -1,6 +1,4 @@
 <?php
-// Sử dụng layout chung
-include_once __DIR__ . '/../layout/layout.php';
 include_once __DIR__ . '/../../model/donhang.php';
 include_once __DIR__ . '/../../helpers/jwt_helper.php';
 
@@ -34,7 +32,7 @@ $content = '
     <div class="bg-white rounded-lg shadow-md p-6">
         <div class="flex items-center justify-between">
             <div class="flex items-center gap-4">
-                <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center">
+                <div class="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center">
                     <i class="ri-shopping-bag-line text-white text-xl"></i>
                 </div>
                 <div>
@@ -278,5 +276,6 @@ document.getElementById("statusModal").addEventListener("click", function(e) {
 });
 </script>';
 
-renderPage("Quản lý đơn hàng - Admin", $content);
+// Include admin layout
+include_once __DIR__ . '/../layout/admin_layout.php';
 ?> 

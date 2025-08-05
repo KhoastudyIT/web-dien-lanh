@@ -97,6 +97,37 @@ class User {
             return false;
         }
     }
+
+    // Lấy tổng số người dùng
+    public function getTotalUsers() {
+        try {
+            $conn = $this->db->connection_database();
+            
+            $stmt = $conn->prepare("SELECT COUNT(*) as total FROM taikhoan");
+            $stmt->execute();
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            
+            return $result['total'] ?? 0;
+            
+        } catch (PDOException $e) {
+            return 0;
+        }
+    }
+
+    // Lấy tất cả người dùng
+    public function getAllUsers() {
+        try {
+            $conn = $this->db->connection_database();
+            
+            $stmt = $conn->prepare("SELECT id_user as id, username, fullname, email, phone, address, position, created_at FROM taikhoan ORDER BY created_at DESC");
+            $stmt->execute();
+            
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+            
+        } catch (PDOException $e) {
+            return [];
+        }
+    }
     
     // Đổi mật khẩu
     public function changePassword($id, $oldPassword, $newPassword) {

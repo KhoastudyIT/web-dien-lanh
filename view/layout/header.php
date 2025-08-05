@@ -133,6 +133,11 @@ $currentUser = getCurrentUser();
                                 <a href="/project/index.php?act=my_orders" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">
                                     <i class="ri-shopping-bag-3-line mr-2"></i>Đơn hàng của tôi
                                 </a>
+                                <?php if ($currentUser['position'] === 'admin'): ?>
+                                <a href="/project/index.php?act=admin" class="block px-4 py-2 text-blue-600 hover:bg-gray-100">
+                                    <i class="ri-admin-line mr-2"></i>Quản lý Admin
+                                </a>
+                                <?php endif; ?>
                                 <a href="/project/index.php?act=logout" class="block px-4 py-2 text-red-600 hover:bg-gray-100" onclick="return confirm('Bạn có chắc chắn muốn đăng xuất?')">
                                     <i class="ri-logout-box-line mr-2"></i>Đăng xuất
                                 </a>

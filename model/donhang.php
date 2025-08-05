@@ -29,28 +29,17 @@ class DonHang {
             
             $orderId = $this->db->lastInsertId();
             
-            // Thêm chi tiết đơn hàng và cập nhật tồn kho
+            // Thêm chi tiết đơn hàng
             $cart = new Cart();
             $cartItems = $cart->getCart();
             
             foreach ($cartItems as $item) {
-                // Kiểm tra số lượng tồn kho
-                $sql = "SELECT Mount FROM sanpham WHERE id_sp = ?";
-                $stmt = $this->db->prepare($sql);
-                $stmt->execute([$item['id_sp']]);
-                $currentStock = $stmt->fetchColumn();
-                
-                if ($currentStock < $item['quantity']) {
-                    throw new Exception("Sản phẩm " . $item['Name'] . " chỉ còn " . $currentStock . " sản phẩm trong kho");
-                }
-                
                 $price = $item['Price'];
                 if ($item['Sale'] > 0) {
                     $price = $price * (1 - $item['Sale'] / 100);
                 }
                 $subtotal = $price * $item['quantity'];
                 
-                // Thêm chi tiết đơn hàng
                 $sql = "INSERT INTO dh_chitiet (id_sp, id_dh, soluong, tong_dh, gia_ban) 
                         VALUES (?, ?, ?, ?, ?)";
                 $stmt = $this->db->prepare($sql);
@@ -62,18 +51,15 @@ class DonHang {
                     $price
                 ]);
                 
-                // Cập nhật số lượng tồn kho
-                $newStock = $currentStock - $item['quantity'];
-                $sql = "UPDATE sanpham SET Mount = ? WHERE id_sp = ?";
+                // Cập nhật số lượng tồn kho và kiểm tra hết hàng
+                $sql = "UPDATE sanpham SET Mount = Mount - ? WHERE id_sp = ?";
                 $stmt = $this->db->prepare($sql);
-                $stmt->execute([$newStock, $item['id_sp']]);
+                $stmt->execute([$item['quantity'], $item['id_sp']]);
                 
-                // Nếu hết hàng (Mount = 0), cập nhật trạng thái sản phẩm
-                if ($newStock == 0) {
-                    $sql = "UPDATE sanpham SET Mount = 0 WHERE id_sp = ?";
-                    $stmt = $this->db->prepare($sql);
-                    $stmt->execute([$item['id_sp']]);
-                }
+                // Kiểm tra nếu sản phẩm hết hàng (Mount <= 0) thì ẩn sản phẩm
+                $sql = "UPDATE sanpham SET Mount = 0, Sale = 0 WHERE id_sp = ? AND Mount <= 0";
+                $stmt = $this->db->prepare($sql);
+                $stmt->execute([$item['id_sp']]);
             }
             
             // Xóa giỏ hàng
@@ -86,124 +72,6 @@ class DonHang {
             $this->db->rollback();
             throw $e;
         }
-    }
-
-    // Cập nhật trạng thái đơn hàng và xử lý tồn kho
-    public function updateOrderStatus($orderId, $status, $userId = null, $ghiChu = '') {
-        try {
-            $this->db->beginTransaction();
-            
-            // Lấy trạng thái hiện tại
-            $sql = "SELECT trangthai FROM donhang WHERE id_dh = ?";
-            $stmt = $this->db->prepare($sql);
-            $stmt->execute([$orderId]);
-            $currentStatus = $stmt->fetchColumn();
-            
-            // Cập nhật trạng thái mới
-            $sql = "UPDATE donhang SET trangthai = ? WHERE id_dh = ?";
-            $stmt = $this->db->prepare($sql);
-            $result = $stmt->execute([$status, $orderId]);
-            
-            if ($result) {
-                // Lưu lịch sử thay đổi trạng thái
-                $sql = "INSERT INTO lich_su_trang_thai (id_dh, trang_thai_cu, trang_thai_moi, ghi_chu, nguoi_cap_nhat) 
-                        VALUES (?, ?, ?, ?, ?)";
-                $stmt = $this->db->prepare($sql);
-                $stmt->execute([$orderId, $currentStatus, $status, $ghiChu, $userId]);
-                
-                // Xử lý tồn kho khi hủy đơn hàng
-                if ($status == 'Đã hủy' && $currentStatus != 'Đã hủy') {
-                    $this->restoreInventory($orderId);
-                }
-                
-                // Xử lý khi xác nhận đơn hàng
-                if ($status == 'Đã xác nhận' && $currentStatus == 'Chờ xác nhận') {
-                    $this->confirmOrderInventory($orderId);
-                }
-            }
-            
-            $this->db->commit();
-            return $result;
-            
-        } catch (Exception $e) {
-            $this->db->rollback();
-            throw $e;
-        }
-    }
-
-    // Khôi phục tồn kho khi hủy đơn hàng
-    private function restoreInventory($orderId) {
-        $sql = "SELECT dct.id_sp, dct.soluong, sp.Name 
-                FROM dh_chitiet dct 
-                JOIN sanpham sp ON dct.id_sp = sp.id_sp 
-                WHERE dct.id_dh = ?";
-        $stmt = $this->db->prepare($sql);
-        $stmt->execute([$orderId]);
-        $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        
-        foreach ($items as $item) {
-            $sql = "UPDATE sanpham SET Mount = Mount + ? WHERE id_sp = ?";
-            $stmt = $this->db->prepare($sql);
-            $stmt->execute([$item['soluong'], $item['id_sp']]);
-        }
-    }
-
-    // Xác nhận tồn kho khi đơn hàng được xác nhận
-    private function confirmOrderInventory($orderId) {
-        // Có thể thêm logic xử lý khi đơn hàng được xác nhận
-        // Ví dụ: gửi email thông báo, cập nhật trạng thái sản phẩm, etc.
-    }
-
-    // Kiểm tra tồn kho trước khi đặt hàng
-    public function checkInventory($cartItems) {
-        $errors = [];
-        
-        foreach ($cartItems as $item) {
-            $sql = "SELECT Mount, Name FROM sanpham WHERE id_sp = ?";
-            $stmt = $this->db->prepare($sql);
-            $stmt->execute([$item['id_sp']]);
-            $product = $stmt->fetch(PDO::FETCH_ASSOC);
-            
-            if (!$product) {
-                $errors[] = "Sản phẩm không tồn tại";
-                continue;
-            }
-            
-            if ($product['Mount'] < $item['quantity']) {
-                $errors[] = "Sản phẩm " . $product['Name'] . " chỉ còn " . $product['Mount'] . " sản phẩm trong kho";
-            }
-        }
-        
-        return $errors;
-    }
-
-    // Lấy danh sách sản phẩm hết hàng
-    public function getOutOfStockProducts() {
-        $sql = "SELECT id_sp, Name, image, Price, Mount 
-                FROM sanpham 
-                WHERE Mount = 0 
-                ORDER BY Name";
-        $stmt = $this->db->prepare($sql);
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
-
-    // Lấy danh sách sản phẩm sắp hết hàng (dưới 5 sản phẩm)
-    public function getLowStockProducts($threshold = 5) {
-        $sql = "SELECT id_sp, Name, image, Price, Mount 
-                FROM sanpham 
-                WHERE Mount > 0 AND Mount <= ? 
-                ORDER BY Mount ASC";
-        $stmt = $this->db->prepare($sql);
-        $stmt->execute([$threshold]);
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
-
-    // Cập nhật số lượng tồn kho
-    public function updateProductStock($productId, $newQuantity) {
-        $sql = "UPDATE sanpham SET Mount = ? WHERE id_sp = ?";
-        $stmt = $this->db->prepare($sql);
-        return $stmt->execute([$newQuantity, $productId]);
     }
 
     // Lấy danh sách đơn hàng của user
@@ -265,6 +133,39 @@ class DonHang {
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    // Cập nhật trạng thái đơn hàng
+    public function updateOrderStatus($orderId, $status, $userId = null, $ghiChu = '') {
+        try {
+            $this->db->beginTransaction();
+            
+            // Lấy trạng thái hiện tại
+            $sql = "SELECT trangthai FROM donhang WHERE id_dh = ?";
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute([$orderId]);
+            $currentStatus = $stmt->fetchColumn();
+            
+            // Cập nhật trạng thái mới
+            $sql = "UPDATE donhang SET trangthai = ? WHERE id_dh = ?";
+            $stmt = $this->db->prepare($sql);
+            $result = $stmt->execute([$status, $orderId]);
+            
+            if ($result) {
+                // Lưu lịch sử thay đổi trạng thái
+                $sql = "INSERT INTO lich_su_trang_thai (id_dh, trang_thai_cu, trang_thai_moi, ghi_chu, nguoi_cap_nhat) 
+                        VALUES (?, ?, ?, ?, ?)";
+                $stmt = $this->db->prepare($sql);
+                $stmt->execute([$orderId, $currentStatus, $status, $ghiChu, $userId]);
+            }
+            
+            $this->db->commit();
+            return $result;
+            
+        } catch (Exception $e) {
+            $this->db->rollback();
+            throw $e;
+        }
     }
 
     // Thống kê đơn hàng
@@ -373,6 +274,7 @@ class DonHang {
 
     // Lấy top sản phẩm bán chạy
     public function getTopSellingProducts($limit = 10) {
+        $limit = (int)$limit; // Đảm bảo limit là integer
         $sql = "SELECT 
                     sp.id_sp,
                     sp.Name,
@@ -385,10 +287,33 @@ class DonHang {
                 WHERE dh.trangthai != 'Đã hủy'
                 GROUP BY sp.id_sp
                 ORDER BY tong_ban DESC
-                LIMIT ?";
+                LIMIT $limit";
         
         $stmt = $this->db->prepare($sql);
-        $stmt->execute([$limit]);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    // Lấy tổng số đơn hàng
+    public function getTotalOrders() {
+        $sql = "SELECT COUNT(*) as total FROM donhang";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result['total'] ?? 0;
+    }
+
+    // Lấy đơn hàng gần đây
+    public function getRecentOrders($limit = 5) {
+        $limit = (int)$limit; // Đảm bảo limit là integer
+        $sql = "SELECT dh.*, tk.fullname, dh.tongdh as tong_tien, dh.trangthai as trang_thai
+                FROM donhang dh
+                JOIN taikhoan tk ON dh.id_user = tk.id_user
+                ORDER BY dh.ngaydat DESC
+                LIMIT $limit";
+        
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
@@ -396,9 +321,6 @@ class DonHang {
     public function deleteOrder($orderId) {
         try {
             $this->db->beginTransaction();
-            
-            // Khôi phục tồn kho trước khi xóa
-            $this->restoreInventory($orderId);
             
             // Xóa chi tiết đơn hàng trước
             $sql = "DELETE FROM dh_chitiet WHERE id_dh = ?";
@@ -422,6 +344,144 @@ class DonHang {
             $this->db->rollback();
             throw $e;
         }
+    }
+
+    // Kiểm tra và cập nhật trạng thái sản phẩm sau khi thanh toán
+    public function updateProductStatusAfterOrder($orderId) {
+        try {
+            $this->db->beginTransaction();
+            
+            // Lấy danh sách sản phẩm trong đơn hàng
+            $sql = "SELECT dct.id_sp, dct.soluong, sp.Mount, sp.Name
+                    FROM dh_chitiet dct
+                    JOIN sanpham sp ON dct.id_sp = sp.id_sp
+                    WHERE dct.id_dh = ?";
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute([$orderId]);
+            $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            
+            $updatedProducts = [];
+            
+            foreach ($products as $product) {
+                $newStock = $product['Mount'] - $product['soluong'];
+                
+                if ($newStock <= 0) {
+                    // Sản phẩm hết hàng - ẩn khỏi cửa hàng
+                    $sql = "UPDATE sanpham SET Mount = 0, Sale = 0 WHERE id_sp = ?";
+                    $stmt = $this->db->prepare($sql);
+                    $stmt->execute([$product['id_sp']]);
+                    
+                    $updatedProducts[] = [
+                        'id_sp' => $product['id_sp'],
+                        'name' => $product['Name'],
+                        'status' => 'out_of_stock',
+                        'message' => 'Sản phẩm đã hết hàng và được ẩn khỏi cửa hàng'
+                    ];
+                } else {
+                    // Cập nhật số lượng tồn kho
+                    $sql = "UPDATE sanpham SET Mount = ? WHERE id_sp = ?";
+                    $stmt = $this->db->prepare($sql);
+                    $stmt->execute([$newStock, $product['id_sp']]);
+                    
+                    $updatedProducts[] = [
+                        'id_sp' => $product['id_sp'],
+                        'name' => $product['Name'],
+                        'status' => 'updated',
+                        'new_stock' => $newStock,
+                        'message' => 'Số lượng tồn kho đã được cập nhật'
+                    ];
+                }
+            }
+            
+            $this->db->commit();
+            return $updatedProducts;
+            
+        } catch (Exception $e) {
+            $this->db->rollback();
+            throw $e;
+        }
+    }
+
+    // Lấy danh sách sản phẩm hết hàng
+    public function getOutOfStockProducts() {
+        $sql = "SELECT id_sp, Name, image, Price, Price_old, Mount, Sale, id_danhmuc, id_hang
+                FROM sanpham 
+                WHERE Mount <= 0
+                ORDER BY Name";
+        
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    // Khôi phục sản phẩm về cửa hàng (thêm lại hàng)
+    public function restoreProductToStore($productId, $quantity) {
+        try {
+            $sql = "UPDATE sanpham SET Mount = ? WHERE id_sp = ?";
+            $stmt = $this->db->prepare($sql);
+            $result = $stmt->execute([$quantity, $productId]);
+            
+            return $result;
+            
+        } catch (Exception $e) {
+            throw $e;
+        }
+    }
+
+    // Xóa vĩnh viễn sản phẩm khỏi cửa hàng
+    public function permanentlyRemoveProduct($productId) {
+        try {
+            $this->db->beginTransaction();
+            
+            // Xóa sản phẩm khỏi wishlist
+            $sql = "DELETE FROM wishlist WHERE id_sp = ?";
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute([$productId]);
+            
+            // Xóa đánh giá sản phẩm
+            $sql = "DELETE FROM danh_gia WHERE id_sp = ?";
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute([$productId]);
+            
+            // Xóa sản phẩm
+            $sql = "DELETE FROM sanpham WHERE id_sp = ?";
+            $stmt = $this->db->prepare($sql);
+            $result = $stmt->execute([$productId]);
+            
+            $this->db->commit();
+            return $result;
+            
+        } catch (Exception $e) {
+            $this->db->rollback();
+            throw $e;
+        }
+    }
+
+    // Thống kê sản phẩm theo trạng thái
+    public function getProductStatusStats() {
+        $sql = "SELECT 
+                    COUNT(*) as tong_san_pham,
+                    COUNT(CASE WHEN Mount > 0 THEN 1 END) as con_hang,
+                    COUNT(CASE WHEN Mount = 0 THEN 1 END) as het_hang,
+                    COUNT(CASE WHEN Mount <= 5 AND Mount > 0 THEN 1 END) as sap_het_hang,
+                    SUM(Mount) as tong_ton_kho
+                FROM sanpham";
+        
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    // Lấy danh sách sản phẩm sắp hết hàng (còn ít hơn 5 sản phẩm)
+    public function getLowStockProducts($threshold = 5) {
+        $sql = "SELECT id_sp, Name, image, Price, Mount, id_danhmuc, id_hang
+                FROM sanpham 
+                WHERE Mount > 0 AND Mount <= ?
+                ORDER BY Mount ASC";
+        
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([$threshold]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }
 ?> 

@@ -261,17 +261,8 @@ if(isset($_REQUEST['act'])){
                     exit();
                 }
                 
-                // Kiểm tra tồn kho trước khi đặt hàng
-                $donhang = new DonHang();
-                $inventoryErrors = $donhang->checkInventory($cart_items);
-                
-                if (!empty($inventoryErrors)) {
-                    $errorMessage = implode(', ', $inventoryErrors);
-                    header('Location: /project/index.php?act=checkout&error=' . urlencode($errorMessage));
-                    exit();
-                }
-                
                 try {
+                    $donhang = new DonHang();
                     $shippingInfo = [
                         'ten_nguoi_nhan' => $ten_nguoi_nhan,
                         'sdt_nguoi_nhan' => $sdt_nguoi_nhan,
@@ -281,6 +272,12 @@ if(isset($_REQUEST['act'])){
                     ];
                     
                     $orderId = $donhang->createOrder($currentUser['id_user'], $total, $shippingInfo);
+                    
+                    // Cập nhật trạng thái sản phẩm sau khi thanh toán
+                    $updatedProducts = $donhang->updateProductStatusAfterOrder($orderId);
+                    
+                    // Đảm bảo xóa giỏ hàng sau khi thanh toán thành công
+                    $cart->clear();
                     
                     header('Location: /project/index.php?act=order_success&id=' . $orderId);
                     exit();
@@ -366,7 +363,7 @@ if(isset($_REQUEST['act'])){
             
             include "../view/pages/admin_order_detail.php";
             break;
-        case 'admin_inventory':
+        case 'admin_product_management':
             // Kiểm tra quyền admin
             $currentUser = getCurrentUser();
             if (!$currentUser || $currentUser['position'] !== 'admin') {
@@ -374,7 +371,7 @@ if(isset($_REQUEST['act'])){
                 exit();
             }
             
-            include "../view/pages/admin_inventory.php";
+            include "../view/pages/admin_product_management.php";
             break;
         case 'lienhe':
             include "../view/pages/lienhe.php";
@@ -409,7 +406,7 @@ if(isset($_REQUEST['act'])){
                 }
                 break;
             case 'admin':
-                include "../view/pages/admin.php";
+                include "../view/pages/admin_complete.php";
                 break;
     }
 

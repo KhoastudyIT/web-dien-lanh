@@ -1,6 +1,7 @@
 <?php
 // Include necessary files
 include_once __DIR__ . '/../../model/donhang.php';
+include_once __DIR__ . '/../../helpers/jwt_helper.php';
 
 // Kiểm tra đăng nhập
 $currentUser = getCurrentUser();
