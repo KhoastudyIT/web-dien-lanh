@@ -112,9 +112,12 @@ $currentUser = getCurrentUser();
                     </div>
                     <!-- Giỏ hàng -->
                     <div class="w-8 h-8 flex items-center justify-center relative">
-                        <a href="/project/index.php?act=cart" class="hover:text-primary transition-colors">
-                            <i class="ri-shopping-cart-line text-gray-600 text-lg"></i>
-                        </a>
+                                            <a href="/project/index.php?act=cart" class="hover:text-primary transition-colors">
+                        <i class="ri-shopping-cart-line text-gray-600 text-lg"></i>
+                    </a>
+                    <a href="/project/index.php?act=wishlist" class="hover:text-primary transition-colors">
+                        <i class="ri-heart-line text-gray-600 text-lg"></i>
+                    </a>
                     </div>
                     <?php if ($currentUser): ?>
                         <div class="relative group">

@@ -3,13 +3,13 @@ Array
     [success] => 1
     [user] => Array
         (
-            [id_user] => 2
-            [username] => admin
-            [fullname] => Administrator
-            [email] => admin@dienlanhkv.vn
-            [phone] => 1900 6789
-            [address] => 163/50/7, Đặng Văn Bi, Thủ Đức
-            [position] => admin
+            [id_user] => 1
+            [username] => test
+            [fullname] => Test ne
+            [email] => khoa221a010345@gmail.com
+            [phone] => 0976237648
+            [address] => Dia chi test
+            [position] => 1
             [created_at] => 2025-08-05 00:52:57
         )
 

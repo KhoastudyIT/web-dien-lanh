@@ -360,7 +360,11 @@ if(isset($_REQUEST['act'])){
         case 'lienhe':
             include "../view/pages/lienhe.php";
             break;
-                    case 'contact_submit':
+
+        case 'wishlist':
+            include "../view/pages/wishlist.php";
+            break;
+        case 'contact_submit':
                 if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     // Xử lý form liên hệ
                     $service = $_POST['service'] ?? '';

@@ -4,7 +4,7 @@
  * Dùng để tạo và xác thực token cho hệ thống đăng nhập
  */
 class JWT {
-    private static $secret_key = "your_secret_key_here_change_this_in_production"; // Khóa bí mật
+    private static $secret_key = "dienlanh_kv_2025_secret_key_change_in_production_environment"; // Khóa bí mật
     private static $algorithm = 'HS256'; // Thuật toán mã hóa
 
     /**

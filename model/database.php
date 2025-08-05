@@ -17,5 +17,30 @@
         }
             return $conn;
         }
+
+    // Thêm các method cần thiết cho DonHang class
+    public function beginTransaction() {
+        return $this->connection_database()->beginTransaction();
     }
+
+    public function commit() {
+        return $this->connection_database()->commit();
+    }
+
+    public function rollback() {
+        return $this->connection_database()->rollback();
+    }
+
+    public function prepare($sql) {
+        return $this->connection_database()->prepare($sql);
+    }
+
+    public function lastInsertId() {
+        return $this->connection_database()->lastInsertId();
+    }
+
+    public function query($sql) {
+        return $this->connection_database()->query($sql);
+    }
+}
 }
