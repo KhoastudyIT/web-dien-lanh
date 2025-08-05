@@ -31,7 +31,7 @@ class User {
             $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
             
             // Thêm tài khoản mới
-            $stmt = $conn->prepare("INSERT INTO taikhoan (username, password, fullname, email, phone, address, position) VALUES (?, ?, ?, ?, ?, ?, '1')");
+            $stmt = $conn->prepare("INSERT INTO taikhoan (username, password, fullname, email, phone, address, position) VALUES (?, ?, ?, ?, ?, ?, 'user')");
             $result = $stmt->execute([$username, $hashedPassword, $fullname, $email, $phone, $address]);
             
             if ($result) {

@@ -97,6 +97,11 @@
     .desktop-block { display: block !important; }
 }
 
+/* Button styles */
+.rounded-button {
+    border-radius: 8px !important;
+}
+
 /* Thanh cuộn tùy chỉnh */
 ::-webkit-scrollbar {
     width: 8px;

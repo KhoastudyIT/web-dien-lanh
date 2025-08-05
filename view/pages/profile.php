@@ -1,8 +1,7 @@
 <?php
-// Sử dụng đường dẫn tuyệt đối từ root của project
-$project_root = dirname(dirname(__DIR__));
-include $project_root . "/view/layout/layout.php";
-require_once $project_root . "/helpers/jwt_helper.php";
+include_once __DIR__ . '/../layout/layout.php';
+include_once __DIR__ . '/../../model/user.php';
+require_once __DIR__ . '/../../helpers/jwt_helper.php';
 
 $currentUser = getCurrentUser();
 
@@ -69,7 +68,7 @@ $content = '
                         Vai trò
                     </dt>
                     <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                        ' . ($currentUser['position'] == '0' ? 'Admin' : 'Người dùng') . '
+                        ' . ($currentUser['position'] == 'admin' ? 'Admin' : 'Người dùng') . '
                     </dd>
                 </div>
             </dl>
@@ -77,17 +76,23 @@ $content = '
     </div>
     
     <div class="mt-6 flex space-x-3">
-        <a href="index.php?act=edit_profile" 
+        ' . ($currentUser['position'] == 'admin' ? '
+        <a href="/project/index.php?act=admin" 
+           class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-purple-600 hover:bg-purple-700">
+            <i class="ri-admin-line mr-2"></i>
+            Quản Lý Admin
+        </a>' : '') . '
+        <a href="/project/index.php?act=edit_profile" 
            class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-primary hover:bg-blue-700">
             <i class="ri-edit-line mr-2"></i>
             Chỉnh sửa thông tin
         </a>
-        <a href="index.php?act=change_password" 
+        <a href="/project/index.php?act=change_password" 
            class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
             <i class="ri-lock-line mr-2"></i>
             Đổi mật khẩu
         </a>
-        <a href="index.php?act=logout" 
+        <a href="/project/index.php?act=logout" 
            class="inline-flex items-center px-4 py-2 border border-red-300 text-sm font-medium rounded-md text-red-700 bg-white hover:bg-red-50"
            onclick="return confirm(\'Bạn có chắc chắn muốn đăng xuất?\')">
             <i class="ri-logout-box-line mr-2"></i>

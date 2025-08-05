@@ -1,71 +1,143 @@
 <?php
-// Sử dụng đường dẫn tuyệt đối từ root của project
-$project_root = dirname(dirname(__DIR__));
-include $project_root . "/view/layout/layout.php";
+include_once __DIR__ . '/../layout/layout.php';
+include_once __DIR__ . '/../../model/danhmuc.php';
+include_once __DIR__ . '/../../controller/controller.php';
+
+$controller = new controller();
+$brands = $controller->getAllBrands();
 
 $content = '
 <div class="space-y-8">
-    <!-- Form thêm danh mục -->
-    <div class="bg-white rounded-lg shadow-md p-6">
-        <h2 class="text-2xl font-bold text-gray-800 mb-6">Thêm danh mục mới</h2>
-        <form action="index.php?act=xl_themDM" method="post" enctype="multipart/form-data" class="space-y-4">
-            <div>
-                <label for="name" class="block text-sm font-medium text-gray-700 mb-2">Tên danh mục:</label>
-                <input type="text" name="name" id="name" value="" 
-                       class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-                       placeholder="Nhập tên danh mục...">
-            </div>
-            <button type="submit" class="bg-primary hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md transition duration-200">
-                Thêm danh mục
-            </button>
-        </form>
-    </div>
+    <!-- Logo các hãng -->
+    <div class="bg-white rounded-lg shadow-md p-8">
+        <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">Các hãng nổi bật</h2>
+        <div class="grid grid-cols-3 gap-6 max-w-4xl mx-auto">';
 
-    <!-- Danh sách danh mục -->
-    <div class="bg-white rounded-lg shadow-md p-6">
-        <h2 class="text-2xl font-bold text-gray-800 mb-6">Danh sách danh mục</h2>
-        <div class="overflow-x-auto">
-            <table class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-gray-50">
-                    <tr>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tên danh mục</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Thao tác</th>
-                    </tr>
-                </thead>
-                <tbody class="bg-white divide-y divide-gray-200">';
-
-if(isset($danhmuc) && count($danhmuc) > 0) {
-    for($i=0; $i<count($danhmuc); $i++){
-        $rc = $danhmuc[$i];
+if(isset($brands) && count($brands) > 0) {
+    // hiển thị 6 hãng  (2 hàng x 3 cột)
+    $displayBrands = array_slice($brands, 0, 6);
+    
+    foreach($displayBrands as $brand) {
         $content .= '
-                    <tr class="hover:bg-gray-50">
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">'.$rc["id"].'</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">'.$rc["name"].'</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                            <a href="index.php?act=xoadm&id_dm='.$rc["id"].'" 
-                               class="text-red-600 hover:text-red-900 bg-red-100 hover:bg-red-200 px-3 py-1 rounded-md transition duration-200"
-                               onclick="return confirm(\'Bạn có chắc chắn muốn xóa danh mục này?\')">
-                                Xóa
-                            </a>
-                        </td>
-                    </tr>';
+        <div class="flex flex-col items-center p-4 bg-gray-50 rounded-lg border border-gray-200 hover:bg-white hover:shadow-md transition-all duration-300 cursor-pointer">
+            <div class="w-20 h-20 flex items-center justify-center bg-white border border-gray-200 rounded-lg mb-3 shadow-sm">
+                <img src="/project/view/image/' . htmlspecialchars($brand["logo_hang"]) . '" 
+                     alt="' . htmlspecialchars($brand["ten_hang"]) . '" 
+                     class="w-16 h-16 object-contain" 
+                     loading="lazy"
+                     onerror="this.src=\'/project/view/image/logodienlanh.png\'"/>
+            </div>
+            <span class="text-sm font-medium text-gray-700 text-center">
+                ' . htmlspecialchars($brand["ten_hang"]) . '
+            </span>
+        </div>';
     }
-} else {
-    $content .= '
-                    <tr>
-                        <td colspan="3" class="px-6 py-4 text-center text-sm text-gray-500">
-                            Chưa có danh mục nào được tạo
-                        </td>
-                    </tr>';
 }
 
 $content .= '
-                </tbody>
-            </table>
         </div>
-    </div>
-</div>';
+    </div>';
 
-renderPage("Quản lý danh mục", $content);
+// Danh mục và sản phẩm nổi bật
+$content .= '
+    <div class="space-y-8 mt-8">';
+
+// Lấy danh mục
+$danhmuc = new danhmuc();
+$danhmuc_list = $danhmuc->getDS_Danhmuc();
+
+if(isset($danhmuc_list) && count($danhmuc_list) > 0) {
+    foreach($danhmuc_list as $dm) {
+        // Lấy sản phẩm nổi bật cho từng danh mục
+        $featured_products = $controller->getFeaturedProductsByCategory($dm['id'], 4);
+        
+        $content .= '
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <h3 class="text-xl font-semibold text-primary mb-4">' . htmlspecialchars($dm["name"]) . '</h3>';
+        
+        if(isset($featured_products) && count($featured_products) > 0) {
+            $content .= '
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">';
+            
+            foreach($featured_products as $sp) {
+                $gia_sau_giam = $sp['Price'] - ($sp['Price'] * $sp['Sale'] / 100);
+                $gia_format = number_format($gia_sau_giam, 0, ',', '.');
+                $gia_goc = number_format($sp['Price'], 0, ',', '.');
+                
+                $content .= '
+                <div class="border rounded-lg p-4 flex flex-col items-center hover:shadow-md transition-shadow">
+                    <img src="/project/view/image/' . htmlspecialchars($sp["image"]) . '" 
+                         alt="' . htmlspecialchars($sp["Name"]) . '" 
+                         class="h-24 w-auto object-contain mb-2" 
+                         loading="lazy"
+                         onerror="this.src=\'/project/view/image/logodienlanh.png\'"/>
+                    <div class="font-medium text-gray-800 text-center text-sm mb-1">' . htmlspecialchars($sp["Name"]) . '</div>
+                    <div class="text-primary font-bold text-lg">' . $gia_format . ' ₫</div>';
+                
+                if(isset($sp["Sale"]) && $sp["Sale"] > 0) {
+                    $content .= '
+                    <div class="text-xs text-red-500 font-semibold">Giảm ' . $sp["Sale"] . '%</div>
+                    <div class="text-xs text-gray-500 line-through">' . $gia_goc . ' ₫</div>';
+                }
+                
+                $content .= '
+                </div>';
+            }
+            
+            $content .= '
+            </div>';
+        } else {
+            $content .= '
+            <div class="text-gray-500 italic text-center py-8">Chưa có sản phẩm nổi bật</div>';
+        }
+        
+        $content .= '
+        </div>';
+    }
+}
+
+$content .= '
+    </div>
+</div>
+
+<style>
+/* Responsive cho logo hãng */
+@media (max-width: 768px) {
+    .grid-cols-3 { 
+        grid-template-columns: repeat(2, minmax(0, 1fr)); 
+    }
+}
+
+@media (max-width: 480px) {
+    .grid-cols-3 { 
+        grid-template-columns: repeat(1, minmax(0, 1fr)); 
+    }
+}
+
+/* Hover effects */
+.grid-cols-3 > div:hover {
+    transform: translateY(-2px);
+}
+
+.grid-cols-3 > div:hover img {
+    transform: scale(1.05);
+    transition: transform 0.3s ease;
+}
+</style>
+
+<script>
+// Thêm click event cho brand card
+document.addEventListener("DOMContentLoaded", function() {
+    const brandCards = document.querySelectorAll(".grid-cols-3 > div");
+    brandCards.forEach(card => {
+        card.addEventListener("click", function() {
+            const brandName = this.querySelector("span").textContent.trim();
+            // Chuyển đến trang sản phẩm của hãng
+            window.location.href = `/project/index.php?act=sanpham&search=${encodeURIComponent(brandName)}`;
+        });
+    });
+});
+</script>';
+
+renderPage("Danh mục & Sản phẩm nổi bật", $content);
 ?>

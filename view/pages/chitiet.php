@@ -1,9 +1,8 @@
 <?php
-// Sử dụng đường dẫn tuyệt đối từ root của project
-$project_root = dirname(dirname(__DIR__));
-include $project_root . "/view/layout/layout.php";
-include_once $project_root . "/model/sanpham.php";
-include_once $project_root . "/model/danhmuc.php";
+// Sử dụng đường dẫn tương đối đơn giản
+include_once __DIR__ . '/../layout/layout.php';
+include_once __DIR__ . '/../../model/sanpham.php';
+include_once __DIR__ . '/../../model/danhmuc.php';
 
 $sanpham = new sanpham();
 $danhmuc = new danhmuc();
@@ -12,7 +11,7 @@ $danhmuc = new danhmuc();
 $id_sp = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 
 if ($id_sp <= 0) {
-    header('Location: index.php?act=sanpham');
+    header('Location: ../../index.php?act=sanpham');
     exit();
 }
 
@@ -20,7 +19,7 @@ if ($id_sp <= 0) {
 $sp = $sanpham->getSanphamById($id_sp);
 
 if (!$sp) {
-    header('Location: index.php?act=sanpham');
+    header('Location: ../../index.php?act=sanpham');
     exit();
 }
 
@@ -51,20 +50,20 @@ $content = '
     <nav class="flex" aria-label="Breadcrumb">
         <ol class="inline-flex items-center space-x-1 md:space-x-3">
             <li class="inline-flex items-center">
-                <a href="index.php" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-primary">
+                <a href="../../index.php" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-primary">
                     <i class="ri-home-line mr-2"></i>Trang chủ
                 </a>
             </li>
             <li>
                 <div class="flex items-center">
                     <i class="ri-arrow-right-s-line text-gray-400"></i>
-                    <a href="index.php?act=sanpham" class="ml-1 text-sm font-medium text-gray-700 hover:text-primary md:ml-2">Sản phẩm</a>
+                    <a href="../../index.php?act=sanpham" class="ml-1 text-sm font-medium text-gray-700 hover:text-primary md:ml-2">Sản phẩm</a>
                 </div>
             </li>
             <li>
                 <div class="flex items-center">
                     <i class="ri-arrow-right-s-line text-gray-400"></i>
-                    <a href="index.php?act=sanpham&danhmuc=' . $sp['id_danhmuc'] . '" class="ml-1 text-sm font-medium text-gray-700 hover:text-primary md:ml-2">' . $sp_category_clean . '</a>
+                    <a href="../../index.php?act=sanpham&danhmuc=' . $sp['id_danhmuc'] . '" class="ml-1 text-sm font-medium text-gray-700 hover:text-primary md:ml-2">' . $sp_category_clean . '</a>
                 </div>
             </li>
             <li aria-current="page">
@@ -82,7 +81,7 @@ $content = '
             <!-- Product Images -->
             <div class="space-y-4">
                 <div class="relative">
-                    <img src="' . $sp['image'] . '" alt="' . $sp_name_clean . '" class="w-full h-96 object-cover rounded-lg">';
+                    <img src="/project/view/image/' . $sp['image'] . '" alt="' . $sp_name_clean . '" class="w-full h-96 object-cover rounded-lg">';
                     
 if ($sp['Sale'] > 0) {
     $content .= '<div class="absolute top-4 left-4 bg-red-500 text-white px-3 py-2 rounded-lg text-lg font-bold">-' . $sp['Sale'] . '%</div>';
@@ -156,7 +155,10 @@ $content .= '
                     </div>
                     <div>
                         <span class="text-sm text-gray-500">Thương hiệu:</span>
-                        <div class="font-medium">' . $sp_brand_clean . '</div>
+                        <div class="flex items-center gap-2 font-medium text-blue-600">
+  <img src="/project/view/image/' . $sp['logo_hang'] . '" alt="' . $sp_brand_clean . '" style="width:24px; height:24px; object-fit:contain;">
+  ' . $sp_brand_clean . '
+</div>
                     </div>
                     <div>
                         <span class="text-sm text-gray-500">Danh mục:</span>
@@ -224,7 +226,7 @@ if (!empty($sanpham_lienquan)) {
         $content .= '
         <div class="bg-gray-50 rounded-lg overflow-hidden hover:shadow-md transition duration-200">
             <div class="relative">
-                <img src="' . $sp_lq['image'] . '" alt="' . $sp_lq_name_clean . '" class="w-full h-32 object-cover">';
+                <img src="/project/view/image/' . $sp_lq['image'] . '" alt="' . $sp_lq_name_clean . '" class="w-full h-32 object-cover">';
                 
         if ($sp_lq['Sale'] > 0) {
             $content .= '<div class="absolute top-2 left-2 bg-red-500 text-white px-2 py-1 rounded text-xs font-semibold">-' . $sp_lq['Sale'] . '%</div>';
@@ -234,13 +236,13 @@ if (!empty($sanpham_lienquan)) {
             </div>
             <div class="p-4">
                 <h3 class="font-semibold text-gray-800 mb-2 line-clamp-2">
-                    <a href="index.php?act=chitiet&id=' . $sp_lq['id_sp'] . '" class="hover:text-primary transition duration-200">
+                    <a href="/project/index.php?act=chitiet&id=' . $sp_lq['id_sp'] . '" class="hover:text-primary transition duration-200">
                         ' . $sp_lq_name_clean . '
                     </a>
                 </h3>
                 <div class="flex items-center justify-between">
                     <span class="font-bold text-primary">' . $gia_format_lq . '</span>
-                    <a href="index.php?act=chitiet&id=' . $sp_lq['id_sp'] . '" class="text-sm text-primary hover:underline">Chi tiết</a>
+                    <a href="/project/index.php?act=chitiet&id=' . $sp_lq['id_sp'] . '" class="text-sm text-primary hover:underline">Chi tiết</a>
                 </div>
             </div>
         </div>';
@@ -256,15 +258,40 @@ $content .= '
 
 <script>
 function addToCart(productId) {
-    alert("Đã thêm sản phẩm vào giỏ hàng!");
+    // Tạo form để submit
+    const form = document.createElement("form");
+    form.method = "POST";
+    form.action = "/project/index.php?act=add_to_cart&id=" + productId;
+    
+    // Thêm input cho quantity
+    const quantityInput = document.createElement("input");
+    quantityInput.type = "hidden";
+    quantityInput.name = "quantity";
+    quantityInput.value = 1;
+    
+    form.appendChild(quantityInput);
+    document.body.appendChild(form);
+    form.submit();
 }
 
 function buyNow(productId) {
-    alert("Chuyển đến trang thanh toán!");
+    // Thêm vào giỏ hàng trước, sau đó chuyển đến trang thanh toán
+    const form = document.createElement("form");
+    form.method = "POST";
+    form.action = "/project/index.php?act=add_to_cart&id=" + productId;
+    
+    const quantityInput = document.createElement("input");
+    quantityInput.type = "hidden";
+    quantityInput.name = "quantity";
+    quantityInput.value = 1;
+    
+    form.appendChild(quantityInput);
+    document.body.appendChild(form);
+    form.submit();
 }
 
 function addToWishlist(productId) {
-    alert("Đã thêm vào danh sách yêu thích!");
+    alert("Tính năng yêu thích sẽ được phát triển trong tương lai!");
 }
 
 function shareProduct() {

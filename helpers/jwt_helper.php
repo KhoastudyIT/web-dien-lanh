@@ -133,9 +133,22 @@ function getCurrentUser() {
 
     $payload = JWT::verifyToken($token);
     if (!$payload) {
+        // Token không hợp lệ hoặc hết hạn - tự động đăng xuất
+        setcookie('auth_token', '', time() - 3600, '/');
+        setcookie('auth_token', '', time() - 3600, '/project');
+        
+        // Nếu đang ở trang cần đăng nhập, chuyển hướng
+        $current_page = $_SERVER['REQUEST_URI'] ?? '';
+        if (strpos($current_page, 'act=profile') !== false || 
+            strpos($current_page, 'act=admin') !== false || 
+            strpos($current_page, 'act=cart') !== false) {
+            header('Location: /project/index.php?act=login&error=' . urlencode('Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.'));
+            exit();
+        }
         return null; // Token không hợp lệ
     }
 
+    require_once __DIR__ . '/../model/user.php';
     $user = new User();
     return $user->getUserById($payload['user_id']);
 } 

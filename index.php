@@ -4,5 +4,14 @@
  * Điểm khởi đầu của ứng dụng
  */
 
-header("location: controller/index.php");
+if (isset($_GET['act'])) {
+    $url = "controller/index.php?act=" . urlencode($_GET['act']);
+    if (isset($_GET['id'])) {
+        $url .= "&id=" . urlencode($_GET['id']);
+    }
+    header("Location: $url");
+    exit();
+}
+header("Location: controller/index.php");
+exit();
 ?>

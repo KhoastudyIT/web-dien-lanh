@@ -1,9 +1,7 @@
 <?php
 // Layout template cho tất cả các trang
-function renderPage($title = "Myweb", $content = "") {
-    // Sử dụng đường dẫn tuyệt đối
-    $project_root = dirname(dirname(__DIR__));
-    include $project_root . "/view/layout/header.php";
+function renderPage($title = "Điện Lạnh KV", $content = "") {
+    include __DIR__ . '/header.php';
     ?>
     <main class="min-h-screen bg-gray-50 py-8">
         <div class="max-w-7xl mx-auto px-4">
@@ -16,7 +14,7 @@ function renderPage($title = "Myweb", $content = "") {
         <div class="max-w-7xl mx-auto px-4">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
                 <div>
-                    <img src="view/image/Neel.png" alt="logo" style="width:40px;">
+                    <img src="/project/view/image/logodienlanh.png" alt="Điện Lạnh KV" style="width:40px;">
                     <p class="text-gray-400 mb-4">
                         Chuyên cung cấp và sửa chữa các thiết bị điện lạnh chất lượng cao
                         với dịch vụ tận tâm.
@@ -77,7 +75,7 @@ function renderPage($title = "Myweb", $content = "") {
                             <div class="w-5 h-5 flex items-center justify-center">
                                 <i class="ri-map-pin-line text-sm"></i>
                             </div>
-                            <span class="text-sm">60/15/3, P. Thủ Đức, TP.HCM</span>
+                            <span class="text-sm">163/50/7, Đặng Văn Bi, Thủ Đức</span>
                         </div>
                         <div class="flex items-center gap-3">
                             <div class="w-5 h-5 flex items-center justify-center">

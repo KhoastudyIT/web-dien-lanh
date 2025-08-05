@@ -1,9 +1,10 @@
 <?php 
+    if (!class_exists('database')) {
     class database{
         private $servername = "localhost";
         private $username="root";
         private $password="";
-        private $databasename="abc";// Tên database
+        private $databasename="dienlanh_shop";// Tên database
         protected $conn = null;
 
     function connection_database(){
@@ -17,3 +18,4 @@
             return $conn;
         }
     }
+}
