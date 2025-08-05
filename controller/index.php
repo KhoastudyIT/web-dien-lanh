@@ -35,12 +35,12 @@ if(isset($_REQUEST['act'])){
                     // Lưu token vào cookie
                     setcookie('auth_token', $token, time() + 3600, '/');
                     
-                    header('Location: /project/index.php?success=Đăng nhập thành công');
+                    header('Location: /project/controller/index.php?success=Đăng nhập thành công');
                 } else {
-                    header('Location: /project/index.php?act=login&error=' . urlencode($result['message']));
+                    header('Location: /project/controller/index.php?act=login&error=' . urlencode($result['message']));
                 }
             } else {
-                header('Location: /project/index.php?act=login');
+                header('Location: /project/controller/index.php?act=login');
                 exit();
             }
             break;
@@ -56,12 +56,12 @@ if(isset($_REQUEST['act'])){
                 
                 // Kiểm tra dữ liệu đầu vào
                 if ($password !== $confirm_password) {
-                    header('Location: /project/index.php?act=register&error=' . urlencode('Mật khẩu xác nhận không khớp'));
+                    header('Location: /project/controller/index.php?act=register&error=' . urlencode('Mật khẩu xác nhận không khớp'));
                     exit();
                 }
                 
                 if (strlen($password) < 6) {
-                    header('Location: /project/index.php?act=register&error=' . urlencode('Mật khẩu phải có ít nhất 6 ký tự'));
+                    header('Location: /project/controller/index.php?act=register&error=' . urlencode('Mật khẩu phải có ít nhất 6 ký tự'));
                     exit();
                 }
                 
@@ -70,19 +70,19 @@ if(isset($_REQUEST['act'])){
                 file_put_contents(__DIR__ . '/../debug_register.txt', print_r($result, true));
                 
                 if ($result['success']) {
-                    header('Location: /project/index.php?act=login&success=' . urlencode($result['message']));
+                    header('Location: /project/controller/index.php?act=login&success=' . urlencode($result['message']));
                 } else {
-                    header('Location: /project/index.php?act=register&error=' . urlencode($result['message']));
+                    header('Location: /project/controller/index.php?act=register&error=' . urlencode($result['message']));
                 }
             } else {
-                header('Location: /project/index.php?act=register');
+                header('Location: /project/controller/index.php?act=register');
                 exit();
             }
             break;
         case 'profile':
             $currentUser = getCurrentUser();
             if (!$currentUser) {
-                header('Location: /project/index.php?act=login');
+                header('Location: /project/controller/index.php?act=login');
                 exit();
             }
             include "../view/pages/profile.php";
@@ -106,7 +106,7 @@ if(isset($_REQUEST['act'])){
                 $cart->clear();
             }
             
-            header('Location: /project/index.php?success=Đăng xuất thành công');
+            header('Location: /project/controller/index.php?success=Đăng xuất thành công');
             exit();
             break;
         case 'danhmuc':
@@ -152,7 +152,7 @@ if(isset($_REQUEST['act'])){
             // Kiểm tra đăng nhập trước khi thêm vào giỏ hàng
             $currentUser = getCurrentUser();
             if (!$currentUser) {
-                header('Location: /project/index.php?act=login&error=' . urlencode('Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng'));
+                header('Location: /project/controller/index.php?act=login&error=' . urlencode('Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng'));
                 exit();
             }
             
@@ -166,13 +166,13 @@ if(isset($_REQUEST['act'])){
                     $cart->add($product, $quantity);
                 }
             }
-            header('Location: /project/index.php?act=cart');
+            header('Location: /project/controller/index.php?act=cart');
             break;
         case 'cart':
             // Kiểm tra đăng nhập trước khi xem giỏ hàng
             $currentUser = getCurrentUser();
             if (!$currentUser) {
-                header('Location: /project/index.php?act=login&error=' . urlencode('Vui lòng đăng nhập để xem giỏ hàng'));
+                header('Location: /project/controller/index.php?act=login&error=' . urlencode('Vui lòng đăng nhập để xem giỏ hàng'));
                 exit();
             }
             
@@ -182,7 +182,7 @@ if(isset($_REQUEST['act'])){
             // Kiểm tra đăng nhập trước khi cập nhật giỏ hàng
             $currentUser = getCurrentUser();
             if (!$currentUser) {
-                header('Location: /project/index.php?act=login&error=' . urlencode('Vui lòng đăng nhập để cập nhật giỏ hàng'));
+                header('Location: /project/controller/index.php?act=login&error=' . urlencode('Vui lòng đăng nhập để cập nhật giỏ hàng'));
                 exit();
             }
             
@@ -192,13 +192,13 @@ if(isset($_REQUEST['act'])){
                     $cart->update($id, (int)$quantity);
                 }
             }
-            header('Location: /project/index.php?act=cart');
+            header('Location: /project/controller/index.php?act=cart');
             break;
         case 'remove_from_cart':
             // Kiểm tra đăng nhập trước khi xóa sản phẩm
             $currentUser = getCurrentUser();
             if (!$currentUser) {
-                header('Location: /project/index.php?act=login&error=' . urlencode('Vui lòng đăng nhập để quản lý giỏ hàng'));
+                header('Location: /project/controller/index.php?act=login&error=' . urlencode('Vui lòng đăng nhập để quản lý giỏ hàng'));
                 exit();
             }
             
@@ -206,25 +206,25 @@ if(isset($_REQUEST['act'])){
             if (isset($_GET['id'])) {
                 $cart->remove($_GET['id']);
             }
-            header('Location: /project/index.php?act=cart');
+            header('Location: /project/controller/index.php?act=cart');
             break;
         case 'clear_cart':
             // Kiểm tra đăng nhập trước khi xóa toàn bộ giỏ hàng
             $currentUser = getCurrentUser();
             if (!$currentUser) {
-                header('Location: /project/index.php?act=login&error=' . urlencode('Vui lòng đăng nhập để quản lý giỏ hàng'));
+                header('Location: /project/controller/index.php?act=login&error=' . urlencode('Vui lòng đăng nhập để quản lý giỏ hàng'));
                 exit();
             }
             
             $cart = new Cart();
             $cart->clear();
-            header('Location: /project/index.php?act=cart');
+            header('Location: /project/controller/index.php?act=cart');
             break;
         case 'checkout':
             // Kiểm tra đăng nhập trước khi thanh toán
             $currentUser = getCurrentUser();
             if (!$currentUser) {
-                header('Location: /project/index.php?act=login&error=' . urlencode('Vui lòng đăng nhập để thanh toán'));
+                header('Location: /project/controller/index.php?act=login&error=' . urlencode('Vui lòng đăng nhập để thanh toán'));
                 exit();
             }
             
@@ -234,7 +234,7 @@ if(isset($_REQUEST['act'])){
             // Kiểm tra đăng nhập trước khi xử lý thanh toán
             $currentUser = getCurrentUser();
             if (!$currentUser) {
-                header('Location: /project/index.php?act=login&error=' . urlencode('Vui lòng đăng nhập để thanh toán'));
+                header('Location: /project/controller/index.php?act=login&error=' . urlencode('Vui lòng đăng nhập để thanh toán'));
                 exit();
             }
             
@@ -247,7 +247,7 @@ if(isset($_REQUEST['act'])){
                 $phuong_thuc_thanh_toan = $_POST['phuong_thuc_thanh_toan'] ?? 'Tiền mặt';
                 
                 if (empty($ten_nguoi_nhan) || empty($sdt_nguoi_nhan) || empty($dia_chi_giao)) {
-                    header('Location: /project/index.php?act=checkout&error=' . urlencode('Vui lòng điền đầy đủ thông tin bắt buộc'));
+                    header('Location: /project/controller/index.php?act=checkout&error=' . urlencode('Vui lòng điền đầy đủ thông tin bắt buộc'));
                     exit();
                 }
                 
@@ -257,7 +257,7 @@ if(isset($_REQUEST['act'])){
                 $total = $cart->getTotal();
                 
                 if (empty($cart_items)) {
-                    header('Location: /project/index.php?act=cart&error=' . urlencode('Giỏ hàng trống, vui lòng thêm sản phẩm'));
+                    header('Location: /project/controller/index.php?act=cart&error=' . urlencode('Giỏ hàng trống, vui lòng thêm sản phẩm'));
                     exit();
                 }
                 
@@ -279,15 +279,15 @@ if(isset($_REQUEST['act'])){
                     // Đảm bảo xóa giỏ hàng sau khi thanh toán thành công
                     $cart->clear();
                     
-                    header('Location: /project/index.php?act=order_success&id=' . $orderId);
+                    header('Location: /project/controller/index.php?act=order_success&id=' . $orderId);
                     exit();
                     
                 } catch (Exception $e) {
-                    header('Location: /project/index.php?act=checkout&error=' . urlencode('Có lỗi xảy ra khi đặt hàng: ' . $e->getMessage()));
+                    header('Location: /project/controller/index.php?act=checkout&error=' . urlencode('Có lỗi xảy ra khi đặt hàng: ' . $e->getMessage()));
                     exit();
                 }
             } else {
-                header('Location: /project/index.php?act=checkout');
+                header('Location: /project/controller/index.php?act=checkout');
                 exit();
             }
             break;
@@ -295,13 +295,13 @@ if(isset($_REQUEST['act'])){
             // Kiểm tra đăng nhập
             $currentUser = getCurrentUser();
             if (!$currentUser) {
-                header('Location: /project/index.php?act=login&error=' . urlencode('Vui lòng đăng nhập để xem đơn hàng'));
+                header('Location: /project/controller/index.php?act=login&error=' . urlencode('Vui lòng đăng nhập để xem đơn hàng'));
                 exit();
             }
             
             $orderId = isset($_GET['id']) ? (int)$_GET['id'] : 0;
             if (!$orderId) {
-                header('Location: /project/index.php?act=cart');
+                header('Location: /project/controller/index.php?act=cart');
                 exit();
             }
             
@@ -311,7 +311,7 @@ if(isset($_REQUEST['act'])){
             // Kiểm tra đăng nhập
             $currentUser = getCurrentUser();
             if (!$currentUser) {
-                header('Location: /project/index.php?act=login&error=' . urlencode('Vui lòng đăng nhập để xem đơn hàng'));
+                header('Location: /project/controller/index.php?act=login&error=' . urlencode('Vui lòng đăng nhập để xem đơn hàng'));
                 exit();
             }
             
@@ -321,7 +321,7 @@ if(isset($_REQUEST['act'])){
             // Kiểm tra đăng nhập
             $currentUser = getCurrentUser();
             if (!$currentUser) {
-                header('Location: /project/index.php?act=login&error=' . urlencode('Vui lòng đăng nhập để xem đơn hàng'));
+                header('Location: /project/controller/index.php?act=login&error=' . urlencode('Vui lòng đăng nhập để xem đơn hàng'));
                 exit();
             }
             
@@ -331,7 +331,7 @@ if(isset($_REQUEST['act'])){
             // Kiểm tra quyền admin
             $currentUser = getCurrentUser();
             if (!$currentUser || $currentUser['position'] !== 'admin') {
-                header('Location: /project/index.php?act=login&error=' . urlencode('Bạn không có quyền truy cập trang này'));
+                header('Location: /project/controller/index.php?act=login&error=' . urlencode('Bạn không có quyền truy cập trang này'));
                 exit();
             }
             
@@ -344,9 +344,9 @@ if(isset($_REQUEST['act'])){
                 $status = $_POST['status'];
                 
                 if ($donHang->updateOrderStatus($orderId, $status)) {
-                    header('Location: /project/index.php?act=admin_orders&success=' . urlencode('Cập nhật trạng thái đơn hàng thành công!'));
+                    header('Location: /project/controller/index.php?act=admin_orders&success=' . urlencode('Cập nhật trạng thái đơn hàng thành công!'));
                 } else {
-                    header('Location: /project/index.php?act=admin_orders&error=' . urlencode('Có lỗi xảy ra khi cập nhật trạng thái!'));
+                    header('Location: /project/controller/index.php?act=admin_orders&error=' . urlencode('Có lỗi xảy ra khi cập nhật trạng thái!'));
                 }
                 exit();
             }
@@ -357,7 +357,7 @@ if(isset($_REQUEST['act'])){
             // Kiểm tra quyền admin
             $currentUser = getCurrentUser();
             if (!$currentUser || $currentUser['position'] !== 'admin') {
-                header('Location: /project/index.php?act=login&error=' . urlencode('Bạn không có quyền truy cập trang này'));
+                header('Location: /project/controller/index.php?act=login&error=' . urlencode('Bạn không có quyền truy cập trang này'));
                 exit();
             }
             
@@ -367,7 +367,7 @@ if(isset($_REQUEST['act'])){
             // Kiểm tra quyền admin
             $currentUser = getCurrentUser();
             if (!$currentUser || $currentUser['position'] !== 'admin') {
-                header('Location: /project/index.php?act=login&error=' . urlencode('Bạn không có quyền truy cập trang này'));
+                header('Location: /project/controller/index.php?act=login&error=' . urlencode('Bạn không có quyền truy cập trang này'));
                 exit();
             }
             
@@ -392,16 +392,16 @@ if(isset($_REQUEST['act'])){
                     
                     // Validate dữ liệu
                     if (empty($name) || empty($phone) || empty($service)) {
-                        header('Location: /project/index.php?act=lienhe&error=' . urlencode('Vui lòng điền đầy đủ thông tin bắt buộc'));
+                        header('Location: /project/controller/index.php?act=lienhe&error=' . urlencode('Vui lòng điền đầy đủ thông tin bắt buộc'));
                         exit();
                     }
                     
                     // Có thể lưu vào database hoặc gửi email ở đây
                     // Hiện tại chỉ hiển thị thông báo thành công
-                    header('Location: /project/index.php?act=lienhe&success=' . urlencode('Cảm ơn bạn đã liên hệ! Chúng tôi sẽ phản hồi sớm nhất có thể.'));
+                    header('Location: /project/controller/index.php?act=lienhe&success=' . urlencode('Cảm ơn bạn đã liên hệ! Chúng tôi sẽ phản hồi sớm nhất có thể.'));
                     exit();
                 } else {
-                    header('Location: /project/index.php?act=lienhe');
+                    header('Location: /project/controller/index.php?act=lienhe');
                     exit();
                 }
                 break;

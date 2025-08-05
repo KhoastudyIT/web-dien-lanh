@@ -105,7 +105,7 @@ function requireAuth() {
     $token = $_COOKIE['auth_token'] ?? null;
 
     if (!$token) {
-        header('Location: index.php?act=login');
+        header('Location: /project/controller/index.php?act=login');
         exit();
     }
 
@@ -113,7 +113,7 @@ function requireAuth() {
     if (!$payload) {
         // Xóa token không hợp lệ
         setcookie('auth_token', '', time() - 3600, '/');
-        header('Location: index.php?act=login');
+        header('Location: /project/controller/index.php?act=login');
         exit();
     }
 
@@ -142,7 +142,7 @@ function getCurrentUser() {
         if (strpos($current_page, 'act=profile') !== false || 
             strpos($current_page, 'act=admin') !== false || 
             strpos($current_page, 'act=cart') !== false) {
-            header('Location: /project/index.php?act=login&error=' . urlencode('Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.'));
+            header('Location: /project/controller/index.php?act=login&error=' . urlencode('Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.'));
             exit();
         }
         return null; // Token không hợp lệ
