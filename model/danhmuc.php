@@ -119,5 +119,17 @@ class  danhmuc {
                 return null;
             }
         }
+
+        public function updateCategory($id, $name) {
+            try {
+                $db = new database();
+                $conn = $db->connection_database();
+                
+                $stmt = $conn->prepare("UPDATE danhmuc SET name = ? WHERE id = ?");
+                return $stmt->execute([$name, $id]);
+            } catch (PDOException $e) {
+                return false;
+            }
+        }
     }
     ?>
