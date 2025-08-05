@@ -15,7 +15,7 @@ $current_page = $_GET['act'] ?? 'admin';
 if ($current_page === 'admin_orders') {
     $current_action = 'orders';
 } elseif ($current_page === 'admin_product_management') {
-    $current_action = 'inventory';
+    $current_action = 'products';
 }
 ?>
 <!DOCTYPE html>
@@ -55,7 +55,7 @@ if ($current_page === 'admin_orders') {
                     <a href="?act=admin&action=dashboard" class="flex items-center px-4 py-3 rounded-lg <?php echo ($current_action === 'dashboard' ? 'bg-blue-700 text-white' : 'text-blue-200 hover:bg-blue-700'); ?> transition-colors">
                         <i class="ri-dashboard-line mr-3"></i>Bảng điều khiển
                     </a>
-                    <a href="?act=admin&action=products" class="flex items-center px-4 py-3 rounded-lg <?php echo ($current_action === 'products' ? 'bg-blue-700 text-white' : 'text-blue-200 hover:bg-blue-700'); ?> transition-colors">
+                    <a href="/project/index.php?act=admin_product_management" class="flex items-center px-4 py-3 rounded-lg <?php echo ($current_action === 'products' ? 'bg-blue-700 text-white' : 'text-blue-200 hover:bg-blue-700'); ?> transition-colors">
                         <i class="ri-product-hunt-line mr-3"></i>Quản lý sản phẩm
                     </a>
                     <a href="?act=admin&action=categories" class="flex items-center px-4 py-3 rounded-lg <?php echo ($current_action === 'categories' ? 'bg-blue-700 text-white' : 'text-blue-200 hover:bg-blue-700'); ?> transition-colors">
@@ -63,9 +63,6 @@ if ($current_page === 'admin_orders') {
                     </a>
                     <a href="/project/index.php?act=admin_orders" class="flex items-center px-4 py-3 rounded-lg <?php echo ($current_action === 'orders' ? 'bg-blue-700 text-white' : 'text-blue-200 hover:bg-blue-700'); ?> transition-colors">
                         <i class="ri-shopping-cart-line mr-3"></i>Quản lý đơn hàng
-                    </a>
-                    <a href="/project/index.php?act=admin_product_management" class="flex items-center px-4 py-3 rounded-lg <?php echo ($current_action === 'inventory' ? 'bg-blue-700 text-white' : 'text-blue-200 hover:bg-blue-700'); ?> transition-colors">
-                        <i class="ri-store-line mr-3"></i>Quản lý tồn kho
                     </a>
                     <a href="?act=admin&action=users" class="flex items-center px-4 py-3 rounded-lg <?php echo ($current_action === 'users' ? 'bg-blue-700 text-white' : 'text-blue-200 hover:bg-blue-700'); ?> transition-colors">
                         <i class="ri-user-line mr-3"></i>Quản lý người dùng

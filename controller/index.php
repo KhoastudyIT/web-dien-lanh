@@ -373,6 +373,26 @@ if(isset($_REQUEST['act'])){
             
             include "../view/pages/admin_product_management.php";
             break;
+        case 'admin_add_product':
+            // Kiểm tra quyền admin
+            $currentUser = getCurrentUser();
+            if (!$currentUser || $currentUser['position'] !== 'admin') {
+                header('Location: /project/controller/index.php?act=login&error=' . urlencode('Bạn không có quyền truy cập trang này'));
+                exit();
+            }
+            
+            include "../view/pages/admin_add_product.php";
+            break;
+        case 'admin_edit_product':
+            // Kiểm tra quyền admin
+            $currentUser = getCurrentUser();
+            if (!$currentUser || $currentUser['position'] !== 'admin') {
+                header('Location: /project/controller/index.php?act=login&error=' . urlencode('Bạn không có quyền truy cập trang này'));
+                exit();
+            }
+            
+            include "../view/pages/admin_edit_product.php";
+            break;
         case 'lienhe':
             include "../view/pages/lienhe.php";
             break;

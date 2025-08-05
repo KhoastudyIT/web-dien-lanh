@@ -232,7 +232,7 @@ class sanpham {
         }
     }
 
-    public function getTotalProducts($search = '', $category = '') {
+    public function getTotalProducts($search = '', $category = '', $brand = '', $status = '') {
         try {
             $db = new database();
             $conn = $db->connection_database();
@@ -241,13 +241,33 @@ class sanpham {
             $params = [];
             
             if (!empty($search)) {
-                $where_conditions[] = "Name LIKE ?";
+                $where_conditions[] = "(Name LIKE ? OR id_sp LIKE ?)";
+                $params[] = "%$search%";
                 $params[] = "%$search%";
             }
             
             if (!empty($category)) {
                 $where_conditions[] = "id_danhmuc = ?";
                 $params[] = $category;
+            }
+            
+            if (!empty($brand)) {
+                $where_conditions[] = "id_hang = ?";
+                $params[] = $brand;
+            }
+            
+            if (!empty($status)) {
+                switch ($status) {
+                    case 'in_stock':
+                        $where_conditions[] = "Mount > 5";
+                        break;
+                    case 'out_of_stock':
+                        $where_conditions[] = "Mount = 0";
+                        break;
+                    case 'low_stock':
+                        $where_conditions[] = "Mount > 0 AND Mount <= 5";
+                        break;
+                }
             }
             
             $where_clause = '';
@@ -303,7 +323,7 @@ class sanpham {
         }
     }
 
-    public function getAllProducts($search = '', $category = '') {
+    public function getAllProducts($search = '', $category = '', $brand = '', $status = '', $sort = 'id_desc', $offset = 0, $limit = 10) {
         try {
             $db = new database();
             $conn = $db->connection_database();
@@ -312,7 +332,8 @@ class sanpham {
             $params = [];
             
             if (!empty($search)) {
-                $where_conditions[] = "sp.Name LIKE ?";
+                $where_conditions[] = "(sp.Name LIKE ? OR sp.id_sp LIKE ?)";
+                $params[] = "%$search%";
                 $params[] = "%$search%";
             }
             
@@ -321,9 +342,56 @@ class sanpham {
                 $params[] = $category;
             }
             
+            if (!empty($brand)) {
+                $where_conditions[] = "sp.id_hang = ?";
+                $params[] = $brand;
+            }
+            
+            if (!empty($status)) {
+                switch ($status) {
+                    case 'in_stock':
+                        $where_conditions[] = "sp.Mount > 5";
+                        break;
+                    case 'out_of_stock':
+                        $where_conditions[] = "sp.Mount = 0";
+                        break;
+                    case 'low_stock':
+                        $where_conditions[] = "sp.Mount > 0 AND sp.Mount <= 5";
+                        break;
+                }
+            }
+            
             $where_clause = '';
             if (!empty($where_conditions)) {
                 $where_clause = 'WHERE ' . implode(' AND ', $where_conditions);
+            }
+            
+            // Xử lý sắp xếp
+            $order_clause = 'ORDER BY ';
+            switch ($sort) {
+                case 'id_asc':
+                    $order_clause .= 'sp.id_sp ASC';
+                    break;
+                case 'name_asc':
+                    $order_clause .= 'sp.Name ASC';
+                    break;
+                case 'name_desc':
+                    $order_clause .= 'sp.Name DESC';
+                    break;
+                case 'price_asc':
+                    $order_clause .= 'sp.Price ASC';
+                    break;
+                case 'price_desc':
+                    $order_clause .= 'sp.Price DESC';
+                    break;
+                case 'stock_asc':
+                    $order_clause .= 'sp.Mount ASC';
+                    break;
+                case 'stock_desc':
+                    $order_clause .= 'sp.Mount DESC';
+                    break;
+                default:
+                    $order_clause .= 'sp.id_sp DESC';
             }
             
             $sql = "SELECT sp.*, dm.name as ten_danhmuc, h.ten_hang, h.logo_hang 
@@ -331,7 +399,8 @@ class sanpham {
                     LEFT JOIN danhmuc dm ON sp.id_danhmuc = dm.id 
                     LEFT JOIN hang h ON sp.id_hang = h.id_hang 
                     $where_clause 
-                    ORDER BY sp.id_sp DESC";
+                    $order_clause 
+                    LIMIT $offset, $limit";
             
             $stmt = $conn->prepare($sql);
             $stmt->execute($params);
@@ -380,6 +449,19 @@ class sanpham {
             
             $stmt = $conn->prepare($sql);
             return $stmt->execute($params);
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
+    public function updateStock($id, $quantity) {
+        try {
+            $db = new database();
+            $conn = $db->connection_database();
+            
+            $sql = "UPDATE sanpham SET Mount = ? WHERE id_sp = ?";
+            $stmt = $conn->prepare($sql);
+            return $stmt->execute([$quantity, $id]);
         } catch (PDOException $e) {
             return false;
         }
