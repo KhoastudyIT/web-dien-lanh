@@ -97,6 +97,28 @@ class User {
             return false;
         }
     }
+    
+    // Cập nhật thông tin user bởi admin (bao gồm position)
+    public function updateUserByAdmin($id, $fullname, $email, $phone, $address, $position) {
+        try {
+            $conn = $this->db->connection_database();
+            
+            // Kiểm tra email đã tồn tại chưa (trừ user hiện tại)
+            $stmt = $conn->prepare("SELECT id_user FROM taikhoan WHERE email = ? AND id_user != ?");
+            $stmt->execute([$email, $id]);
+            if ($stmt->rowCount() > 0) {
+                return false; // Email đã tồn tại
+            }
+            
+            $stmt = $conn->prepare("UPDATE taikhoan SET fullname = ?, email = ?, phone = ?, address = ?, position = ? WHERE id_user = ?");
+            $result = $stmt->execute([$fullname, $email, $phone, $address, $position, $id]);
+            
+            return $result;
+            
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
 
     // Lấy tổng số người dùng
     public function getTotalUsers() {
@@ -156,6 +178,29 @@ class User {
             
         } catch (PDOException $e) {
             return ['success' => false, 'message' => 'Lỗi database: ' . $e->getMessage()];
+        }
+    }
+    
+    // Xóa người dùng
+    public function deleteUser($id) {
+        try {
+            $conn = $this->db->connection_database();
+            
+            // Kiểm tra xem user có tồn tại không
+            $stmt = $conn->prepare("SELECT id_user FROM taikhoan WHERE id_user = ?");
+            $stmt->execute([$id]);
+            if ($stmt->rowCount() === 0) {
+                return false;
+            }
+            
+            // Xóa user
+            $stmt = $conn->prepare("DELETE FROM taikhoan WHERE id_user = ?");
+            $result = $stmt->execute([$id]);
+            
+            return $result;
+            
+        } catch (PDOException $e) {
+            return false;
         }
     }
 }

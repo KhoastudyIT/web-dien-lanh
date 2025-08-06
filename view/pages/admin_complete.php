@@ -66,9 +66,54 @@ if (isset($_GET['delete_product'])) {
     }
 }
 
+// Xử lý xóa người dùng
+if (isset($_GET['delete_user'])) {
+    $id = $_GET['delete_user'];
+    // Kiểm tra không xóa chính mình
+    if ($id == $currentUser['id_user']) {
+        $error = 'Không thể xóa tài khoản của chính mình!';
+    } else {
+        if ($user->deleteUser($id)) {
+            $message = 'Xóa người dùng thành công!';
+        } else {
+            $error = 'Lỗi khi xóa người dùng!';
+        }
+    }
+}
+
+// Xử lý cập nhật thông tin người dùng
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_user'])) {
+    $id = $_POST['user_id'] ?? '';
+    $fullname = $_POST['fullname'] ?? '';
+    $email = $_POST['email'] ?? '';
+    $phone = $_POST['phone'] ?? '';
+    $address = $_POST['address'] ?? '';
+    $position = $_POST['position'] ?? '';
+    
+    if ($user->updateUserByAdmin($id, $fullname, $email, $phone, $address, $position)) {
+        $message = 'Cập nhật thông tin người dùng thành công!';
+    } else {
+        $error = 'Lỗi khi cập nhật thông tin người dùng!';
+    }
+}
+
 // Tạo nội dung cho layout
 ob_start();
-if ($action === 'dashboard'): ?>
+
+// Hiển thị thông báo
+if (!empty($message)): ?>
+    <div class="mb-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded">
+        <?php echo htmlspecialchars($message); ?>
+    </div>
+<?php endif; ?>
+
+<?php if (!empty($error)): ?>
+    <div class="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
+        <?php echo htmlspecialchars($error); ?>
+    </div>
+<?php endif; ?>
+
+<?php if ($action === 'dashboard'): ?>
     <!-- Dashboard Content -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         <div class="bg-white rounded-lg shadow p-6">
@@ -266,6 +311,8 @@ if ($action === 'dashboard'): ?>
                                         <tr>
                                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tên</th>
                                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Số điện thoại</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Địa chỉ</th>
                                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Vai trò</th>
                                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Thao tác</th>
                                         </tr>
@@ -282,15 +329,27 @@ if ($action === 'dashboard'): ?>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                                                 <?php echo htmlspecialchars($user_item['email']); ?>
                                             </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                                <?php echo htmlspecialchars($user_item['phone'] ?? ''); ?>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                                <div class="max-w-xs truncate" title="<?php echo htmlspecialchars($user_item['address'] ?? ''); ?>">
+                                                    <?php echo htmlspecialchars($user_item['address'] ?? ''); ?>
+                                                </div>
+                                            </td>
                                             <td class="px-6 py-4 whitespace-nowrap">
                                                 <span class="px-2 py-1 text-xs rounded <?php echo $user_item['position'] === 'admin' ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'; ?>">
                                                     <?php echo htmlspecialchars($user_item['position']); ?>
                                                 </span>
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                                <button onclick="editUser(<?php echo $user_item['id']; ?>)" class="text-blue-600 hover:text-blue-900 mr-3">Sửa</button>
-                                                <?php if ($user_item['id'] != $currentUser['id']): ?>
+                                                <?php if (isset($user_item['id'])): ?>
+                                                <button onclick="editUser(<?php echo $user_item['id']; ?>, '<?php echo htmlspecialchars($user_item['fullname']); ?>', '<?php echo htmlspecialchars($user_item['email']); ?>', '<?php echo htmlspecialchars($user_item['phone'] ?? ''); ?>', '<?php echo htmlspecialchars($user_item['address'] ?? ''); ?>', '<?php echo htmlspecialchars($user_item['position']); ?>')" class="text-blue-600 hover:text-blue-900 mr-3">Sửa</button>
+                                                <?php if (isset($currentUser['id_user']) && $user_item['id'] != $currentUser['id_user']): ?>
                                                 <button onclick="deleteUser(<?php echo $user_item['id']; ?>)" class="text-red-600 hover:text-red-900">Xóa</button>
+                                                <?php endif; ?>
+                                                <?php else: ?>
+                                                <span class="text-gray-400">Không có ID</span>
                                                 <?php endif; ?>
                                             </td>
                                         </tr>
@@ -315,9 +374,122 @@ if ($action === 'dashboard'): ?>
                         <p class="text-gray-600">Tính năng cài đặt đang được phát triển...</p>
                     </div>
 
-                <?php endif; 
+                                 <?php endif; 
 $content = ob_get_clean();
+?>
 
+<!-- Modal chỉnh sửa người dùng -->
+<div id="editUserModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden z-50">
+    <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+        <div class="mt-3">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-semibold text-gray-900">Chỉnh sửa người dùng</h3>
+                <button onclick="closeEditUserModal()" class="text-gray-400 hover:text-gray-600">
+                    <i class="ri-close-line text-xl"></i>
+                </button>
+            </div>
+            
+            <form method="POST" class="space-y-4">
+                <input type="hidden" id="editUserId" name="user_id">
+                
+                <div>
+                    <label for="editUserFullname" class="block text-sm font-medium text-gray-700 mb-2">Họ và tên *</label>
+                    <input type="text" name="fullname" id="editUserFullname" required 
+                           class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                </div>
+                
+                <div>
+                    <label for="editUserEmail" class="block text-sm font-medium text-gray-700 mb-2">Email *</label>
+                    <input type="email" name="email" id="editUserEmail" required 
+                           class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                </div>
+                
+                <div>
+                    <label for="editUserPhone" class="block text-sm font-medium text-gray-700 mb-2">Số điện thoại</label>
+                    <input type="tel" name="phone" id="editUserPhone" 
+                           class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                </div>
+                
+                <div>
+                    <label for="editUserAddress" class="block text-sm font-medium text-gray-700 mb-2">Địa chỉ</label>
+                    <textarea name="address" id="editUserAddress" rows="2" 
+                              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"></textarea>
+                </div>
+                
+                <div>
+                    <label for="editUserPosition" class="block text-sm font-medium text-gray-700 mb-2">Vai trò *</label>
+                    <select name="position" id="editUserPosition" required 
+                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        <option value="user">Người dùng</option>
+                        <option value="admin">Quản trị viên</option>
+                    </select>
+                </div>
+                
+                <div class="flex space-x-3 pt-4">
+                    <button type="submit" name="update_user" 
+                            class="flex-1 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors">
+                        <i class="ri-save-line mr-2"></i>Cập nhật
+                    </button>
+                    <button type="button" onclick="closeEditUserModal()" 
+                            class="flex-1 bg-gray-500 text-white py-2 px-4 rounded-lg hover:bg-gray-600 transition-colors">
+                        Hủy
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+// Hàm chỉnh sửa người dùng
+function editUser(userId, fullname, email, phone, address, position) {
+    // Hiển thị modal chỉnh sửa
+    document.getElementById('editUserModal').style.display = 'block';
+    document.getElementById('editUserId').value = userId;
+    document.getElementById('editUserFullname').value = fullname;
+    document.getElementById('editUserEmail').value = email;
+    document.getElementById('editUserPhone').value = phone;
+    document.getElementById('editUserAddress').value = address;
+    document.getElementById('editUserPosition').value = position;
+}
+
+// Hàm xóa người dùng
+function deleteUser(userId) {
+    if (confirm('Bạn có chắc chắn muốn xóa người dùng này? Hành động này không thể hoàn tác.')) {
+        // Gửi request xóa người dùng
+        window.location.href = '?act=admin&action=users&delete_user=' + userId;
+    }
+}
+
+// Hàm chỉnh sửa danh mục
+function editCategory(categoryId) {
+    if (confirm('Bạn có muốn chỉnh sửa danh mục này?')) {
+        alert('Tính năng chỉnh sửa danh mục đang được phát triển. Category ID: ' + categoryId);
+    }
+}
+
+// Hàm xóa danh mục
+function deleteCategory(categoryId) {
+    if (confirm('Bạn có chắc chắn muốn xóa danh mục này? Hành động này không thể hoàn tác.')) {
+        window.location.href = '?act=admin&action=categories&delete_category=' + categoryId;
+    }
+}
+
+// Hàm đóng modal chỉnh sửa người dùng
+function closeEditUserModal() {
+    document.getElementById('editUserModal').style.display = 'none';
+}
+
+// Đóng modal khi click bên ngoài
+window.onclick = function(event) {
+    const modal = document.getElementById('editUserModal');
+    if (event.target === modal) {
+        modal.style.display = 'none';
+    }
+}
+</script>
+
+<?php
 // Include admin layout
 include_once __DIR__ . '/../layout/admin_layout.php';
 ?> 
