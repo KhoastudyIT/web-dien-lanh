@@ -115,12 +115,6 @@ $currentUser = getCurrentUser();
                                             <a href="/project/index.php?act=cart" class="hover:text-primary transition-colors">
                         <i class="ri-shopping-cart-line text-gray-600 text-lg"></i>
                     </a>
-                    <a href="/project/index.php?act=wishlist" class="hover:text-primary transition-colors relative">
-                        <i class="ri-heart-line text-gray-600 text-lg"></i>
-                        <?php if ($currentUser): ?>
-                        <span id="wishlist-count" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">0</span>
-                        <?php endif; ?>
-                    </a>
                     </div>
                     <?php if ($currentUser): ?>
                         <div class="relative group">
