@@ -100,8 +100,8 @@ $currentUser = getCurrentUser();
 
                 <nav class="hidden md:flex items-center space-x-8">
                     <a href="/project/index.php" class="text-gray-700 hover:text-primary font-medium">Trang chủ</a>
-                    <a href="/project/index.php?act=sanpham" class="text-gray-700 hover:text-primary font-medium">Sản phẩm</a>
                     <a href="/project/index.php?act=danhmuc" class="text-gray-700 hover:text-primary font-medium">Danh mục</a>
+                    <a href="/project/index.php?act=sanpham" class="text-gray-700 hover:text-primary font-medium">Sản phẩm</a>
                     <a href="/project/index.php?act=lienhe" class="text-gray-700 hover:text-primary font-medium">Liên hệ</a>
                 </nav>
 
@@ -115,8 +115,11 @@ $currentUser = getCurrentUser();
                                             <a href="/project/index.php?act=cart" class="hover:text-primary transition-colors">
                         <i class="ri-shopping-cart-line text-gray-600 text-lg"></i>
                     </a>
-                    <a href="/project/index.php?act=wishlist" class="hover:text-primary transition-colors">
+                    <a href="/project/index.php?act=wishlist" class="hover:text-primary transition-colors relative">
                         <i class="ri-heart-line text-gray-600 text-lg"></i>
+                        <?php if ($currentUser): ?>
+                        <span id="wishlist-count" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">0</span>
+                        <?php endif; ?>
                     </a>
                     </div>
                     <?php if ($currentUser): ?>
@@ -160,6 +163,9 @@ $currentUser = getCurrentUser();
         const searchInput = document.getElementById('searchInput');
         const searchSuggestions = document.getElementById('searchSuggestions');
         let searchTimeout;
+        
+        // Load wishlist count
+        loadWishlistCount();
 
         // Debounced search function
         function debounceSearch(query) {
@@ -274,5 +280,32 @@ $currentUser = getCurrentUser();
                 hideSuggestions();
             }
         });
+        
+        // Load wishlist count function
+        function loadWishlistCount() {
+            const wishlistCount = document.getElementById('wishlist-count');
+            if (wishlistCount) {
+                fetch('/project/api/wishlist.php?action=count')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        wishlistCount.textContent = data.count;
+                        if (data.count > 0) {
+                            wishlistCount.classList.remove('hidden');
+                        } else {
+                            wishlistCount.classList.add('hidden');
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading wishlist count:', error);
+                });
+            }
+        }
+        
+        // Update wishlist count function (can be called from other pages)
+        window.updateWishlistCount = function() {
+            loadWishlistCount();
+        };
     });
     </script>

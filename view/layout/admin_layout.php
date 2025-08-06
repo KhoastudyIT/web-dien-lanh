@@ -57,6 +57,7 @@ if ($current_page === 'admin_orders') {
                     <a href="?act=admin&action=dashboard" class="flex items-center px-4 py-3 rounded-lg <?php echo ($current_action === 'dashboard' ? 'bg-blue-700 text-white' : 'text-blue-200 hover:bg-blue-700'); ?> transition-colors">
                         <i class="ri-dashboard-line mr-3"></i>Bảng điều khiển
                     </a>
+
                     <a href="/project/index.php?act=admin_product_management" class="flex items-center px-4 py-3 rounded-lg <?php echo ($current_action === 'products' ? 'bg-blue-700 text-white' : 'text-blue-200 hover:bg-blue-700'); ?> transition-colors">
                         <i class="ri-product-hunt-line mr-3"></i>Quản lý sản phẩm
                     </a>
