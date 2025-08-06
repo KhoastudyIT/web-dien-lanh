@@ -100,7 +100,7 @@ $currentUser = getCurrentUser();
 
                 <nav class="hidden md:flex items-center space-x-8">
                     <a href="/project/index.php" class="text-gray-700 hover:text-primary font-medium">Trang chủ</a>
-                    <a href="/project/index.php?act=danhmuc" class="text-gray-700 hover:text-primary font-medium">Danh mục</a>
+                    <a href="/project/index.php?act=gioithieu" class="text-gray-700 hover:text-primary font-medium">Giới thiệu</a>
                     <a href="/project/index.php?act=sanpham" class="text-gray-700 hover:text-primary font-medium">Sản phẩm</a>
                     <a href="/project/index.php?act=lienhe" class="text-gray-700 hover:text-primary font-medium">Liên hệ</a>
                 </nav>

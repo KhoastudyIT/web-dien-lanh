@@ -120,6 +120,9 @@ if(isset($_REQUEST['act'])){
             unset($dm);
             include "../view/pages/danhmuc.php";
             break;
+        case 'gioithieu':
+            include "../view/pages/gioithieu.php";
+            break;
         case 'xl_themDM':
             if ($_SERVER["REQUEST_METHOD"] == "POST") { 
                 $name = $_POST['name'];
