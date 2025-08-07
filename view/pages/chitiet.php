@@ -285,87 +285,7 @@ function buyNow(productId) {
     form.submit();
 }
 
-function addToWishlist(productId) {
-    fetch('/project/api/wishlist.php', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            action: 'add',
-            product_id: productId
-        })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            // Cập nhật trạng thái nút
-            const wishlistBtn = document.querySelector('[onclick="addToWishlist(' + productId + ')"]');
-            if (wishlistBtn) {
-                wishlistBtn.innerHTML = '<i class="ri-heart-fill mr-2 text-red-500"></i>Đã yêu thích';
-                wishlistBtn.onclick = () => removeFromWishlist(productId);
-                wishlistBtn.classList.remove('border-gray-300', 'text-gray-700', 'hover:bg-gray-50');
-                wishlistBtn.classList.add('border-red-300', 'text-red-600', 'hover:bg-red-50');
-            }
-            showNotification('Đã thêm sản phẩm vào danh sách yêu thích!', 'success');
-            // Cập nhật số lượng wishlist trên header
-            if (typeof window.updateWishlistCount === 'function') {
-                window.updateWishlistCount();
-            }
-        } else {
-            if (data.message && data.message.includes('đăng nhập')) {
-                showNotification('Vui lòng đăng nhập để sử dụng tính năng yêu thích!', 'error');
-                // Chuyển hướng đến trang đăng nhập sau 2 giây
-                setTimeout(() => {
-                    window.location.href = '/project/controller/index.php?act=login';
-                }, 2000);
-            } else {
-                showNotification(data.message || 'Có lỗi xảy ra!', 'error');
-            }
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        showNotification('Có lỗi xảy ra khi thêm vào danh sách yêu thích!', 'error');
-    });
-}
 
-function removeFromWishlist(productId) {
-    fetch('/project/api/wishlist.php', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            action: 'remove',
-            product_id: productId
-        })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            // Cập nhật trạng thái nút
-            const wishlistBtn = document.querySelector('[onclick="removeFromWishlist(' + productId + ')"]');
-            if (wishlistBtn) {
-                wishlistBtn.innerHTML = '<i class="ri-heart-line mr-2"></i>Yêu thích';
-                wishlistBtn.onclick = () => addToWishlist(productId);
-                wishlistBtn.classList.remove('border-red-300', 'text-red-600', 'hover:bg-red-50');
-                wishlistBtn.classList.add('border-gray-300', 'text-gray-700', 'hover:bg-gray-50');
-            }
-            showNotification('Đã xóa sản phẩm khỏi danh sách yêu thích!', 'success');
-            // Cập nhật số lượng wishlist trên header
-            if (typeof window.updateWishlistCount === 'function') {
-                window.updateWishlistCount();
-            }
-        } else {
-            showNotification(data.message || 'Có lỗi xảy ra!', 'error');
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        showNotification('Có lỗi xảy ra khi xóa khỏi danh sách yêu thích!', 'error');
-    });
-}
 
 function showNotification(message, type) {
     // Tạo notification element
@@ -428,33 +348,9 @@ document.addEventListener("DOMContentLoaded", function() {
     `;
     document.head.appendChild(style);
     
-    // Kiểm tra trạng thái wishlist khi trang được tải
-    checkWishlistStatus();
+
 });
 
-function checkWishlistStatus() {
-    const productId = <?php echo $id_sp; ?>;
-    
-    fetch('/project/api/wishlist.php?action=check&product_id=' + productId)
-    .then(response => response.json())
-    .then(data => {
-        if (data.success && data.in_wishlist) {
-            // Sản phẩm đã có trong wishlist
-            const wishlistBtn = document.querySelector('[onclick="addToWishlist(' + productId + ')"]');
-            if (wishlistBtn) {
-                wishlistBtn.innerHTML = '<i class="ri-heart-fill mr-2 text-red-500"></i>Đã yêu thích';
-                wishlistBtn.onclick = () => removeFromWishlist(productId);
-                wishlistBtn.classList.remove('border-gray-300', 'text-gray-700', 'hover:bg-gray-50');
-                wishlistBtn.classList.add('border-red-300', 'text-red-600', 'hover:bg-red-50');
-            }
-        }
-    })
-    .catch(error => {
-        // Không hiển thị lỗi nếu người dùng chưa đăng nhập
-        if (error.message && !error.message.includes('401')) {
-            console.error('Error checking wishlist status:', error);
-        }
-    });
-}
+
 </script>
 ?> 

@@ -478,9 +478,7 @@ if(isset($_REQUEST['act'])){
             include "../view/pages/lienhe.php";
             break;
 
-        case 'wishlist':
-            include "../view/pages/wishlist.php";
-            break;
+
         case 'contact_submit':
                 if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     // Xử lý form liên hệ

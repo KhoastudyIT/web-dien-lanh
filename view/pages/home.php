@@ -202,11 +202,7 @@ $content = '
                     <img src="/project/view/image/' . $sp['image'] . '" alt="' . htmlspecialchars($sp['Name']) . '" 
                          class="w-full h-48 object-cover group-hover:scale-105 transition duration-300">
                     ' . ($sp['Sale'] > 0 ? '<div class="absolute top-3 left-3 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold">-' . $sp['Sale'] . '%</div>' : '') . '
-                    <div class="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition duration-300">
-                        <button class="bg-white/90 hover:bg-white text-gray-800 p-2 rounded-full shadow-lg">
-                            <i class="ri-heart-line"></i>
-                        </button>
-                    </div>
+
                 </div>
                 <div class="p-6">
                     <div class="flex items-center justify-between mb-3">
@@ -225,9 +221,12 @@ $content = '
                            class="flex-1 bg-blue-600 hover:bg-blue-700 text-white text-center py-2 px-4 rounded-lg font-medium transition duration-300">
                             Chi tiết
                         </a>
-                        <button class="bg-gray-100 hover:bg-gray-200 text-gray-800 p-2 rounded-lg transition duration-300">
-                            <i class="ri-shopping-cart-line"></i>
-                        </button>
+                        <form method="POST" action="/project/index.php?act=add_to_cart&id=' . $sp['id_sp'] . '" style="display:inline;">
+                            <input type="hidden" name="quantity" value="1">
+                            <button type="submit" class="bg-green-600 hover:bg-green-700 text-white p-2 rounded-lg transition duration-300">
+                                <i class="ri-shopping-cart-line"></i>
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>';

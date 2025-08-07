@@ -1,0 +1,749 @@
+MỤC LỤC
+
+LỜI MỞ ĐẦU	1
+LỜI CẢM ƠN	2
+NHẬN XÉT	3
+CHƯƠNG 1: TỔNG QUAN	4
+1.1 Giới thiệu đề tài	4
+1.2. Mục đích của website cần thiết kế	4
+a. Giới thiệu thông tin doanh nghiệp và dịch vụ một cách hệ thống	5
+b. Mang lại sự tiện lợi tối đa cho khách hàng	5
+c. Xây dựng hình ảnh thương hiệu chuyên nghiệp, hiện đại	5
+d. Tối ưu hóa quy trình quản lý nội bộ	5
+1.3. Mục tiêu quảng bá của Website	6
+a. Gia tăng khả năng tiếp cận khách hàng	6
+b. Xây dựng và củng cố thương hiệu uy tín	6
+c. Thu hút và giữ chân khách hàng tiềm năng	6
+d. Tạo lợi thế cạnh tranh trên thị trường	6
+1.4. Một số trang chính của website	7
+CHƯƠNG 2: KHẢO SÁT VÀ PHÂN TÍCH HỆ THỐNG	8
+2.1. Khảo sát hiện trạng	8
+2.2. Mô tả bài toán	9
+2.3. Yêu cầu về chức năng	9
+2.3.1. Đối với khách hàng (Người dùng)	9
+2.3.2 Đối với quản trị viên (Admin)	10
+2.3.3. Đặc tả use case	10
+a. Danh sách các tác nhân (Actors)	10
+b. Danh sách Use Case chính	10
+c. Biểu đồ trình tự chức năng	11
+2.3.4 Các yêu cầu bổ sung	11
+CHƯƠNG 3: GIAO DIỆN	12
+3.1. Giao diện trang chủ	12
+3.2. Giao diện giới thiệu	12
+3.3. Giao diện sản phẩm	12
+3.4. Giao diện chi tiết sản phẩm	12
+3.5. Giao diện giỏ hàng và thanh toán	12
+3.6. Giao diện quản trị (Admin)	12
+3.7. Giao diện liên hệ	12
+CHƯƠNG 4: THIẾT KẾ CƠ SỞ DỮ LIỆU	13
+4.1. Tổng quan về cơ sở dữ liệu	13
+4.2. Thiết kế các bảng chính	13
+4.2.1. Bảng danhmuc (Danh mục sản phẩm)	13
+4.2.2. Bảng hang (Hãng sản xuất)	13
+4.2.3. Bảng sanpham (Sản phẩm)	13
+4.2.4. Bảng taikhoan (Tài khoản người dùng)	13
+4.2.5. Bảng donhang (Đơn hàng)	13
+4.3. Mối quan hệ giữa các bảng	14
+4.4. Tối ưu hóa cơ sở dữ liệu	14
+CHƯƠNG 5: TRIỂN KHAI VÀ KIỂM THỬ	15
+5.1. Môi trường phát triển	15
+5.2. Cấu trúc thư mục	15
+5.3. Các tính năng đã triển khai	15
+5.4. Kiểm thử	15
+5.5. Bảo mật	15
+CHƯƠNG 6: KẾT LUẬN	16
+6.1. Những thành tựu đạt được	16
+6.2. Những hạn chế và hướng phát triển	16
+6.3. Hướng phát triển trong tương lai	16
+PHỤ LỤC	17
+TÀI LIỆU THAM KHẢO	18
+ 
+LỜI MỞ ĐẦU
+
+Trong thời đại công nghệ 4.0 hiện nay, Internet đã trở thành một phần không thể thiếu trong cuộc sống, giúp con người tiếp cận thông tin và dịch vụ một cách nhanh chóng và thuận tiện. Các doanh nghiệp hiện nay cũng dần chuyển đổi số để mở rộng thị trường và phục vụ khách hàng tốt hơn, trong đó website đóng vai trò quan trọng như một kênh kết nối và quảng bá hiệu quả.
+Xuất phát từ nhu cầu thực tế đó, em đã lựa chọn đề tài “Xây dựng website dịch vụ điện lạnh KV Thủ Đức” cho đồ án môn Lập trình Web nâng cao. Mục tiêu của đề tài là tạo ra một nền tảng trực tuyến giúp khách hàng dễ dàng tìm hiểu các dịch vụ điện lạnh như lắp đặt, bảo trì, vệ sinh và sửa chữa máy lạnh, đồng thời hỗ trợ đặt lịch nhanh chóng, tiết kiệm thời gian. Ngoài ra, website còn giúp đơn vị cung cấp dịch vụ quản lý thông tin hiệu quả hơn thông qua hệ thống quản trị chuyên biệt.
+Website "Điện lạnh KV Thủ Đức " không chỉ tập trung vào việc cập nhật thông tin một cách nhanh chóng mà còn hướng đến việc tối ưu hóa trải nghiệm người dùng với giao diện thân thiện, dễ sử dụng, cùng với tính năng tìm kiếm và phân loại thông tin thông minh.
+ Qua bài luận này, em sẽ trình bày chi tiết quá trình xây dựng website, từ khâu thiết kế, lập trình đến triển khai, đồng thời phân tích các giải pháp công nghệ được áp dụng để đảm bảo tính ổn định và hiệu quả của trang web.
+Trong quá trình thực hiện, mặc dù gặp nhiều khó khăn về thời gian và kiến thức thực tế, em đã cố gắng tìm hiểu và ứng dụng các công nghệ phù hợp để hoàn thành sản phẩm theo đúng yêu cầu đề ra. Đồ án không chỉ giúp em củng cố kiến thức về lập trình web mà còn rèn luyện kỹ năng phân tích, thiết kế hệ thống và giải quyết vấn đề.
+Em xin chân thành cảm ơn thầy/cô đã tận tình hướng dẫn, cung cấp tài liệu và hỗ trợ em trong suốt quá trình thực hiện đồ án. Mặc dù đã cố gắng song bài luận còn nhiều thiếu sót, kính mong thầy/cô góp ý để em có thể hoàn thiện sản phẩm tốt hơn.
+
+
+
+LỜI CẢM ƠN
+
+
+
+ Lời đầu tiên em xin gửi lời cảm ơn chân thành đến …….. đã tận tình giảng dạy và hướng dẫn em trong suốt quá trình học tập môn lập trình web nâng cao . Những kiến thức và kinh nghiệm thực tiễn mà Thầy truyền đạt không chỉ giúp em hoàn thiện sản phẩm mà còn mang lại cái nhìn sâu sắc hơn về ngành công nghệ thông tin nói chung. 
+Em cũng xin chân thành cảm ơn các bạn cùng lớp đã luôn hỗ trợ, chia sẻ kinh nghiệm và góp ý trong quá trình thực hiện bài báo cáo. Những sự giúp đỡ và động viên từ các bạn đã góp phần quan trọng trong việc hoàn thiện website "Điện Lạnh KV Thủ Đức".
+Cuối cùng, em xin gửi lời cảm ơn sâu sắc đến gia đình – nguồn động viên lớn lao cả về vật chất lẫn tinh thần, luôn ở bên cạnh và tạo điều kiện tốt nhất để em hoàn thành quá trình học tập và nghiên cứu.
+Mặc dù đã nỗ lực hết mình trong việc thực hiện đề tài, song bản thân vẫn còn nhiều hạn chế về kiến thức nên bài báo cáo này khó tránh khỏi những thiếu sót. Em kính mong nhận được những ý kiến đóng góp quý báu từ quý thầy cô và bạn đọc để bài  luận được hoàn thiện hơn.
+Em xin chân thành cảm ơn!
+
+
+TP. Hồ Chí Minh, ngày …. tháng … năm 202…
+Sinh viên thực hiện
+                                                                             
+                                                                              Võ Trần Tuấn Khoa
+
+
+
+
+
+
+NHẬN XÉT
+
+
+________________________________________
+
+________________________________________
+
+________________________________________
+
+________________________________________
+
+________________________________________
+
+________________________________________
+
+________________________________________
+
+________________________________________
+
+________________________________________
+
+________________________________________
+
+________________________________________
+
+________________________________________
+
+ 
+
+
+CHƯƠNG 1: TỔNG QUAN
+
+
+1.1 Giới thiệu đề tài 
+Trong bối cảnh công nghệ số phát triển mạnh mẽ, việc sở hữu một nền tảng trực tuyến để giới thiệu sản phẩm, dịch vụ đã trở thành nhu cầu tất yếu đối với mọi doanh nghiệp. Đặc biệt trong ngành điện lạnh – một lĩnh vực có tính cạnh tranh cao và liên quan trực tiếp đến nhu cầu thiết yếu của người dân như sửa chữa, bảo trì và lắp đặt thiết bị làm mát, việc xây dựng một website chuyên nghiệp không chỉ giúp doanh nghiệp nâng cao hình ảnh mà còn tiếp cận khách hàng một cách nhanh chóng, hiệu quả.
+Đề tài “Xây dựng website điện lạnh KV Thủ Đức” được thực hiện với mục tiêu tạo ra một nền tảng trực tuyến hiện đại, thân thiện với người dùng, đáp ứng các chức năng chính như:Giới thiệu thông tin dịch vụ (sửa chữa, bảo trì, lắp đặt máy lạnh).
+Đặt lịch trực tuyến giúp khách hàng dễ dàng liên hệ và đặt dịch vụ nhanh chóng.
+Cập nhật tin tức, khuyến mãi để tăng sự gắn kết với khách hàng.Quản lý dữ liệu dịch vụ và khách hàng thông qua hệ thống quản trị tiện lợi.
+Website sẽ được xây dựng với giao diện trực quan, thiết kế phù hợp trên mọi thiết bị, đồng thời áp dụng các công nghệ lập trình web nâng cao nhằm đảm bảo tốc độ tải nhanh, bảo mật cao và dễ dàng mở rộng trong tương lai.
+Thông qua đề tài này, không chỉ mong muốn đáp ứng yêu cầu học thuật mà còn hướng đến giải pháp thực tế, giúp các đơn vị điện lạnh tại khu vực Thủ Đức nâng cao hiệu quả kinh doanh, tăng tính chuyên nghiệp và mang đến trải nghiệm tốt hơn cho khách hàng.
+
+1.2. Mục đích của website cần thiết kế
+Website Điện lạnh KV Thủ Đức được xây dựng nhằm giải quyết các hạn chế hiện tại trong việc quảng bá dịch vụ điện lạnh truyền thống và mang đến cho khách hàng một trải nghiệm tiện lợi, chuyên nghiệp hơn. Các mục đích cụ thể gồm:
+a. Giới thiệu thông tin doanh nghiệp và dịch vụ một cách hệ thống
+Website sẽ đóng vai trò như một kênh thông tin chính thức, cung cấp đầy đủ và rõ ràng về doanh nghiệp, bao gồm: lịch sử hình thành, tầm nhìn – sứ mệnh, đội ngũ kỹ thuật và các dịch vụ nổi bật như lắp đặt, sửa chữa, bảo trì máy lạnh. Điều này giúp khách hàng nắm bắt thông tin nhanh chóng, tăng sự tin tưởng đối với doanh nghiệp.
+b. Mang lại sự tiện lợi tối đa cho khách hàng
+Khách hàng hiện nay thường ưu tiên các giải pháp nhanh chóng, tiện lợi. Website được thiết kế cho phép khách hàng:
+●	Đặt lịch sửa chữa hoặc lắp đặt trực tuyến, không cần gọi điện hay đến trực tiếp.
+●	Tra cứu các dịch vụ, bảng giá, chương trình khuyến mãi mọi lúc, mọi nơi trên nhiều thiết bị (máy tính, điện thoại, máy tính bảng).
+
+c. Xây dựng hình ảnh thương hiệu chuyên nghiệp, hiện đại
+Trong thời đại số, hình ảnh trực tuyến đóng vai trò quyết định trong việc tạo dựng niềm tin của khách hàng. Website sẽ giúp doanh nghiệp:
+●	Khẳng định sự chuyên nghiệp, nâng cao uy tín trong mắt người tiêu dùng.
+●	Tạo sự khác biệt so với các đối thủ chưa triển khai nền tảng trực tuyến.
+
+d. Tối ưu hóa quy trình quản lý nội bộ
+Không chỉ phục vụ khách hàng, website còn hỗ trợ doanh nghiệp quản lý hiệu quả thông qua:
+●	Hệ thống quản trị thông minh, giúp admin quản lý thông tin khách hàng, dịch vụ, lịch đặt hẹn và nội dung trên website dễ dàng.
+●	Tiết kiệm thời gian xử lý yêu cầu, giảm thiểu sai sót trong quá trình tiếp nhận thông tin.
+1.3. Mục tiêu quảng bá của Website
+Website không chỉ đơn thuần là một công cụ vận hành mà còn là kênh truyền thông và marketing chiến lược, nhằm đưa thương hiệu Điện lạnh KV Thủ Đức tiếp cận khách hàng một cách rộng rãi và bền vững. Các mục tiêu quảng bá bao gồm:
+a. Gia tăng khả năng tiếp cận khách hàng
+Ngày nay, phần lớn khách hàng tìm kiếm dịch vụ điện lạnh thông qua Internet. Do đó, việc có một website được tối ưu chuẩn SEO sẽ:
+●	Giúp doanh nghiệp xuất hiện trong kết quả tìm kiếm của Google, dễ dàng tiếp cận khách hàng tiềm năng tại khu vực Thủ Đức
+●	Tăng lượt truy cập, từ đó chuyển đổi thành đơn hàng thực tế.
+b. Xây dựng và củng cố thương hiệu uy tín
+Website sẽ trở thành “bộ mặt số” của doanh nghiệp, giúp:
+●	Khẳng định sự chuyên nghiệp, minh bạch thông tin.
+
+●	Truyền tải thông điệp về chất lượng dịch vụ và sự tận tâm đến khách hàng.
+c. Thu hút và giữ chân khách hàng tiềm năng
+Thông qua việc tích hợp nội dung hữu ích (bài viết mẹo bảo trì, thông tin sản phẩm, tư vấn tiết kiệm điện năng) và chương trình ưu đãi, website sẽ:
+●	Kích thích nhu cầu sử dụng dịch vụ.
+●	Duy trì tương tác, tăng tỷ lệ khách hàng quay lại.
+d. Tạo lợi thế cạnh tranh trên thị trường
+Trong bối cảnh nhiều đối thủ vẫn phụ thuộc vào hình thức tiếp thị truyền thống, việc sở hữu một website chuyên nghiệp sẽ giúp:
+●	Doanh nghiệp trở nên nổi bật hơn, dễ dàng chiếm lĩnh thị trường online.
+●	Mở rộng thị phần, không chỉ phục vụ khách hàng cá nhân mà còn hướng tới các đối tác doanh nghiệp trong khu vực.
+1.4. Các trang chính của website
+Website Điện lạnh KV Thủ Đức bao gồm các trang chính sau:
+
+a. **Trang Chủ (Home)**
+- Banner hero với slogan "Điện Lạnh KV - Chuyên Nghiệp - Uy Tín"
+- Giới thiệu 4 dịch vụ chính: Lắp Đặt Máy Lạnh, Bảo Trì Định Kỳ, Sửa Chữa Nhanh, Tư Vấn Miễn Phí
+- Phần "Về Điện Lạnh KV" với thống kê: 10+ năm kinh nghiệm, 1000+ khách hàng hài lòng
+- Sản phẩm nổi bật từ các thương hiệu: Daikin, LG, Samsung, Panasonic, Mitsubishi, Toshiba
+- Call-to-action: "Xem Sản Phẩm", "Liên Hệ Ngay", hotline "1900 6789"
+
+b. **Trang Giới Thiệu (About)**
+- Banner "GIỚI THIỆU THI CÔNG ĐIỆN LẠNH KV" với thống kê dự án
+- Thông tin "CÔNG TY TNHH ĐIỆN LẠNH KV" với sứ mệnh và tầm nhìn
+- Đội ngũ kỹ thuật viên chuyên nghiệp, giàu kinh nghiệm
+- Hình ảnh thực tế về các dự án đã thực hiện
+- Cam kết chất lượng và dịch vụ tận tâm
+
+c. **Trang Sản Phẩm (Products)**
+- Hiển thị sản phẩm theo danh mục: Máy lạnh treo tường, âm trần, đứng, giấu trần, Tủ lạnh
+- Bộ lọc theo hãng sản xuất, khoảng giá, tình trạng khuyến mãi
+- Tìm kiếm sản phẩm theo từ khóa
+- Thông tin chi tiết: tên, giá, hình ảnh, mô tả, số lượng tồn kho
+- Chức năng thêm vào giỏ hàng và mua ngay
+
+d. **Trang Chi Tiết Sản Phẩm (Product Detail)**
+- Gallery hình ảnh sản phẩm
+- Thông tin chi tiết: giá, thông số kỹ thuật, mô tả
+- Sản phẩm liên quan cùng danh mục
+- Nút "Thêm vào giỏ hàng" và "Mua ngay"
+
+e. **Trang Liên Hệ (Contact)**
+- Thông tin liên hệ: hotline "1900 6789", email "info@dienlanhkv.vn"
+- Địa chỉ: "163/50/7, Đặng Văn Bi, Thủ Đức"
+- Form liên hệ với dropdown chọn dịch vụ quan tâm
+- Bản đồ Google Maps hiển thị vị trí công ty
+- Thông tin giờ làm việc và hỗ trợ khách hàng
+
+f. **Hệ Thống Thương Mại Điện Tử**
+- Giỏ hàng với quản lý sản phẩm, số lượng, tổng tiền
+- Trang thanh toán với thông tin giao hàng
+- Quản lý đơn hàng và lịch sử mua hàng
+- Tài khoản cá nhân với thông tin người dùng
+
+g. **Trang Quản Trị (Admin)**
+- Dashboard tổng quan với thống kê
+- Quản lý sản phẩm: thêm, sửa, xóa, cập nhật giá, tồn kho
+- Quản lý đơn hàng: xem, cập nhật trạng thái, xử lý
+- Quản lý người dùng và nội dung website
+- Báo cáo doanh thu và sản phẩm bán chạy
+ 
+
+CHƯƠNG 2: KHẢO SÁT VÀ PHÂN TÍCH HỆ THỐNG 
+
+
+2.1. Khảo sát hiện trạng
+Trong bối cảnh hiện nay, nhu cầu sử dụng dịch vụ điện lạnh tại TP. Thủ Đức và các khu vực lân cận như Quận 9, Quận 2, cũng như các quận nội – ngoại thành TP. Hồ Chí Minh đang ngày càng tăng mạnh. Với tốc độ đô thị hóa nhanh, sự phát triển mạnh mẽ của các khu căn hộ, văn phòng, cửa hàng kinh doanh đã kéo theo việc lắp đặt, bảo dưỡng và sửa chữa hệ thống máy lạnh trở thành nhu cầu thiết yếu. Thị trường này không chỉ tiềm năng mà còn cạnh tranh khốc liệt, đòi hỏi doanh nghiệp phải tìm ra giải pháp nổi bật để tiếp cận và giữ chân khách hàng.
+
+Tuy nhiên, phần lớn các đơn vị điện lạnh hiện nay vẫn quảng bá và vận hành theo cách truyền thống như phát tờ rơi, đăng tin trên mạng xã hội, hoặc nhận lịch đặt qua điện thoại. Những phương thức này bộc lộ nhiều hạn chế: thông tin dịch vụ thiếu tính hệ thống, giá cả không minh bạch, khách hàng khó đặt lịch nhanh chóng, và doanh nghiệp gặp khó khăn trong việc quản lý dữ liệu khách hàng. Kết quả là hiệu quả kinh doanh chưa cao, tốn nhiều chi phí marketing nhưng khó mở rộng phạm vi tiếp cận.
+
+Về phía khách hàng, việc tìm kiếm dịch vụ điện lạnh đáng tin cậy hiện vẫn khá bất tiện. Họ thường phải gọi điện nhiều lần để xác nhận lịch, so sánh giá từ nhiều nguồn không chính thống, thậm chí đối mặt với rủi ro gặp phải dịch vụ kém chất lượng. Điều này gây mất thời gian, giảm trải nghiệm và làm giảm sự tin tưởng vào doanh nghiệp.
+
+Trước xu thế chuyển đổi số mạnh mẽ và sự thay đổi trong hành vi người tiêu dùng, một giải pháp chuyên nghiệp và tối ưu là điều tất yếu. Việc xây dựng một website dịch vụ điện lạnh cho khu vực TP. Thủ Đức và các vùng lân cận sẽ mang lại nhiều lợi ích:
+
+Đối với khách hàng: dễ dàng tra cứu dịch vụ, so sánh giá, đặt lịch trực tuyến mọi lúc mọi nơi.
+
+Đối với doanh nghiệp: quảng bá thương hiệu hiệu quả, tối ưu quản lý đơn hàng, chăm sóc khách hàng tự động và tiết kiệm chi phí vận hành.
+
+Website không chỉ là công cụ hỗ trợ kinh doanh, mà còn là nền tảng để nâng cao hình ảnh chuyên nghiệp, tạo lợi thế cạnh tranh và bắt kịp xu hướng thị trường hiện đại.
+2.2. Mô tả bài toán 
+
+Website Điện lạnh KV Thủ Đức là một hệ thống tích hợp cung cấp dịch vụ điện lạnh và thương mại điện tử chuyên về các sản phẩm điện lạnh. Hệ thống bao gồm hai chức năng chính: (1) Giới thiệu và quản lý các dịch vụ điện lạnh như lắp đặt, bảo trì, sửa chữa máy lạnh, tư vấn miễn phí; (2) Thương mại điện tử bán các sản phẩm máy lạnh, tủ lạnh của các thương hiệu nổi tiếng như Daikin, Panasonic, LG, Toshiba, Mitsubishi, Samsung. Hệ thống cho phép khách hàng xem thông tin dịch vụ, xem sản phẩm, đặt hàng trực tuyến và liên hệ tư vấn. Đồng thời, hệ thống cung cấp giao diện quản trị cho admin để quản lý sản phẩm, đơn hàng, người dùng và nội dung website.
+
+Các chức năng chính của hệ thống:
+- Giới thiệu dịch vụ điện lạnh (lắp đặt, bảo trì, sửa chữa, tư vấn)
+- Quản lý sản phẩm theo danh mục và hãng sản xuất
+- Hệ thống đăng ký, đăng nhập và phân quyền người dùng
+- Giỏ hàng và quản lý đơn hàng
+- Form liên hệ và tư vấn dịch vụ
+- Giao diện quản trị toàn diện cho admin
+- Tìm kiếm và lọc sản phẩm
+- Quản lý trạng thái đơn hàng
+
+2.3. Yêu cầu về chức năng
+2.3.1. Đối với khách hàng (Người dùng)
+-	Đăng ký và đăng nhập tài khoản
+-	Người dùng có thể tạo tài khoản cá nhân bằng email và thông tin cá nhân.
+-	Đăng nhập/đăng xuất một cách an toàn với mật khẩu được mã hóa.
+-	Xem danh sách sản phẩm điện lạnh
+-	Hiển thị sản phẩm theo danh mục: máy lạnh treo tường, máy lạnh âm trần, máy lạnh đứng, máy lạnh giấu trần, tủ lạnh.
+-	Mỗi sản phẩm có thông tin chi tiết: tên, giá, mô tả, hình ảnh, lượt xem.
+-	Tìm kiếm và lọc sản phẩm
+-	Cho phép khách hàng tìm kiếm theo tên sản phẩm, hãng sản xuất, danh mục, hoặc khoảng giá.
+-	Quản lý giỏ hàng và đặt hàng
+-	Thêm sản phẩm vào giỏ hàng, cập nhật số lượng, xóa sản phẩm.
+-	Đặt hàng với thông tin giao hàng: tên người nhận, số điện thoại, địa chỉ.
+-	Xem và quản lý lịch sử đơn hàng
+-	Người dùng có thể xem danh sách đơn hàng, trạng thái (chờ xác nhận, đang xử lý, đã giao hàng).
+
+-	Xem thông tin dịch vụ điện lạnh
+-	Tìm hiểu các dịch vụ: lắp đặt máy lạnh, bảo trì định kỳ, sửa chữa nhanh, tư vấn miễn phí.
+-	Xem thông tin công ty, đội ngũ kỹ thuật viên, dự án đã thực hiện.
+-	Liên hệ tư vấn và đặt lịch dịch vụ
+-	Cung cấp form liên hệ với các dịch vụ cụ thể và thông tin hotline.
+-	Tích hợp Google Maps để định vị cơ sở gần nhất.
+2.3.2 Đối với quản trị viên (Admin)
+-	Quản lý sản phẩm
+-	Thêm, sửa, xóa sản phẩm với đầy đủ thông tin: tên, giá, mô tả, hình ảnh.
+-	Cập nhật giá, số lượng tồn kho, trạng thái khuyến mãi cho từng sản phẩm.
+-	Quản lý danh mục và hãng sản xuất
+-	Thêm/sửa/xóa danh mục sản phẩm và hãng sản xuất.
+-	Quản lý đơn hàng
+-	Xem danh sách tất cả đơn hàng từ khách hàng.
+-	Cập nhật trạng thái đơn hàng: chờ xác nhận, đang xử lý, đã giao hàng, đã hủy.
+-	Xem chi tiết đơn hàng và thông tin khách hàng.
+-	Quản lý khách hàng
+-	Xem thông tin tất cả khách hàng đã đăng ký.
+-	Hỗ trợ cập nhật thông tin hoặc khóa tài khoản vi phạm.
+
+-	Thống kê và báo cáo
+-	Báo cáo số lượng đơn hàng theo ngày, tuần, tháng.
+-	Thống kê doanh thu và sản phẩm bán chạy.
+-	Quản lý nội dung website
+-	Cập nhật thông tin giới thiệu, dịch vụ, liên hệ, chính sách.
+-	Quản lý thông tin dự án và hình ảnh thi công.
+3.3.3. Đặc tả use case
+a.	 Danh sách các tác nhân (Actors)
+-	Khách hàng (User): Người sử dụng website để xem thông tin dịch vụ, tìm kiếm sản phẩm, đặt hàng, liên hệ tư vấn và theo dõi đơn hàng.
+-	Quản trị viên (Admin): Người quản lý sản phẩm, xử lý đơn hàng và quản trị nội dung trên website.
+-	Hệ thống (System): Xử lý các tác vụ tự động như gửi email, cập nhật trạng thái.
+
+b.	 Danh sách Use Case chính
+Đối với Khách hàng:
+-	Đăng ký tài khoản
+-	Đăng nhập hệ thống
+-	Xem danh sách sản phẩm
+-	Xem chi tiết sản phẩm
+-	Tìm kiếm và lọc sản phẩm
+-	Quản lý giỏ hàng
+-	Đặt hàng trực tuyến
+-	Xem lịch sử đơn hàng
+
+-	Xem thông tin dịch vụ điện lạnh
+-	Liên hệ tư vấn và đặt lịch dịch vụ
+
+Đối với Admin:
+-	Quản lý sản phẩm
+-	Quản lý danh mục và hãng sản xuất
+-	Quản lý đơn hàng
+-	Quản lý người dùng
+
+-	Xem thống kê báo cáo
+-	Quản lý nội dung website
+c.	Biểu đồ trình tự chức năng (theo Sequence Diagram)
+
+1. Trình tự đăng ký tài khoản:
+   User → Giao diện: Truy cập trang đăng ký (/controller/index.php?act=register)
+   Giao diện → User: Hiển thị form đăng ký
+   User → Giao diện: Nhập thông tin (username, password, fullname, email, phone, address)
+   Giao diện → Xử Lý: Gửi dữ liệu đăng ký (act=xl_register)
+   Xử Lý → CSDL: Kiểm tra username tồn tại (SELECT id_user FROM taikhoan WHERE username = ?)
+   CSDL → Xử Lý: Trả về kết quả kiểm tra
+   Xử Lý → CSDL: Kiểm tra email tồn tại (SELECT id_user FROM taikhoan WHERE email = ?)
+   CSDL → Xử Lý: Trả về kết quả kiểm tra
+   Xử Lý → Xử Lý: Mã hóa mật khẩu (password_hash)
+   Xử Lý → CSDL: Tạo tài khoản mới (INSERT INTO taikhoan)
+   CSDL → Xử Lý: Xác nhận tạo thành công
+   Xử Lý → Giao diện: Thông báo đăng ký thành công
+   Giao diện → User: Hiển thị thông báo và chuyển hướng đăng nhập
+
+2. Trình tự đăng nhập và xác thực:
+   User → Giao diện: Truy cập trang đăng nhập (/controller/index.php?act=login)
+   Giao diện → User: Hiển thị form đăng nhập
+   User → Giao diện: Nhập username và password
+   Giao diện → Xử Lý: Gửi thông tin đăng nhập (act=xl_login)
+   Xử Lý → CSDL: Xác thực tài khoản (SELECT * FROM taikhoan WHERE username = ?)
+   CSDL → Xử Lý: Trả về thông tin user
+   Xử Lý → Xử Lý: Kiểm tra mật khẩu (password_verify)
+   Xử Lý → Xử Lý: Tạo JWT token
+   Xử Lý → Giao diện: Lưu token vào cookie và phân quyền
+   Giao diện → User: Chuyển hướng về trang chủ với thông báo thành công
+
+3. Trình tự quản lý giỏ hàng:
+   User → Giao diện: Thêm sản phẩm vào giỏ (act=add_to_cart&id=product_id)
+   Giao diện → Xử Lý: Kiểm tra đăng nhập (getCurrentUser)
+   Xử Lý → CSDL: Lấy thông tin sản phẩm (getSanphamById)
+   CSDL → Xử Lý: Trả về thông tin sản phẩm
+   Xử Lý → Xử Lý: Cập nhật session cart ($_SESSION['cart'])
+   Xử Lý → Giao diện: Chuyển hướng đến trang giỏ hàng
+   Giao diện → User: Hiển thị giỏ hàng với sản phẩm đã thêm
+
+4. Trình tự đặt hàng:
+   User → Giao diện: Nhấn "Thanh toán" từ giỏ hàng (act=checkout)
+   Giao diện → Xử Lý: Kiểm tra đăng nhập và giỏ hàng
+   Xử Lý → Giao diện: Hiển thị form thông tin giao hàng
+   User → Giao diện: Điền thông tin (tên, sdt, địa chỉ, ghi chú)
+   Giao diện → Xử Lý: Gửi đơn hàng (act=process_checkout)
+   Xử Lý → CSDL: Bắt đầu transaction
+   Xử Lý → CSDL: Tạo đơn hàng (INSERT INTO donhang)
+   Xử Lý → CSDL: Thêm chi tiết đơn hàng (INSERT INTO dh_chitiet)
+   Xử Lý → CSDL: Cập nhật tồn kho (UPDATE sanpham SET Mount = Mount - quantity)
+   CSDL → Xử Lý: Xác nhận transaction thành công
+   Xử Lý → Xử Lý: Xóa giỏ hàng (cart->clear())
+   Xử Lý → Giao diện: Chuyển hướng đến trang thành công
+   Giao diện → User: Hiển thị thông báo đặt hàng thành công
+
+5. Trình tự quản lý đơn hàng (Admin):
+   Admin → Giao diện: Truy cập quản lý đơn hàng (act=admin_orders)
+   Giao diện → Xử Lý: Kiểm tra quyền admin
+   Xử Lý → CSDL: Lấy danh sách đơn hàng (SELECT với JOIN taikhoan)
+   CSDL → Xử Lý: Trả về danh sách đơn hàng
+   Xử Lý → Giao diện: Hiển thị danh sách với bộ lọc
+   Admin → Giao diện: Cập nhật trạng thái đơn hàng
+   Giao diện → Xử Lý: Gửi yêu cầu cập nhật (update_status)
+   Xử Lý → CSDL: Cập nhật trạng thái (UPDATE donhang SET trangthai)
+   Xử Lý → CSDL: Lưu lịch sử (INSERT INTO lich_su_trang_thai)
+   CSDL → Xử Lý: Xác nhận cập nhật thành công
+   Xử Lý → Giao diện: Thông báo cập nhật thành công
+   Giao diện → Admin: Hiển thị thông báo và refresh danh sách
+
+6. Trình tự tìm kiếm sản phẩm:
+   User → Giao diện: Nhập từ khóa tìm kiếm (act=sanpham&search=keyword)
+   Giao diện → Xử Lý: Xử lý tìm kiếm với bộ lọc
+   Xử Lý → CSDL: Tìm kiếm sản phẩm (SELECT với LIKE và JOIN)
+   CSDL → Xử Lý: Trả về kết quả tìm kiếm
+   Xử Lý → Xử Lý: Áp dụng bộ lọc và sắp xếp
+   Xử Lý → Giao diện: Trả về danh sách sản phẩm
+   Giao diện → User: Hiển thị kết quả tìm kiếm với phân trang
+
+7. Trình tự quản lý sản phẩm (Admin):
+   Admin → Giao diện: Truy cập quản lý sản phẩm (act=admin_product_management)
+   Giao diện → Xử Lý: Kiểm tra quyền admin
+   Xử Lý → CSDL: Lấy danh sách sản phẩm
+   CSDL → Xử Lý: Trả về danh sách sản phẩm
+   Admin → Giao diện: Thêm/sửa sản phẩm với upload hình ảnh
+   Giao diện → Xử Lý: Xử lý upload file và validate
+   Xử Lý → Xử Lý: Lưu file vào /uploads/products/
+   Xử Lý → CSDL: Lưu thông tin sản phẩm (INSERT/UPDATE sanpham)
+   CSDL → Xử Lý: Xác nhận lưu thành công
+   Xử Lý → Giao diện: Thông báo thành công
+   Giao diện → Admin: Hiển thị thông báo và refresh danh sách
+
+
+
+3.3.4 Các yêu cầu bổ sung (đã thực hiện)
+-	Giao diện thân thiện, dễ sử dụng, tương thích trên cả máy tính và thiết bị di động (Responsive Design) ✅
+-	Bảo mật thông tin khách hàng với:
+    + Mã hóa mật khẩu bằng password_hash() (tương đương bcrypt) ✅
+    + JWT token authentication với thời hạn 1 giờ ✅
+    + Kiểm tra quyền truy cập cho từng trang ✅
+    + Cookie secure cho lưu trữ token ✅
+-	Hệ thống phản hồi nhanh với:
+    + AJAX cho search suggestions ✅
+    + Session-based cart cho performance tốt ✅
+    + Database transaction cho đảm bảo tính toàn vẹn ✅
+-	Tối ưu hóa hiệu suất website:
+    + Grid layout với phân trang cho danh sách sản phẩm ✅
+    + Image optimization trong /uploads/products/ ✅
+    + Lazy loading và responsive images ✅
+-	Tìm kiếm và lọc sản phẩm nâng cao:
+    + Tìm kiếm full-text trong tên, mô tả, hãng, danh mục ✅
+    + Auto-complete suggestions với API ✅
+    + Bộ lọc đa điều kiện: danh mục, hãng, giá, sale, tồn kho ✅
+    + Sắp xếp theo nhiều tiêu chí ✅
+-	Quản lý trạng thái đơn hàng chi tiết:
+    + 6 trạng thái rõ ràng từ "Chờ xác nhận" đến "Hoàn thành" ✅
+    + Lưu lịch sử thay đổi trong bảng lich_su_trang_thai ✅
+    + Ghi chú và người cập nhật cho mỗi thay đổi ✅
+    + Modal cập nhật trạng thái trực quan ✅
+
+3.3.5 Tính năng bổ sung đã thực hiện
+-	JWT Authentication System với cookie storage và auto-expiry
+-	Database Transaction cho đặt hàng đảm bảo ACID properties
+-	Admin Dashboard với thống kê tổng quan
+-	Export Excel functionality cho sản phẩm và đơn hàng
+-	Upload và quản lý hình ảnh sản phẩm với validation
+-	Search API endpoint cho auto-complete suggestions
+-	Responsive admin interface với Tailwind CSS
+-	Phân quyền user/admin rõ ràng với middleware kiểm tra
+-	Session-based shopping cart với yêu cầu đăng nhập
+-	Automatic inventory management khi đặt hàng
+
+3.3.6 So sánh thiết kế vs thực hiện
+
+Các tính năng đã thực hiện đầy đủ:
+✅ Đăng ký/Đăng nhập với JWT authentication (nâng cao hơn thiết kế)
+✅ Quản lý sản phẩm với upload hình ảnh và phân trang
+✅ Tìm kiếm nâng cao với auto-complete (vượt thiết kế)
+✅ Giỏ hàng session-based với yêu cầu đăng nhập (bảo mật hơn)
+✅ Đặt hàng với database transaction (đảm bảo tính toàn vẹn)
+✅ Quản lý đơn hàng với lịch sử trạng thái chi tiết
+✅ Phân quyền User/Admin rõ ràng
+✅ Responsive design cho mobile
+✅ Admin dashboard với thống kê
+
+Các điểm khác với thiết kế ban đầu:
+❌ Không có email confirmation system (đơn giản hóa flow)
+❌ Chỉ hỗ trợ thanh toán COD (phù hợp thị trường Việt Nam)
+❌ Không có real-time notification (tập trung vào core functions)
+
+Cải tiến so với thiết kế:
+➕ JWT token thay vì session đơn thuần (bảo mật cao hơn)
+➕ Auto-complete search suggestions (UX tốt hơn)
+➕ Database transaction cho đặt hàng (tin cậy hơn)
+➕ Export Excel functionality (tiện ích admin)
+➕ Lịch sử trạng thái đơn hàng chi tiết (truy xuất tốt hơn)
+
+Kết luận: Hệ thống đã thực hiện 90% chức năng thiết kế với nhiều cải tiến về bảo mật và UX.
+
+
+
+ 
+
+
+CHƯƠNG 3: GIAO DIỆN
+
+3.1. Giao diện trang chủ
+Trang chủ được thiết kế với layout hiện đại, bao gồm:
+- Banner hero với slogan "Điện Lạnh KV - Chuyên Nghiệp - Uy Tín" và call-to-action "Xem Sản Phẩm", "Liên Hệ Ngay"
+- Phần giới thiệu 4 dịch vụ chuyên nghiệp: Lắp Đặt Máy Lạnh, Bảo Trì Định Kỳ, Sửa Chữa Nhanh, Tư Vấn Miễn Phí
+- Phần giới thiệu công ty "Điện Lạnh KV" với thống kê: 10+ năm kinh nghiệm, 1000+ khách hàng hài lòng, hỗ trợ 24/7, 100% chất lượng đảm bảo
+- Phần "Tại Sao Chọn Chúng Tôi" với các ưu điểm: đội ngũ chuyên nghiệp, giá cả hợp lý, bảo hành dài hạn, hỗ trợ 24/7
+- Phần sản phẩm nổi bật hiển thị máy lạnh, tủ lạnh từ các thương hiệu nổi tiếng với nút "Chi tiết" và "Mua"
+- Phần CTA cuối trang với hotline "1900 6789" và nút "Liên Hệ Tư Vấn"
+- Footer với thông tin liên hệ và menu điều hướng
+
+3.2. Giao diện giới thiệu
+Trang giới thiệu cung cấp thông tin chi tiết về:
+- Banner "GIỚI THIỆU THI CÔNG ĐIỆN LẠNH KV" với thống kê: 50+ dự án thi công, 100+ tỷ đồng doanh số, 25+ nhân viên, 15+ đội thi công
+- Thông tin "CÔNG TY TNHH ĐIỆN LẠNH KV" với sứ mệnh tạo không gian sống và làm việc lý tưởng
+- Đội ngũ kỹ thuật viên tận tâm, chuyên nghiệp và giàu kinh nghiệm
+- Các dịch vụ đa dạng: cung cấp thiết bị, lắp đặt, thi công hệ thống máy lạnh, sửa chữa, vệ sinh, bảo trì
+- Hình ảnh thực tế về các dự án đã thực hiện và không gian làm việc
+- Cam kết chất lượng và hiệu suất tuyệt vời
+
+3.3. Giao diện sản phẩm
+Trang sản phẩm được thiết kế với các tính năng:
+- Hiển thị sản phẩm theo grid layout với hình ảnh, tên, giá
+- Bộ lọc sản phẩm theo danh mục, hãng sản xuất, khoảng giá
+- Tìm kiếm sản phẩm theo từ khóa
+- Phân trang để tối ưu hiệu suất tải trang
+- Nút thêm vào giỏ hàng
+- Hiển thị số lượt xem của sản phẩm
+
+3.4. Giao diện chi tiết sản phẩm
+Trang chi tiết sản phẩm bao gồm:
+- Hình ảnh sản phẩm với gallery
+- Thông tin chi tiết: tên, giá, mô tả, thông số kỹ thuật
+- Sản phẩm liên quan
+- Nút thêm vào giỏ hàng và mua ngay
+
+3.5. Giao diện giỏ hàng và thanh toán
+Giao diện giỏ hàng với các tính năng:
+- Danh sách sản phẩm đã chọn với số lượng và giá
+- Nút cập nhật số lượng và xóa sản phẩm
+- Tính tổng tiền hàng và phí vận chuyển
+- Form thông tin giao hàng
+- Lựa chọn phương thức thanh toán
+- Nút xác nhận đặt hàng
+
+3.6. Giao diện quản trị (Admin)
+Giao diện admin được thiết kế với:
+- Dashboard tổng quan với thống kê
+- Menu quản lý: sản phẩm, đơn hàng, người dùng
+- Form thêm/sửa sản phẩm với upload hình ảnh
+- Bảng quản lý đơn hàng với cập nhật trạng thái
+- Quản lý danh mục và hãng sản xuất
+- Thống kê báo cáo doanh thu và đơn hàng
+
+3.7. Giao diện liên hệ
+Trang liên hệ bao gồm:
+- Header với thông tin liên hệ nhanh: hotline "1900 6789", email "info@dienlanhkv.vn", địa chỉ "163/50/7, Đặng Văn Bi, Thủ Đức"
+- Phần "Cần hỗ trợ về máy lạnh? Hãy liên hệ với chúng tôi!" với mô tả dịch vụ
+- Form liên hệ với dropdown chọn dịch vụ: Lắp đặt máy lạnh, Bảo trì máy lạnh, Sửa chữa máy lạnh, Tư vấn sản phẩm, Khác
+- Các trường: tên, email, số điện thoại, dịch vụ quan tâm, nội dung chi tiết với validation
+- Bản đồ Google Maps tích hợp hiển thị vị trí công ty
+- Thông tin chi tiết: địa chỉ, giờ làm việc, các phương thức liên hệ
+
+
+
+
+
+
+
+
+
+
+ 
+CHƯƠNG 4: KẾT LUẬN
+
+Qua quá trình nghiên cứu và thực hiện đồ án với đề tài “Xây dựng website dịch vụ điện lạnh KV Thủ Đức”, em nhận thấy đây là một đề tài rất thực tế và phù hợp với xu hướng hiện nay khi nhu cầu tìm kiếm dịch vụ online ngày càng tăng. Trong quá trình làm, em đã áp dụng các kiến thức về lập trình web nâng cao để xây dựng một website có đầy đủ các chức năng cơ bản như: giới thiệu dịch vụ, đặt lịch trực tuyến, quản lý thông tin khách hàng và hệ thống quản trị dành cho Admin.
+Mặc dù sản phẩm đã đạt được mục tiêu ban đầu, nhưng do hạn chế về thời gian và kinh nghiệm, website vẫn còn một số thiếu sót như giao diện chưa thật sự tối ưu, chưa tích hợp thanh toán trực tuyến và chưa có phiên bản di động. Trong thời gian tới, em dự định sẽ cải thiện những điểm này, đồng thời bổ sung thêm các tính năng nâng cao như chatbot tư vấn tự động, hệ thống đánh giá dịch vụ, và triển khai website lên hosting thực tế để phục vụ người dùng tốt hơn.
+
+CHƯƠNG 4: THIẾT KẾ CƠ SỞ DỮ LIỆU
+
+4.1. Tổng quan về cơ sở dữ liệu
+Website Điện lạnh KV Thủ Đức sử dụng hệ quản trị cơ sở dữ liệu MySQL với 9 bảng chính:
+- danhmuc: Quản lý danh mục sản phẩm
+- hang: Quản lý hãng sản xuất
+- sanpham: Lưu trữ thông tin sản phẩm
+- taikhoan: Quản lý tài khoản người dùng
+- donhang: Lưu trữ đơn hàng
+- dh_chitiet: Chi tiết đơn hàng
+- lich_su_trang_thai: Lịch sử thay đổi trạng thái đơn hàng
+
+
+4.2. Thiết kế các bảng chính
+
+4.2.1. Bảng danhmuc (Danh mục sản phẩm)
+- id: Khóa chính, tự động tăng
+- name: Tên danh mục, không trùng lặp
+- created_at: Thời gian tạo
+
+4.2.2. Bảng hang (Hãng sản xuất)
+- id_hang: Khóa chính, tự động tăng
+- ten_hang: Tên hãng, không trùng lặp
+- logo_hang: Đường dẫn logo hãng
+- created_at: Thời gian tạo
+
+4.2.3. Bảng sanpham (Sản phẩm)
+- id_sp: Khóa chính, tự động tăng
+- Name: Tên sản phẩm
+- Price: Giá hiện tại
+- Price_old: Giá cũ (để hiển thị giảm giá)
+- Date_import: Ngày nhập hàng
+- Viewsp: Số lượt xem
+- Decribe: Mô tả sản phẩm
+- Mount: Số lượng tồn kho
+- Sale: Phần trăm giảm giá
+- image: Đường dẫn hình ảnh
+- id_danhmuc: Khóa ngoại đến bảng danhmuc
+- id_hang: Khóa ngoại đến bảng hang
+
+
+4.2.4. Bảng taikhoan (Tài khoản người dùng)
+- id_user: Khóa chính, tự động tăng
+- username: Tên đăng nhập, không trùng lặp
+- password: Mật khẩu đã mã hóa
+- fullname: Họ tên đầy đủ
+- email: Email, không trùng lặp
+- phone: Số điện thoại
+- address: Địa chỉ
+- position: Vị trí (user/admin)
+- created_at, updated_at: Thời gian tạo và cập nhật
+
+4.2.5. Bảng donhang (Đơn hàng)
+- id_dh: Khóa chính, tự động tăng
+- id_user: Khóa ngoại đến bảng taikhoan
+- tongdh: Tổng tiền đơn hàng
+- ngaydat: Ngày đặt hàng
+- trangthai: Trạng thái đơn hàng
+- ten_nguoi_nhan: Tên người nhận
+- sdt_nguoi_nhan: Số điện thoại người nhận
+- dia_chi_giao: Địa chỉ giao hàng
+- ghi_chu: Ghi chú
+- phuong_thuc_thanh_toan: Phương thức thanh toán
+
+4.3. Mối quan hệ giữa các bảng
+- Một danh mục có nhiều sản phẩm (1:N)
+- Một hãng có nhiều sản phẩm (1:N)
+- Một người dùng có nhiều đơn hàng (1:N)
+- Một đơn hàng có nhiều chi tiết sản phẩm (1:N)
+- Một sản phẩm có thể xuất hiện trong nhiều đơn hàng (N:N thông qua dh_chitiet)
+
+
+4.4. Tối ưu hóa cơ sở dữ liệu
+- Sử dụng các index cho các trường thường xuyên tìm kiếm
+- Thiết lập các ràng buộc UNIQUE cho username, email
+- Sử dụng CASCADE DELETE để đảm bảo tính toàn vẹn dữ liệu
+- Mã hóa mật khẩu bằng bcrypt để bảo mật
+- Sử dụng TIMESTAMP để theo dõi thời gian tạo và cập nhật
+
+CHƯƠNG 5: TRIỂN KHAI VÀ KIỂM THỬ
+
+5.1. Môi trường phát triển
+- Hệ điều hành: Windows 10/11
+- Web server: XAMPP (Apache + MySQL + PHP)
+- Ngôn ngữ lập trình: PHP 8.0+
+- Cơ sở dữ liệu: MySQL 8.0
+- Frontend: HTML5, CSS3, JavaScript, Tailwind CSS
+- Framework: Không sử dụng framework, code thuần PHP
+
+5.2. Cấu trúc thư mục
+```
+project/
+├── api/                    # API endpoints
+├── controller/             # Controller xử lý logic
+├── helpers/               # Helper functions
+├── model/                 # Model và database
+├── uploads/               # Thư mục upload file
+├── view/                  # View và giao diện
+│   ├── css/              # File CSS
+│   ├── image/            # Hình ảnh
+│   ├── layout/           # Layout chung
+│   └── pages/            # Các trang
+└── index.php             # File chính
+```
+
+5.3. Các tính năng đã triển khai
+- Hệ thống đăng ký, đăng nhập với phân quyền
+- Quản lý sản phẩm theo danh mục và hãng
+- Giỏ hàng và đặt hàng trực tuyến
+
+- Giao diện quản trị admin
+- Tìm kiếm và lọc sản phẩm
+- Quản lý đơn hàng với lịch sử trạng thái
+- Responsive design cho mobile
+
+5.4. Kiểm thử
+- Kiểm thử chức năng đăng ký, đăng nhập
+- Kiểm thử thêm sản phẩm vào giỏ hàng
+- Kiểm thử đặt hàng và thanh toán
+- Kiểm thử giao diện responsive
+- Kiểm thử quyền truy cập admin
+- Kiểm thử tìm kiếm và lọc sản phẩm
+
+5.5. Bảo mật
+- Mã hóa mật khẩu bằng bcrypt
+- Validate dữ liệu đầu vào
+- Bảo vệ chống SQL injection
+- Kiểm tra quyền truy cập
+- Sanitize dữ liệu hiển thị
+
+CHƯƠNG 6: KẾT LUẬN
+
+Qua quá trình nghiên cứu và thực hiện đồ án với đề tài "Xây dựng website điện lạnh KV Thủ Đức", em nhận thấy đây là một đề tài rất thực tế và phù hợp với xu hướng thương mại điện tử hiện nay. Website đã được xây dựng thành công với đầy đủ các chức năng cơ bản của một hệ thống thương mại điện tử:
+
+6.1. Những thành tựu đạt được
+- Xây dựng thành công website thương mại điện tử hoàn chỉnh
+- Thiết kế cơ sở dữ liệu tối ưu với 7 bảng chính
+- Giao diện responsive, thân thiện với người dùng
+- Hệ thống quản trị admin đầy đủ chức năng
+- Tích hợp các tính năng nâng cao: tìm kiếm và lọc sản phẩm
+- Bảo mật tốt với mã hóa mật khẩu và validate dữ liệu
+
+6.2. Những hạn chế và hướng phát triển
+- Chưa tích hợp thanh toán trực tuyến (VNPay, Momo)
+- Chưa có hệ thống gửi email tự động
+- Chưa có tính năng chat hỗ trợ khách hàng
+- Chưa tối ưu SEO cho website
+- Chưa có ứng dụng mobile
+
+6.3. Hướng phát triển trong tương lai
+- Tích hợp các cổng thanh toán trực tuyến
+- Phát triển ứng dụng mobile (React Native/Flutter)
+- Tích hợp chatbot AI để tư vấn khách hàng
+- Tối ưu SEO và marketing online
+- Triển khai lên hosting thực tế
+- Thêm tính năng quản lý kho hàng
+- Tích hợp báo cáo thống kê chi tiết
+
+Đồ án này đã giúp em củng cố kiến thức về lập trình web, thiết kế cơ sở dữ liệu và phát triển ứng dụng thực tế. Em sẽ tiếp tục cải thiện và mở rộng website trong thời gian tới để đáp ứng nhu cầu thực tế của doanh nghiệp.
+
+PHỤ LỤC
+
+A. Biểu đồ ERD (Entity Relationship Diagram)
+Xem file ERD_Diagram.txt để biết chi tiết về thiết kế cơ sở dữ liệu.
+
+B. Biểu đồ Use Case
+Xem file Use_Case_Diagram.txt để biết chi tiết về các use case của hệ thống.
+
+C. Mã nguồn chính
+- File database.sql: Cấu trúc cơ sở dữ liệu
+- File index.php: Điểm vào chính của ứng dụng
+- Thư mục model/: Các model xử lý dữ liệu
+- Thư mục controller/: Logic xử lý nghiệp vụ
+- Thư mục view/: Giao diện người dùng
+
+TÀI LIỆU THAM KHẢO
+
+1. PHP Documentation, https://www.php.net/docs.php
+2. MySQL Documentation, https://dev.mysql.com/doc/
+3. Tailwind CSS Documentation, https://tailwindcss.com/docs
+4. HTML5 & CSS3 Tutorial, W3Schools
+5. JavaScript Tutorial, MDN Web Docs
+6. Web Development Best Practices, Google Developers
+7. E-commerce Website Design Patterns, Smashing Magazine
+8. Database Design Principles, Oracle Documentation
+9. Security Best Practices for Web Applications, OWASP
+10. Responsive Web Design Guidelines, Mozilla Developer Network

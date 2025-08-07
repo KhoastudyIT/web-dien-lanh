@@ -101,7 +101,7 @@ $content = '
 
         <!-- Contact Form -->
         <div class="bg-blue-50 rounded-lg shadow-lg p-8 border border-blue-200">
-            <h3 class="text-xl font-bold text-blue-900 mb-6">Đăng ký NHẬN KHUYẾN MÃI</h3>
+            <h3 class="text-xl font-bold text-blue-900 mb-6">Đăng ký Dịch Vụ</h3>
             
             <form method="POST" action="/project/index.php?act=contact_submit" class="space-y-6">
                 <div>

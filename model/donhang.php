@@ -446,15 +446,9 @@ class DonHang {
         try {
             $this->db->beginTransaction();
             
-            // Xóa sản phẩm khỏi wishlist
-            $sql = "DELETE FROM wishlist WHERE id_sp = ?";
-            $stmt = $this->db->prepare($sql);
-            $stmt->execute([$productId]);
+
             
-            // Xóa đánh giá sản phẩm
-            $sql = "DELETE FROM danh_gia WHERE id_sp = ?";
-            $stmt = $this->db->prepare($sql);
-            $stmt->execute([$productId]);
+
             
             // Xóa sản phẩm
             $sql = "DELETE FROM sanpham WHERE id_sp = ?";

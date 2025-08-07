@@ -158,8 +158,7 @@ $currentUser = getCurrentUser();
         const searchSuggestions = document.getElementById('searchSuggestions');
         let searchTimeout;
         
-        // Load wishlist count
-        loadWishlistCount();
+
 
         // Debounced search function
         function debounceSearch(query) {
@@ -275,31 +274,6 @@ $currentUser = getCurrentUser();
             }
         });
         
-        // Load wishlist count function
-        function loadWishlistCount() {
-            const wishlistCount = document.getElementById('wishlist-count');
-            if (wishlistCount) {
-                fetch('/project/api/wishlist.php?action=count')
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        wishlistCount.textContent = data.count;
-                        if (data.count > 0) {
-                            wishlistCount.classList.remove('hidden');
-                        } else {
-                            wishlistCount.classList.add('hidden');
-                        }
-                    }
-                })
-                .catch(error => {
-                    console.error('Error loading wishlist count:', error);
-                });
-            }
-        }
         
-        // Update wishlist count function (can be called from other pages)
-        window.updateWishlistCount = function() {
-            loadWishlistCount();
-        };
     });
     </script>
