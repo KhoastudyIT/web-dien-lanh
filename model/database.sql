@@ -1,8 +1,5 @@
--- =====================================================
+
 -- DATABASE HOÀN CHỈNH CHO SHOP ĐIỆN LẠNH
--- Phiên bản: 3.0.0
--- Ngày tạo: 2025-01-27
--- =====================================================
 
 -- Tạo database
 DROP DATABASE IF EXISTS dienlanh_shop;
@@ -518,15 +515,5 @@ SELECT
     COUNT(*)
 FROM donhang
 UNION ALL
-SELECT 
-    'Tổng số đánh giá',
-    COUNT(*)
-FROM danh_gia
-UNION ALL
-SELECT 
-    'Tổng số wishlist',
-    COUNT(*)
-FROM wishlist; 
-
 
 
