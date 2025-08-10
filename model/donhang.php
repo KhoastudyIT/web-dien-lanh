@@ -183,20 +183,61 @@ class DonHang {
 
     // Thống kê đơn hàng
     public function getOrderStats() {
-        $sql = "SELECT 
-                    COUNT(*) as tong_don_hang,
-                    COUNT(CASE WHEN trangthai = 'Chờ xác nhận' THEN 1 END) as cho_xac_nhan,
-                    COUNT(CASE WHEN trangthai = 'Đã xác nhận' THEN 1 END) as da_xac_nhan,
-                    COUNT(CASE WHEN trangthai = 'Đang giao' THEN 1 END) as dang_giao,
-                    COUNT(CASE WHEN trangthai = 'Đã giao' THEN 1 END) as da_giao,
-                    COUNT(CASE WHEN trangthai = 'Đã hủy' THEN 1 END) as da_huy,
-                    SUM(tongdh) as tong_doanh_thu
-                FROM donhang 
-                WHERE trangthai != 'Đã hủy'";
-        
-        $stmt = $this->db->prepare($sql);
-        $stmt->execute();
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+        try {
+            $sql = "SELECT 
+                        COUNT(*) as tong_don_hang,
+                        COUNT(CASE WHEN trangthai = 'Chờ xác nhận' THEN 1 END) as cho_xu_ly,
+                        COUNT(CASE WHEN trangthai = 'Đã xác nhận' THEN 1 END) as da_xac_nhan,
+                        COUNT(CASE WHEN trangthai = 'Đang giao' THEN 1 END) as dang_giao,
+                        COUNT(CASE WHEN trangthai = 'Đã giao' THEN 1 END) as da_giao,
+                        COUNT(CASE WHEN trangthai = 'Đã hủy' THEN 1 END) as da_huy,
+                        SUM(tongdh) as tong_doanh_thu
+                    FROM donhang 
+                    WHERE trangthai != 'Đã hủy'";
+            
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute();
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            
+            // If no rows are returned (e.g., no orders in the database), $result might be false.
+            // Ensure it's an array with default values for all expected keys.
+            if ($result === false || $result === null) {
+                return [
+                    'tong_don_hang' => 0,
+                    'cho_xu_ly' => 0,
+                    'da_xac_nhan' => 0,
+                    'dang_giao' => 0,
+                    'da_giao' => 0,
+                    'da_huy' => 0,
+                    'tong_doanh_thu' => 0
+                ];
+            }
+            
+            // Ensure all expected keys exist with default values if they're null
+            $defaultValues = [
+                'tong_don_hang' => 0,
+                'cho_xu_ly' => 0,
+                'da_xac_nhan' => 0,
+                'dang_giao' => 0,
+                'da_giao' => 0,
+                'da_huy' => 0,
+                'tong_doanh_thu' => 0
+            ];
+            
+            return array_merge($defaultValues, $result);
+        } catch (Exception $e) {
+            error_log("Error in getOrderStats: " . $e->getMessage());
+            // Return default values if there's an error
+            return [
+                'tong_don_hang' => 0,
+                'cho_xu_ly' => 0,
+                'da_xac_nhan' => 0,
+                'dang_giao' => 0,
+                'da_giao' => 0,
+                'da_huy' => 0,
+                'tong_doanh_thu' => 0
+            ];
+        }
     }
 
     // Lấy đơn hàng theo trạng thái
@@ -269,42 +310,55 @@ class DonHang {
 
     // Thống kê doanh thu theo tháng
     public function getMonthlyRevenue($year = null) {
-        if (!$year) $year = date('Y');
-        
-        $sql = "SELECT 
-                    MONTH(ngaydat) as thang,
-                    COUNT(*) as so_don_hang,
-                    SUM(tongdh) as doanh_thu
-                FROM donhang 
-                WHERE YEAR(ngaydat) = ? AND trangthai != 'Đã hủy'
-                GROUP BY MONTH(ngaydat)
-                ORDER BY thang";
-        
-        $stmt = $this->db->prepare($sql);
-        $stmt->execute([$year]);
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        try {
+            if (!$year) {
+                $year = date('Y');
+            }
+            
+            $sql = "SELECT 
+                        MONTH(ngaydat) as month,
+                        COUNT(*) as so_don_hang,
+                        SUM(tongdh) as total_revenue
+                    FROM donhang 
+                    WHERE YEAR(ngaydat) = ? AND trangthai != 'Đã hủy'
+                    GROUP BY MONTH(ngaydat)
+                    ORDER BY month";
+            
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute([$year]);
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (Exception $e) {
+            error_log("Error in getMonthlyRevenue: " . $e->getMessage());
+            return [];
+        }
     }
 
     // Lấy top sản phẩm bán chạy
     public function getTopSellingProducts($limit = 10) {
-        $limit = (int)$limit; // Đảm bảo limit là integer
-        $sql = "SELECT 
-                    sp.id_sp,
-                    sp.Name,
-                    sp.image,
-                    SUM(dct.soluong) as tong_ban,
-                    SUM(dct.tong_dh) as doanh_thu
-                FROM dh_chitiet dct
-                JOIN sanpham sp ON dct.id_sp = sp.id_sp
-                JOIN donhang dh ON dct.id_dh = dh.id_dh
-                WHERE dh.trangthai != 'Đã hủy'
-                GROUP BY sp.id_sp
-                ORDER BY tong_ban DESC
-                LIMIT $limit";
-        
-        $stmt = $this->db->prepare($sql);
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        try {
+            $limit = (int)$limit; // Đảm bảo limit là integer
+            
+            $sql = "SELECT 
+                        sp.id_sp,
+                        sp.Name as product_name,
+                        sp.image,
+                        SUM(dct.soluong) as total_quantity,
+                        SUM(dct.tong_dh) as total_revenue
+                    FROM dh_chitiet dct
+                    JOIN sanpham sp ON dct.id_sp = sp.id_sp
+                    JOIN donhang dh ON dct.id_dh = dh.id_dh
+                    WHERE dh.trangthai != 'Đã hủy'
+                    GROUP BY sp.id_sp
+                    ORDER BY total_quantity DESC
+                    LIMIT $limit";
+            
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (Exception $e) {
+            error_log("Error in getTopSellingProducts: " . $e->getMessage());
+            return [];
+        }
     }
 
     // Lấy tổng số đơn hàng
@@ -318,16 +372,20 @@ class DonHang {
 
     // Lấy đơn hàng gần đây
     public function getRecentOrders($limit = 5) {
-        $limit = (int)$limit; // Đảm bảo limit là integer
-        $sql = "SELECT dh.*, tk.fullname, dh.tongdh as tong_tien, dh.trangthai as trang_thai
-                FROM donhang dh
-                JOIN taikhoan tk ON dh.id_user = tk.id_user
-                ORDER BY dh.ngaydat DESC
-                LIMIT $limit";
-        
-        $stmt = $this->db->prepare($sql);
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        try {
+            $limit = (int)$limit; // Đảm bảo limit là integer
+            $sql = "SELECT dh.id_dh, dh.ngaydat, dh.tongdh, dh.trangthai, dh.ten_nguoi_nhan
+                        FROM donhang dh
+                        ORDER BY dh.ngaydat DESC
+                        LIMIT $limit";
+            
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (Exception $e) {
+            error_log("Error in getRecentOrders: " . $e->getMessage());
+            return [];
+        }
     }
 
     // Xóa đơn hàng (chỉ admin)

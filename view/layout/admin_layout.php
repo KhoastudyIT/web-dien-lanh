@@ -18,6 +18,8 @@ if ($current_page === 'admin_orders') {
     $current_action = 'products';
 } elseif ($current_page === 'admin_category_management') {
     $current_action = 'categories';
+} elseif ($current_page === 'admin_reports') {
+    $current_action = 'reports';
 }
 ?>
 <!DOCTYPE html>
@@ -70,7 +72,7 @@ if ($current_page === 'admin_orders') {
                     <a href="?act=admin&action=users" class="flex items-center px-4 py-3 rounded-lg <?php echo ($current_action === 'users' ? 'bg-blue-700 text-white' : 'text-blue-200 hover:bg-blue-700'); ?> transition-colors">
                         <i class="ri-user-line mr-3"></i>Quản lý người dùng
                     </a>
-                    <a href="?act=admin&action=reports" class="flex items-center px-4 py-3 rounded-lg <?php echo ($current_action === 'reports' ? 'bg-blue-700 text-white' : 'text-blue-200 hover:bg-blue-700'); ?> transition-colors">
+                    <a href="/project/index.php?act=admin_reports" class="flex items-center px-4 py-3 rounded-lg <?php echo ($current_action === 'reports' ? 'bg-blue-700 text-white' : 'text-blue-200 hover:bg-blue-700'); ?> transition-colors">
                         <i class="ri-bar-chart-line mr-3"></i>Báo cáo doanh thu
                     </a>
                     <a href="?act=admin&action=settings" class="flex items-center px-4 py-3 rounded-lg <?php echo ($current_action === 'settings' ? 'bg-blue-700 text-white' : 'text-blue-200 hover:bg-blue-700'); ?> transition-colors">

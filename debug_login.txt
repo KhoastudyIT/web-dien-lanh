@@ -1,0 +1,17 @@
+Array
+(
+    [success] => 1
+    [user] => Array
+        (
+            [id_user] => 6
+            [username] => test
+            [fullname] => Test ne
+            [email] => awmsskhoass@gmail.com
+            [phone] => 0976237648
+            [address] => test123
+            [position] => user
+            [created_at] => 2025-08-06 03:54:40
+            [updated_at] => 2025-08-06 07:07:24
+        )
+
+)

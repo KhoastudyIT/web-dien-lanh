@@ -8,14 +8,13 @@
         protected $conn = null;
 
     function connection_database(){
-        try{
-            $conn = new PDO("mysql:host=$this->servername;dbname=$this->databasename",
+        try{         $this->conn = new PDO("mysql:host=$this->servername;dbname=$this->databasename",
                             $this->username, $this->password);
-            $conn->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);   
+            $this->conn->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);   
         }catch(PDOException $e){   
             throw $e;
         }
-            return $conn;
+            return $this->conn;
         }
 
     // Thêm các method cần thiết cho DonHang class
