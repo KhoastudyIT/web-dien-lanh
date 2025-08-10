@@ -197,16 +197,16 @@ if (!empty($message)): ?>
                 <div class="flex items-center justify-between p-3 bg-gray-50 rounded">
                     <div>
                         <p class="font-medium">Đơn hàng #<?php echo $order['id_dh']; ?></p>
-                        <p class="text-sm text-gray-600"><?php echo number_format($order['tong_tien']); ?> VNĐ</p>
+                        <p class="text-sm text-gray-600"><?php echo number_format($order['tongdh']); ?> VNĐ</p>
                     </div>
-                    <span class="px-2 py-1 text-xs rounded <?php echo $order['trang_thai'] === 'Đã xác nhận' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'; ?>">
-                        <?php echo htmlspecialchars($order['trang_thai']); ?>
+                    <span class="px-2 py-1 text-xs rounded <?php echo $order['trangthai'] === 'Đã xác nhận' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'; ?>">
+                        <?php echo htmlspecialchars($order['trangthai']); ?>
                     </span>
-                                </div>
-                                <?php endforeach; ?>
-                            </div>
-                        </div>
-                    </div>
+                </div>
+                <?php endforeach; ?>
+            </div>
+        </div>
+    </div>
 
                 <?php elseif ($action === 'products'): ?>
                     <!-- Products Management -->

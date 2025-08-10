@@ -99,7 +99,7 @@ $content = '
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-sm font-medium text-gray-600">Chờ xác nhận</p>
-                    <p class="text-2xl font-bold text-yellow-600">' . number_format($stats['cho_xac_nhan']) . '</p>
+                    <p class="text-2xl font-bold text-yellow-600">' . number_format($stats['cho_xu_ly']) . '</p>
                 </div>
                 <div class="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center">
                     <i class="ri-time-line text-yellow-600 text-xl"></i>
@@ -273,7 +273,7 @@ $content = '
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                 <div class="flex items-center gap-2">
                                     <a href="/project/index.php?act=admin_order_detail&id=' . $order['id_dh'] . '" 
-                                       class="text-primary hover:text-primary-dark transition-colors">
+                                       class="text-blue-600 hover:text-blue-700 transition-colors">
                                         <i class="ri-eye-line"></i> Xem
                                     </a>
                                 </div>
@@ -404,7 +404,7 @@ $content = '
                 
                 <div class="mb-4">
                     <label class="block text-sm font-medium text-gray-700 mb-2">Trạng thái thanh toán</label>
-                    <select name="payment_status" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                    <select name="payment_status" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                         <option value="">Chưa thanh toán</option>
                         <option value="Tiền mặt">Đã thanh toán - Tiền mặt</option>
                         <option value="Chuyển khoản">Đã thanh toán - Chuyển khoản</option>
@@ -414,7 +414,7 @@ $content = '
                 <div class="mb-4">
                     <label class="block text-sm font-medium text-gray-700 mb-2">Ghi chú (tùy chọn)</label>
                     <textarea name="ghi_chu" rows="3" 
-                              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                               placeholder="Nhập ghi chú về việc thay đổi trạng thái..."></textarea>
                 </div>
                 
@@ -424,7 +424,7 @@ $content = '
                         Hủy
                     </button>
                     <button type="submit" 
-                            class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors">
+                            class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
                         Cập nhật
                     </button>
                 </div>

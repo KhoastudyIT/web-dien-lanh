@@ -10,10 +10,10 @@ if(isset($_REQUEST['act'])){
     $act= $_REQUEST['act'];
     switch($act){
         case 'login':
-            include "../view/pages/login.php";
+            include __DIR__ . "/../view/pages/login.php";
             break;
         case 'register':
-            include "../view/pages/register.php";
+            include __DIR__ . "/../view/pages/register.php";
             break;
         case 'xl_login':
             if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -85,7 +85,7 @@ if(isset($_REQUEST['act'])){
                 header('Location: /project/controller/index.php?act=login');
                 exit();
             }
-            include "../view/pages/profile.php";
+            include __DIR__ . "/../view/pages/profile.php";
             break;
         case 'logout':
             // Xóa tất cả cookie liên quan đến authentication
@@ -118,10 +118,10 @@ if(isset($_REQUEST['act'])){
                 $dm['featured_products'] = $controller->getFeaturedProductsByCategory($dm['id']);
             }
             unset($dm);
-            include "../view/pages/danhmuc.php";
+            include __DIR__ . "/../view/pages/danhmuc.php";
             break;
         case 'gioithieu':
-            include "../view/pages/gioithieu.php";
+            include __DIR__ . "/../view/pages/gioithieu.php";
             break;
         case 'xl_themDM':
             if ($_SERVER["REQUEST_METHOD"] == "POST") { 
@@ -131,7 +131,7 @@ if(isset($_REQUEST['act'])){
                 $controller = new controller();
                 $controller->themdm($dm);
                 $danhmuc = $controller->hienthidm();
-                include "../view/pages/danhmuc.php";
+                include __DIR__ . "/../view/pages/danhmuc.php";
             }
             break;
         case 'xoadm':
@@ -142,14 +142,14 @@ if(isset($_REQUEST['act'])){
                 $controller = new controller();
                 $controller->xoadm($dm);
                 $danhmuc = $controller->hienthidm();
-                include "../view/pages/danhmuc.php";
+                include __DIR__ . "/../view/pages/danhmuc.php";
             }
             break;
         case 'sanpham':
-            include "../view/pages/sanpham.php";
+            include __DIR__ . "/../view/pages/sanpham.php";
             break;
         case 'chitiet':
-            include "../view/pages/chitiet.php";
+            include __DIR__ . "/../view/pages/chitiet.php";
             break;
         case 'add_to_cart':
             // Kiểm tra đăng nhập trước khi thêm vào giỏ hàng
@@ -179,7 +179,7 @@ if(isset($_REQUEST['act'])){
                 exit();
             }
             
-            include "../view/pages/cart.php";
+            include __DIR__ . "/../view/pages/cart.php";
             break;
         case 'update_cart':
             // Kiểm tra đăng nhập trước khi cập nhật giỏ hàng
@@ -231,7 +231,7 @@ if(isset($_REQUEST['act'])){
                 exit();
             }
             
-            include "../view/pages/checkout.php";
+            include __DIR__ . "/../view/pages/checkout.php";
             break;
         case 'process_checkout':
             // Debug logging
@@ -322,7 +322,7 @@ if(isset($_REQUEST['act'])){
                 exit();
             }
             
-            include "../view/pages/order_success.php";
+            include __DIR__ . "/../view/pages/order_success.php";
             break;
         case 'my_orders':
             // Kiểm tra đăng nhập
@@ -332,7 +332,7 @@ if(isset($_REQUEST['act'])){
                 exit();
             }
             
-            include "../view/pages/my_orders.php";
+            include __DIR__ . "/../view/pages/my_orders.php";
             break;
         case 'order_detail':
             // Kiểm tra đăng nhập
@@ -342,7 +342,7 @@ if(isset($_REQUEST['act'])){
                 exit();
             }
             
-            include "../view/pages/order_detail.php";
+            include __DIR__ . "/../view/pages/order_detail.php";
             break;
         case 'admin_orders':
             // Kiểm tra quyền admin
@@ -375,7 +375,7 @@ if(isset($_REQUEST['act'])){
                 exit();
             }
             
-            include "../view/pages/admin_orders.php";
+            include __DIR__ . "/../view/pages/admin_orders.php";
             break;
         case 'admin_order_detail':
             // Kiểm tra quyền admin
@@ -385,7 +385,7 @@ if(isset($_REQUEST['act'])){
                 exit();
             }
             
-            include "../view/pages/admin_order_detail.php";
+            include __DIR__ . "/../view/pages/admin_order_detail.php";
             break;
 
         case 'cancel_order':
@@ -442,7 +442,7 @@ if(isset($_REQUEST['act'])){
                 exit();
             }
             
-            include "../view/pages/admin_product_management.php";
+            include __DIR__ . "/../view/pages/admin_product_management.php";
             break;
         case 'admin_add_product':
             // Kiểm tra quyền admin
@@ -452,7 +452,7 @@ if(isset($_REQUEST['act'])){
                 exit();
             }
             
-            include "../view/pages/admin_add_product.php";
+            include __DIR__ . "/../view/pages/admin_add_product.php";
             break;
         case 'admin_edit_product':
             // Kiểm tra quyền admin
@@ -462,7 +462,7 @@ if(isset($_REQUEST['act'])){
                 exit();
             }
             
-            include "../view/pages/admin_edit_product.php";
+            include __DIR__ . "/../view/pages/admin_edit_product.php";
             break;
         case 'admin_category_management':
             // Kiểm tra quyền admin
@@ -472,7 +472,7 @@ if(isset($_REQUEST['act'])){
                 exit();
             }
             
-            include "../view/pages/admin_category_management.php";
+            include __DIR__ . "/../view/pages/admin_category_management.php";
             break;
         case 'admin_reports':
             // Kiểm tra quyền admin
@@ -482,10 +482,10 @@ if(isset($_REQUEST['act'])){
                 exit();
             }
             
-            include "../view/pages/admin_reports.php";
+            include __DIR__ . "/../view/pages/admin_reports.php";
             break;
         case 'lienhe':
-            include "../view/pages/lienhe.php";
+            include __DIR__ . "/../view/pages/lienhe.php";
             break;
 
 
@@ -515,7 +515,7 @@ if(isset($_REQUEST['act'])){
                 }
                 break;
             case 'admin':
-                include "../view/pages/admin_complete.php";
+                include __DIR__ . "/../view/pages/admin_complete.php";
                 break;
             case 'admin_simple':
                 // Kiểm tra quyền admin
@@ -525,10 +525,10 @@ if(isset($_REQUEST['act'])){
                     exit();
                 }
                 
-                include "../view/pages/admin_simple.php";
+                include __DIR__ . "/../view/pages/admin_simple.php";
                 break;
     }
 
 }else{
-    include "../view/pages/home.php";
+    include __DIR__ . "/../view/pages/home.php";
 }
