@@ -122,11 +122,25 @@ $content = '
         <div class="bg-white rounded-lg shadow-md p-6">
             <div class="flex items-center justify-between">
                 <div>
-                    <p class="text-sm font-medium text-gray-600">Tổng doanh thu</p>
+                    <p class="text-sm font-medium text-gray-600">Doanh thu thực tế</p>
                     <p class="text-2xl font-bold text-green-600">' . number_format($stats['tong_doanh_thu']) . '₫</p>
+                    <p class="text-xs text-gray-500">Chỉ tính đơn hàng đã giao</p>
                 </div>
                 <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
                     <i class="ri-money-dollar-circle-line text-green-600 text-xl"></i>
+                </div>
+            </div>
+        </div>
+        
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-gray-600">Doanh thu tổng</p>
+                    <p class="text-2xl font-bold text-blue-600">' . number_format($stats['tong_doanh_thu_tat_ca']) . '₫</p>
+                    <p class="text-xs text-gray-500">Tất cả đơn hàng (trừ đã hủy)</p>
+                </div>
+                <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                    <i class="ri-bar-chart-line text-blue-600 text-xl"></i>
                 </div>
             </div>
         </div>

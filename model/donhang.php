@@ -191,9 +191,9 @@ class DonHang {
                         COUNT(CASE WHEN trangthai = 'Đang giao' THEN 1 END) as dang_giao,
                         COUNT(CASE WHEN trangthai = 'Đã giao' THEN 1 END) as da_giao,
                         COUNT(CASE WHEN trangthai = 'Đã hủy' THEN 1 END) as da_huy,
-                        SUM(tongdh) as tong_doanh_thu
-                    FROM donhang 
-                    WHERE trangthai != 'Đã hủy'";
+                        SUM(CASE WHEN trangthai = 'Đã giao' THEN tongdh ELSE 0 END) as tong_doanh_thu,
+                        SUM(CASE WHEN trangthai != 'Đã hủy' THEN tongdh ELSE 0 END) as tong_doanh_thu_tat_ca
+                    FROM donhang";
             
             $stmt = $this->db->prepare($sql);
             $stmt->execute();
@@ -209,7 +209,8 @@ class DonHang {
                     'dang_giao' => 0,
                     'da_giao' => 0,
                     'da_huy' => 0,
-                    'tong_doanh_thu' => 0
+                    'tong_doanh_thu' => 0,
+                    'tong_doanh_thu_tat_ca' => 0
                 ];
             }
             
@@ -221,7 +222,8 @@ class DonHang {
                 'dang_giao' => 0,
                 'da_giao' => 0,
                 'da_huy' => 0,
-                'tong_doanh_thu' => 0
+                'tong_doanh_thu' => 0,
+                'tong_doanh_thu_tat_ca' => 0
             ];
             
             return array_merge($defaultValues, $result);
@@ -235,8 +237,45 @@ class DonHang {
                 'dang_giao' => 0,
                 'da_giao' => 0,
                 'da_huy' => 0,
-                'tong_doanh_thu' => 0
+                'tong_doanh_thu' => 0,
+                'tong_doanh_thu_tat_ca' => 0
             ];
+        }
+    }
+
+    // Lấy tổng doanh thu thực tế (chỉ đơn hàng đã giao)
+    public function getActualRevenue() {
+        try {
+            $sql = "SELECT SUM(tongdh) as tong_doanh_thu_thuc_te
+                    FROM donhang 
+                    WHERE trangthai = 'Đã giao'";
+            
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute();
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            
+            return $result['tong_doanh_thu_thuc_te'] ?? 0;
+        } catch (Exception $e) {
+            error_log("Error in getActualRevenue: " . $e->getMessage());
+            return 0;
+        }
+    }
+
+    // Lấy tổng doanh thu tất cả đơn hàng (trừ đã hủy)
+    public function getTotalRevenue() {
+        try {
+            $sql = "SELECT SUM(tongdh) as tong_doanh_thu_tat_ca
+                    FROM donhang 
+                    WHERE trangthai != 'Đã hủy'";
+            
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute();
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            
+            return $result['tong_doanh_thu_tat_ca'] ?? 0;
+        } catch (Exception $e) {
+            error_log("Error in getTotalRevenue: " . $e->getMessage());
+            return 0;
         }
     }
 
@@ -318,9 +357,9 @@ class DonHang {
             $sql = "SELECT 
                         MONTH(ngaydat) as month,
                         COUNT(*) as so_don_hang,
-                        SUM(tongdh) as total_revenue
+                        SUM(CASE WHEN trangthai = 'Đã giao' THEN tongdh ELSE 0 END) as total_revenue
                     FROM donhang 
-                    WHERE YEAR(ngaydat) = ? AND trangthai != 'Đã hủy'
+                    WHERE YEAR(ngaydat) = ?
                     GROUP BY MONTH(ngaydat)
                     ORDER BY month";
             
@@ -343,7 +382,7 @@ class DonHang {
                         sp.Name as product_name,
                         sp.image,
                         SUM(dct.soluong) as total_quantity,
-                        SUM(dct.tong_dh) as total_revenue
+                        SUM(CASE WHEN dh.trangthai = 'Đã giao' THEN dct.tong_dh ELSE 0 END) as total_revenue
                     FROM dh_chitiet dct
                     JOIN sanpham sp ON dct.id_sp = sp.id_sp
                     JOIN donhang dh ON dct.id_dh = dh.id_dh

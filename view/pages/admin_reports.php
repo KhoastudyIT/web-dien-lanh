@@ -101,6 +101,7 @@ $content = '
                     <p class="text-sm ' . ($growthRate >= 0 ? 'text-green-500' : 'text-red-500') . '">
                         ' . ($growthRate >= 0 ? '+' : '') . number_format($growthRate, 1) . '% so với tháng trước
                     </p>
+                    <p class="text-xs text-gray-500">Chỉ đơn hàng đã giao</p>
                 </div>
                 <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
                     <i class="ri-money-dollar-circle-line text-green-600 text-xl"></i>
@@ -114,6 +115,7 @@ $content = '
                     <p class="text-sm font-medium text-gray-600">Doanh thu năm</p>
                     <p class="text-2xl font-bold text-gray-900">' . number_format($totalYearRevenue, 0, ',', '.') . ' ₫</p>
                     <p class="text-sm text-gray-500">Năm ' . $year . '</p>
+                    <p class="text-xs text-gray-500">Chỉ đơn hàng đã giao</p>
                 </div>
                 <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
                     <i class="ri-calendar-line text-purple-600 text-xl"></i>
@@ -133,13 +135,26 @@ $content = '
                 </div>
             </div>
         </div>
+        
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-gray-600">Doanh thu tổng</p>
+                    <p class="text-2xl font-bold text-blue-900">' . number_format($orderStats['tong_doanh_thu_tat_ca'], 0, ',', '.') . ' ₫</p>
+                    <p class="text-sm text-blue-500">Tất cả đơn hàng (trừ đã hủy)</p>
+                </div>
+                <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                    <i class="ri-bar-chart-line text-blue-600 text-xl"></i>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Charts and Reports -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <!-- Monthly Revenue Chart -->
         <div class="bg-white rounded-lg shadow-md p-6">
-            <h3 class="text-lg font-semibold text-gray-800 mb-4">Doanh thu theo tháng</h3>
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">Doanh thu theo tháng (chỉ đơn hàng đã giao)</h3>
             <div class="h-64">
                 <canvas id="monthlyRevenueChart"></canvas>
             </div>
@@ -147,7 +162,7 @@ $content = '
         
         <!-- Top Selling Products -->
         <div class="bg-white rounded-lg shadow-md p-6">
-            <h3 class="text-lg font-semibold text-gray-800 mb-4">Sản phẩm bán chạy</h3>
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">Sản phẩm bán chạy (doanh thu chỉ tính đơn hàng đã giao)</h3>
             <div class="space-y-3">
                 ' . implode('', array_map(function($product, $index) {
                     $rank = $index + 1;
