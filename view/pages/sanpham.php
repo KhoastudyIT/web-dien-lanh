@@ -76,7 +76,7 @@ if ($sale_filter === 'yes') {
 // Filter theo tình trạng hàng
 if ($stock_filter === 'in_stock') {
     $sanpham_list = array_filter($sanpham_list, function($sp) {
-        return $sp['Mount'] > 10;
+        return $sp['Mount'] > 0;
     });
 } elseif ($stock_filter === 'low_stock') {
     $sanpham_list = array_filter($sanpham_list, function($sp) {
